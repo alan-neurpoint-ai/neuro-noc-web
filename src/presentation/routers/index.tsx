@@ -5,7 +5,7 @@ export default function Index() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<LoginPage />} />
       </Routes>
     </BrowserRouter>
   );
