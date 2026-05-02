@@ -5,6 +5,8 @@ import {
   HiCalendar,
   HiDocumentText,
   HiFingerPrint,
+  HiMail,
+  HiLockClosed,
 } from "react-icons/hi";
 
 type InputType =
@@ -13,7 +15,9 @@ type InputType =
   | "decimal"
   | "alphanumeric"
   | "date"
-  | "datetime";
+  | "datetime"
+  | "email"
+  | "password";
 
 interface InputProps extends Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -29,20 +33,50 @@ const inputConfig = {
     icon: <HiDocumentText />,
     pattern: "[A-Za-z\\s]*",
     placeholder: "Solo texto...",
+    htmlType: "text",
   },
-  number: { icon: <HiHashtag />, pattern: "[0-9]*", placeholder: "0000" },
+  number: {
+    icon: <HiHashtag />,
+    pattern: "[0-9]*",
+    placeholder: "0000",
+    htmlType: "text",
+  },
   decimal: {
     icon: <HiCursorClick />,
     pattern: "[0-9]*[.,]?[0-9]*",
     placeholder: "0.00",
+    htmlType: "text",
   },
   alphanumeric: {
     icon: <HiFingerPrint />,
     pattern: "[A-Za-z0-9]*",
     placeholder: "A1-B2...",
+    htmlType: "text",
   },
-  date: { icon: <HiCalendar />, pattern: undefined, placeholder: "" },
-  datetime: { icon: <HiCalendar />, pattern: undefined, placeholder: "" },
+  date: {
+    icon: <HiCalendar />,
+    pattern: undefined,
+    placeholder: "",
+    htmlType: "date",
+  },
+  datetime: {
+    icon: <HiCalendar />,
+    pattern: undefined,
+    placeholder: "",
+    htmlType: "datetime-local",
+  },
+  email: {
+    icon: <HiMail />,
+    pattern: undefined,
+    placeholder: "usuario@ejemplo.com",
+    htmlType: "email",
+  },
+  password: {
+    icon: <HiLockClosed />,
+    pattern: undefined,
+    placeholder: "••••••••",
+    htmlType: "password",
+  },
 };
 
 export const Input = ({
@@ -53,13 +87,6 @@ export const Input = ({
   ...props
 }: InputProps) => {
   const config = inputConfig[type];
-
-  const htmlType =
-    type === "date" || type === "datetime"
-      ? type === "datetime"
-        ? "datetime-local"
-        : "date"
-      : "text";
 
   return (
     <div className="flex flex-col gap-1.5 w-full">
@@ -76,7 +103,7 @@ export const Input = ({
 
         <input
           {...props}
-          type={htmlType}
+          type={config.htmlType}
           pattern={config.pattern}
           placeholder={props.placeholder || config.placeholder}
           className={`
