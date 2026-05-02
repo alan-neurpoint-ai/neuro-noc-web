@@ -85,17 +85,12 @@ export const Button = ({
       onClick={onClick}
       disabled={disabled}
       className={`
-        /* Layout Base y Responsivo */
         flex items-center justify-center gap-2 
-        px-4 py-2.5 min-w-30 w-full sm:w-auto
-        
-        /* Estética Premium Mate */
+        px-4 py-2.5 min-w-110 w-full sm:w-auto
         border transition-all duration-300 ease-out
         text-xs font-medium uppercase tracking-[0.15em]
         rounded-sm backdrop-blur-sm
         disabled:opacity-40 disabled:cursor-not-allowed
-        
-        /* Variantes dinámicas */
         ${config.styles}
         ${className}
       `}
