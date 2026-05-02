@@ -1,12 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #0d0d0d;
-  --color-surface: #1a1a1a;
+  --color-background: #05070a;
+  --color-surface: #0f172a;
   --color-accent: #c5a059;
-  --color-muted: #4a4a4a;
-  --color-text-primary: #e5e5e5;
-  --color-text-secondary: #a0a0a0;
+  --color-blue-primary: #1e293b;
+  --color-blue-glow: #38bdf8;
+  --color-muted: #334155;
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #94a3b8;
   --font-display: "Inter", "Instrument Serif", serif;
 }
 
@@ -16,7 +18,8 @@
   }
 
   body {
-    @apply bg-background text-text-primary antialiased;
+    background: radial-gradient(circle at top center, #0f172a 0%, #05070a 100%);
+    @apply text-text-primary antialiased;
     font-family: var(--font-display);
     letter-spacing: -0.01em;
   }
@@ -27,19 +30,26 @@
     @apply font-light tracking-tight text-accent;
     letter-spacing: -0.03em;
   }
+
   ::-webkit-scrollbar {
     display: none;
   }
+
   * {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
 }
+
 @layer components {
   .glass-card {
-    background: rgba(26, 26, 26, 0.6);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(197, 160, 89, 0.1);
-    @apply rounded-sm;
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(197, 160, 89, 0.08);
+    @apply rounded-sm shadow-2xl;
+  }
+
+  .blue-glow {
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.05);
   }
 }
