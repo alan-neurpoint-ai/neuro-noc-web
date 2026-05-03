@@ -1,6 +1,7 @@
 import { type AuthRepository } from "../../core/repositories/AuthRepository";
 import { type User } from "../../core/entities/User";
 import { SupabaseAuthDataSource } from "../sources/supabase/SupabaseAuthDataSource";
+import { supabase } from "../sources/supabase/client";
 
 export class AuthRepositoryImpl implements AuthRepository {
   private dataSource: SupabaseAuthDataSource;
@@ -12,6 +13,35 @@ export class AuthRepositoryImpl implements AuthRepository {
   async login(email: string, password: string) {
     const result = await this.dataSource.login(email, password);
 
+    let userRole = "usuario";
+    let organizationId = null;
+    let roleId = null;
+
+    if (result.user) {
+      const { data: userData, error: userError } = await supabase
+        .from("users")
+        .select("organization_id, role_id")
+        .eq("id", result.user.id)
+        .single();
+
+      if (!userError && userData) {
+        organizationId = userData.organization_id;
+        roleId = userData.role_id;
+
+        if (roleId) {
+          const { data: roleData, error: roleError } = await supabase
+            .from("roles")
+            .select("name")
+            .eq("id", roleId)
+            .single();
+
+          if (!roleError && roleData) {
+            userRole = roleData.name;
+          }
+        }
+      }
+    }
+
     const user: User | null = result.user
       ? {
           id: result.user.id,
@@ -20,8 +50,9 @@ export class AuthRepositoryImpl implements AuthRepository {
           last_name: result.user.user_metadata?.last_name || null,
           phone_number: null,
           avatar_url: result.user.user_metadata?.avatar_url || null,
-          organization_id: null,
-          role_id: null,
+          organization_id: organizationId,
+          role_id: roleId,
+          role: userRole,
           is_active: true,
           last_login: new Date().toISOString(),
           created_at: result.user.created_at,
@@ -41,6 +72,33 @@ export class AuthRepositoryImpl implements AuthRepository {
 
     if (!user) return null;
 
+    let userRole = "usuario";
+    let organizationId = null;
+    let roleId = null;
+
+    const { data: userData, error: userError } = await supabase
+      .from("users")
+      .select("organization_id, role_id")
+      .eq("id", user.id)
+      .single();
+
+    if (!userError && userData) {
+      organizationId = userData.organization_id;
+      roleId = userData.role_id;
+
+      if (roleId) {
+        const { data: roleData, error: roleError } = await supabase
+          .from("roles")
+          .select("name")
+          .eq("id", roleId)
+          .single();
+
+        if (!roleError && roleData) {
+          userRole = roleData.name;
+        }
+      }
+    }
+
     return {
       id: user.id,
       email: user.email!,
@@ -48,8 +106,9 @@ export class AuthRepositoryImpl implements AuthRepository {
       last_name: user.user_metadata?.last_name || null,
       phone_number: null,
       avatar_url: user.user_metadata?.avatar_url || null,
-      organization_id: null,
-      role_id: null,
+      organization_id: organizationId,
+      role_id: roleId,
+      role: userRole,
       is_active: true,
       last_login: null,
       created_at: user.created_at,

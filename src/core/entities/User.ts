@@ -7,6 +7,7 @@ export interface User {
   avatar_url: string | null;
   organization_id: string | null;
   role_id: string | null;
+  role?: string;
   is_active: boolean;
   last_login: string | null;
   created_at: string;
