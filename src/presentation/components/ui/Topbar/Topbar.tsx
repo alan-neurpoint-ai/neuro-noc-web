@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { HiChevronDown, HiOfficeBuilding, HiShieldCheck } from "react-icons/hi";
 export interface Organization {
+  slug: ReactNode;
+  org_type: ReactNode;
+  is_active: any;
+  created_at(created_at: any): import("react").ReactNode;
+  parent_organization_id: import("react/jsx-runtime").JSX.Element;
   id: string;
   name: string;
   isInternal?: boolean;
