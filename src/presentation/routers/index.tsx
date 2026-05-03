@@ -8,6 +8,7 @@ import {
   ClientsPage,
 } from "../pages";
 import { ProtectedRoute } from "./ProtectedRoute";
+import ClientEditPage from "../pages/Superadmin/clients/edit/ClientEditPage";
 
 export default function Index() {
   return (
@@ -30,6 +31,14 @@ export default function Index() {
           element={
             <ProtectedRoute>
               <ClientsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/super_admin/clientes/:clientId/edit"
+          element={
+            <ProtectedRoute>
+              <ClientEditPage />
             </ProtectedRoute>
           }
         />

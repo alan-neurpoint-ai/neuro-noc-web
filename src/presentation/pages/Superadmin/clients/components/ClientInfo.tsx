@@ -5,6 +5,7 @@ import {
   HiCheckCircle,
   HiCalendar,
   HiInformationCircle,
+  HiXCircle,
 } from "react-icons/hi";
 import { formatDate } from "../../../../utils/formatters";
 import { InfoRow } from "./InfoRow";
@@ -40,11 +41,41 @@ export const ClientInfo = ({ details }: ClientInfoProps) => (
         value={details.org_type}
         icon={<HiChartBar size={14} />}
       />
-      <InfoRow
-        label="Estado"
-        value={details.is_active ? "Activo" : "Inactivo"}
-        icon={<HiCheckCircle size={14} />}
-      />
+
+      <div className="flex items-start gap-3 p-3 rounded-lg bg-surface/20 border border-muted/10 hover:border-accent/20 transition-all">
+        <div
+          className={`mt-0.5 ${details.is_active ? "text-emerald-400" : "text-rose-400"}`}
+        >
+          {details.is_active ? (
+            <HiCheckCircle size={14} />
+          ) : (
+            <HiXCircle size={14} />
+          )}
+        </div>
+        <div className="flex-1">
+          <p className="text-[9px] uppercase tracking-wider text-accent/70 font-bold">
+            Estado
+          </p>
+          <div className="flex items-center gap-2 mt-0.5">
+            <span
+              className={`text-sm font-medium ${details.is_active ? "text-emerald-400" : "text-rose-400"}`}
+            >
+              {details.is_active ? "Activo" : "Inactivo"}
+            </span>
+            {!details.is_active && (
+              <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30">
+                Suspendido
+              </span>
+            )}
+            {details.is_active && (
+              <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                Operativo
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+
       <InfoRow
         label="Fecha Creación"
         value={formatDate(details.created_at)}

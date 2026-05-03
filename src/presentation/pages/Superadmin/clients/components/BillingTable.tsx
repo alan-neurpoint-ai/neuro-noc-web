@@ -1,6 +1,6 @@
 import { HiCreditCard } from "react-icons/hi";
-import type { BillingItem } from "../../../../core/entities/analytics";
-import { Table } from "../../../components/ui";
+import type { BillingItem } from "../../../../../core/entities/analytics";
+import { Table } from "../../../../components/ui";
 
 interface BillingTableProps {
   data: BillingItem[];
