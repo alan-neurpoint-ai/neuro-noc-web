@@ -110,11 +110,9 @@ export const Card = ({
         ${className}
       `}
     >
-      {/* Background glow effect */}
       <div className="absolute inset-0 bg-linear-to-br from-accent/0 via-accent/0 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
       <div className="absolute -top-20 -right-20 w-40 h-40 bg-accent/5 rounded-full blur-2xl group-hover:bg-accent/10 transition-all duration-700" />
 
-      {/* Header */}
       <div className="relative z-10 flex justify-between items-start">
         <div className="flex flex-col gap-1 flex-1">
           <div className="flex items-center gap-2 flex-wrap">
@@ -156,7 +154,6 @@ export const Card = ({
         )}
       </div>
 
-      {/* Value Section */}
       {(value !== undefined || trend) && (
         <div className="relative z-10 flex items-end justify-between mt-2">
           <div className="flex items-baseline gap-2 flex-wrap">
@@ -191,14 +188,12 @@ export const Card = ({
         </div>
       )}
 
-      {/* Children */}
       {children && (
         <div className="relative z-10 mt-3 pt-3 border-t border-muted/20">
           {children}
         </div>
       )}
 
-      {/* Footer */}
       {footer && (
         <div className="relative z-10 mt-2 pt-2 text-right">{footer}</div>
       )}

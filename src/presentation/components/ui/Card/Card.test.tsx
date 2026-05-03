@@ -33,7 +33,7 @@ describe("Card Component", () => {
         trend={{ value: 12, isPositive: true }}
       />,
     );
-    // Buscar el contenedor del trend
+
     const trendContainer = screen.getByText(/12%/).closest("div");
     expect(trendContainer).toHaveClass("text-emerald-400");
     expect(screen.getByText("↑")).toBeInTheDocument();
@@ -68,19 +68,18 @@ describe("Card Component", () => {
       <Card title="Server" status="online" />,
     );
 
-    // Online status
+  
     let indicator = container.querySelector(".animate-pulse");
     expect(indicator).toBeInTheDocument();
     expect(indicator).toHaveClass("bg-emerald-500");
     expect(screen.getByText("Operativo")).toBeInTheDocument();
 
-    // Offline status
+  
     rerender(<Card title="Server" status="offline" />);
     indicator = container.querySelector(".animate-pulse");
     expect(indicator).toHaveClass("bg-red-500");
     expect(screen.getByText("Inactivo")).toBeInTheDocument();
 
-    // Warning status
     rerender(<Card title="Server" status="warning" />);
     indicator = container.querySelector(".animate-pulse");
     expect(indicator).toHaveClass("bg-amber-500");
