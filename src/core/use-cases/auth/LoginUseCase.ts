@@ -1,4 +1,4 @@
-import { type AuthRepository } from "../../repositories/AuthRepository";
+import { type AuthRepository } from "../../repositories/auth/AuthRepository";
 
 export class LoginUseCase {
   private authRepository: AuthRepository;

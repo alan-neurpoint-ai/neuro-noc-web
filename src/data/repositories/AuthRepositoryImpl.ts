@@ -1,5 +1,5 @@
-import { type AuthRepository } from "../../core/repositories/AuthRepository";
-import { type User } from "../../core/entities/User";
+import { type AuthRepository } from "../../core/repositories/auth/AuthRepository";
+import { type User } from "../../core/entities/supabase/User";
 import { SupabaseAuthDataSource } from "../sources/supabase/SupabaseAuthDataSource";
 import { supabase } from "../sources/supabase/client";
 
