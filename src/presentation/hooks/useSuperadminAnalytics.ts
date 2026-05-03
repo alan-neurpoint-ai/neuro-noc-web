@@ -60,12 +60,19 @@ export const useSuperadminAnalytics = (): UseSuperadminAnalyticsReturn => {
         }));
 
         if (clientsData) {
-          const clientsWithAlerts = clientsData.map((client) => {
+          const clientsWithAlerts: Client[] = clientsData.map((client) => {
             const clientAlerts = alerts.filter(
               (a) => a.organization_id === client.id,
             );
             return {
-              ...client,
+              id: client.id,
+              name: client.name,
+              slug: client.slug,
+              parent_organization_id: client.parent_organization_id,
+              org_type: client.org_type,
+              is_active: client.is_active,
+              created_at: client.created_at,
+              updated_at: client.updated_at,
               alertCount: clientAlerts.length,
               criticalAlertCount: clientAlerts.filter(
                 (a) => a.criticality === "Critical" && a.status !== "RESOLVED",
