@@ -1,18 +1,7 @@
 import { useState } from "react";
-import {
-  HiChartBar,
-  HiServer,
-  HiShieldCheck,
-  HiCog,
-  HiLogout,
-  HiUserCircle,
-  HiChevronLeft,
-  HiMenu,
-  HiDatabase,
-  HiTerminal,
-  HiBell,
-} from "react-icons/hi";
+import { HiUserCircle, HiChevronLeft, HiMenu } from "react-icons/hi";
 import { Button } from "../Button/Button";
+import { getMenuItemsByRole } from "./menuConfig";
 
 interface UserData {
   name: string;
@@ -30,16 +19,13 @@ interface SidebarProps {
 export const Sidebar = ({ user, onLogout }: SidebarProps) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const menuItems = getMenuItemsByRole(user.role);
 
-  const menuItems = [
-    { icon: <HiChartBar size={22} />, label: "Dashboard" },
-    { icon: <HiServer size={22} />, label: "Nodos" },
-    { icon: <HiDatabase size={22} />, label: "Storage" },
-    { icon: <HiShieldCheck size={22} />, label: "Seguridad" },
-    { icon: <HiTerminal size={22} />, label: "Terminal" },
-    { icon: <HiBell size={22} />, label: "Alertas" },
-    { icon: <HiCog size={22} />, label: "Configuración" },
-  ];
+  const handleNavigation = (path: string) => {
+    setCurrentPath(path);
+    window.location.href = path;
+  };
 
   return (
     <aside
@@ -73,9 +59,11 @@ export const Sidebar = ({ user, onLogout }: SidebarProps) => {
           {menuItems.map((item, idx) => (
             <button
               key={idx}
+              onClick={() => handleNavigation(item.path)}
               className={`
                 flex items-center gap-4 px-3 py-3 rounded-sm text-text-secondary 
                 hover:bg-blue-primary/30 hover:text-blue-glow transition-all duration-200 group
+                ${currentPath === item.path ? "bg-blue-primary/20 text-blue-glow" : ""}
                 ${isCollapsed ? "justify-center" : ""}
               `}
             >
@@ -111,11 +99,11 @@ export const Sidebar = ({ user, onLogout }: SidebarProps) => {
                 <p className="text-[11px] text-text-secondary">{user.email}</p>
               </div>
               <Button
-                variant="exit"
+                variant="logout"
                 className="w-full mt-1 py-2 text-[9px]"
                 onClick={onLogout}
               >
-                <HiLogout className="mr-2" /> Cerrar Sesión
+                Cerrar Sesión
               </Button>
             </div>
           </div>
@@ -135,9 +123,6 @@ export const Sidebar = ({ user, onLogout }: SidebarProps) => {
             <div className="flex flex-col items-start overflow-hidden text-left">
               <span className="text-xs font-bold text-text-primary uppercase truncate w-full">
                 {user.name}
-              </span>
-              <span className="text-[9px] text-blue-glow/60 uppercase tracking-tighter">
-                {user.organization}
               </span>
             </div>
           )}
