@@ -5,6 +5,7 @@ import {
   ClientPage,
   UserPage,
   LoginPage,
+  ClientsPage,
 } from "../pages";
 import { ProtectedRoute } from "./ProtectedRoute";
 
@@ -20,6 +21,15 @@ export default function Index() {
           element={
             <ProtectedRoute>
               <SuperadminPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard/super_admin/clientes"
+          element={
+            <ProtectedRoute>
+              <ClientsPage />
             </ProtectedRoute>
           }
         />
