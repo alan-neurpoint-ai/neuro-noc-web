@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Sidebar, Card, Table } from "../../components/ui/";
 import { useAuthStore } from "../../store/AuthStore";
+import { useSuperadminAnalytics } from "../../hooks/useSuperadminAnalytics";
 import { useNavigate } from "react-router";
-
 import {
   HiOfficeBuilding,
   HiBell,
@@ -13,113 +13,18 @@ import {
   HiXCircle,
   HiUserGroup,
 } from "react-icons/hi";
-import { supabase } from "../../../data/sources/supabase";
-
-interface ClientStats {
-  totalClients: number;
-  activeClients: number;
-  totalAlerts: number;
-  criticalAlerts: number;
-  totalAiConfigs: number;
-}
-
-interface Client {
-  id: string;
-  name: string;
-  slug: string;
-  is_active: boolean;
-  created_at: string;
-  alertCount?: number;
-  criticalAlertCount?: number;
-}
 
 export default function SuperadminPage() {
   const { user, userRole, logout } = useAuthStore();
   const navigate = useNavigate();
-  const [stats, setStats] = useState<ClientStats>({
-    totalClients: 0,
-    activeClients: 0,
-    totalAlerts: 0,
-    criticalAlerts: 0,
-    totalAiConfigs: 0,
-  });
-  const [isLoading, setIsLoading] = useState(true);
-  const [clients, setClients] = useState<Client[]>([]);
+  const { stats, clients, isLoading, fetchAnalytics } =
+    useSuperadminAnalytics();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
   useEffect(() => {
     fetchAnalytics();
-  }, []);
-
-  const fetchAnalytics = async () => {
-    setIsLoading(true);
-    try {
-      const { data: clientsData, error: clientsError } = await supabase
-        .from("organizations")
-        .select("*")
-        .eq("org_type", "client")
-        .order("created_at", { ascending: false });
-
-      if (!clientsError && clientsData) {
-        const activeClients = clientsData.filter((c) => c.is_active).length;
-        setStats((prev) => ({
-          ...prev,
-          totalClients: clientsData.length,
-          activeClients: activeClients,
-        }));
-        setClients(clientsData);
-      }
-
-      const { data: alerts, error: alertError } = await supabase
-        .from("alerts")
-        .select("criticality, status, organization_id");
-
-      if (!alertError && alerts) {
-        const totalAlerts = alerts.length;
-        const criticalAlerts = alerts.filter(
-          (a) => a.criticality === "Critical" && a.status !== "RESOLVED",
-        ).length;
-
-        setStats((prev) => ({
-          ...prev,
-          totalAlerts: totalAlerts,
-          criticalAlerts: criticalAlerts,
-        }));
-
-        if (clientsData) {
-          const clientsWithAlerts = clientsData.map((client) => {
-            const clientAlerts = alerts.filter(
-              (a) => a.organization_id === client.id,
-            );
-            return {
-              ...client,
-              alertCount: clientAlerts.length,
-              criticalAlertCount: clientAlerts.filter(
-                (a) => a.criticality === "Critical" && a.status !== "RESOLVED",
-              ).length,
-            };
-          });
-          setClients(clientsWithAlerts);
-        }
-      }
-
-      const { count: aiConfigs, error: aiError } = await supabase
-        .from("ai_configurations")
-        .select("*", { count: "exact", head: true });
-
-      if (!aiError) {
-        setStats((prev) => ({
-          ...prev,
-          totalAiConfigs: aiConfigs || 0,
-        }));
-      }
-    } catch (error) {
-      console.error("Error fetching analytics:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [fetchAnalytics]);
 
   const handleLogout = async () => {
     await logout();
@@ -139,20 +44,20 @@ export default function SuperadminPage() {
     organization: "Neuropoint AI",
   };
 
-  const columns = [
+  const columns: any[] = [
     {
       header: "Nombre",
-      accessor: (item: Client) => (
+      accessor: (item: any) => (
         <span className="font-medium text-text-primary">{item.name}</span>
       ),
     },
     {
       header: "Slug",
-      accessor: "slug" as keyof Client,
+      accessor: (item: any) => <span>{item.slug}</span>,
     },
     {
       header: "Estado",
-      accessor: (item: Client) => (
+      accessor: (item: any) => (
         <span
           className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full ${
             item.is_active
@@ -171,11 +76,11 @@ export default function SuperadminPage() {
     },
     {
       header: "Alertas",
-      accessor: (item: Client) => <span>{item.alertCount || 0}</span>,
+      accessor: (item: any) => <span>{item.alertCount || 0}</span>,
     },
     {
       header: "Críticas",
-      accessor: (item: Client) => (
+      accessor: (item: any) => (
         <span
           className={
             item.criticalAlertCount && item.criticalAlertCount > 0
@@ -189,7 +94,7 @@ export default function SuperadminPage() {
     },
     {
       header: "Fecha Creación",
-      accessor: (item: Client) => (
+      accessor: (item: any) => (
         <span>{new Date(item.created_at).toLocaleDateString()}</span>
       ),
     },

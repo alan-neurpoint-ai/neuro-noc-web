@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { HiTerminal } from "react-icons/hi";
 import { fondo } from "../../assets";
-import { Input } from "../../components/ui/Input/Input";
-import { Button } from "../../components/ui/Button/Button";
+import { Input, Button } from "../../components/ui";
 import { useAuthStore } from "../../store/AuthStore";
 
 export default function LoginPage() {
@@ -95,7 +94,6 @@ export default function LoginPage() {
           </header>
 
           <form onSubmit={handleLogin} className="space-y-6">
-            {/* Error general de autenticación */}
             {authError && (
               <div className="bg-red-950/20 border border-red-900/50 rounded-sm p-3">
                 <p className="text-red-400 text-xs uppercase tracking-wider text-center">
