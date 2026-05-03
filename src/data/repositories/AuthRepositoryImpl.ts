@@ -14,25 +14,22 @@ export class AuthRepositoryImpl implements AuthRepository {
     const result = await this.dataSource.login(email, password);
 
     let userRole = "usuario";
-    let organizationId = null;
-    let roleId = null;
+    let userDataFromDb = null;
 
     if (result.user) {
       const { data: userData, error: userError } = await supabase
         .from("users")
-        .select("organization_id, role_id")
+        .select("*")
         .eq("id", result.user.id)
         .single();
 
       if (!userError && userData) {
-        organizationId = userData.organization_id;
-        roleId = userData.role_id;
-
-        if (roleId) {
+        userDataFromDb = userData;
+        if (userData.role_id) {
           const { data: roleData, error: roleError } = await supabase
             .from("roles")
             .select("name")
-            .eq("id", roleId)
+            .eq("id", userData.role_id)
             .single();
 
           if (!roleError && roleData) {
@@ -46,17 +43,29 @@ export class AuthRepositoryImpl implements AuthRepository {
       ? {
           id: result.user.id,
           email: result.user.email!,
-          first_name: result.user.user_metadata?.first_name || null,
-          last_name: result.user.user_metadata?.last_name || null,
-          phone_number: null,
-          avatar_url: result.user.user_metadata?.avatar_url || null,
-          organization_id: organizationId,
-          role_id: roleId,
+          first_name:
+            userDataFromDb?.first_name ||
+            result.user.user_metadata?.first_name ||
+            null,
+          last_name:
+            userDataFromDb?.last_name ||
+            result.user.user_metadata?.last_name ||
+            null,
+          phone_number: userDataFromDb?.phone_number || null,
+          avatar_url:
+            userDataFromDb?.avatar_url ||
+            result.user.user_metadata?.avatar_url ||
+            null,
+          organization_id: userDataFromDb?.organization_id || null,
+          role_id: userDataFromDb?.role_id || null,
           role: userRole,
-          is_active: true,
-          last_login: new Date().toISOString(),
-          created_at: result.user.created_at,
-          updated_at: result.user.updated_at || new Date().toISOString(),
+          is_active: userDataFromDb?.is_active ?? true,
+          last_login: userDataFromDb?.last_login || new Date().toISOString(),
+          created_at: userDataFromDb?.created_at || result.user.created_at,
+          updated_at:
+            userDataFromDb?.updated_at ||
+            result.user.updated_at ||
+            new Date().toISOString(),
         }
       : null;
 
@@ -73,24 +82,22 @@ export class AuthRepositoryImpl implements AuthRepository {
     if (!user) return null;
 
     let userRole = "usuario";
-    let organizationId = null;
-    let roleId = null;
+    let userDataFromDb = null;
 
     const { data: userData, error: userError } = await supabase
       .from("users")
-      .select("organization_id, role_id")
+      .select("*")
       .eq("id", user.id)
       .single();
 
     if (!userError && userData) {
-      organizationId = userData.organization_id;
-      roleId = userData.role_id;
+      userDataFromDb = userData;
 
-      if (roleId) {
+      if (userData.role_id) {
         const { data: roleData, error: roleError } = await supabase
           .from("roles")
           .select("name")
-          .eq("id", roleId)
+          .eq("id", userData.role_id)
           .single();
 
         if (!roleError && roleData) {
@@ -102,17 +109,23 @@ export class AuthRepositoryImpl implements AuthRepository {
     return {
       id: user.id,
       email: user.email!,
-      first_name: user.user_metadata?.first_name || null,
-      last_name: user.user_metadata?.last_name || null,
-      phone_number: null,
-      avatar_url: user.user_metadata?.avatar_url || null,
-      organization_id: organizationId,
-      role_id: roleId,
+      first_name:
+        userDataFromDb?.first_name || user.user_metadata?.first_name || null,
+      last_name:
+        userDataFromDb?.last_name || user.user_metadata?.last_name || null,
+      phone_number: userDataFromDb?.phone_number || null,
+      avatar_url:
+        userDataFromDb?.avatar_url || user.user_metadata?.avatar_url || null,
+      organization_id: userDataFromDb?.organization_id || null,
+      role_id: userDataFromDb?.role_id || null,
       role: userRole,
-      is_active: true,
-      last_login: null,
-      created_at: user.created_at,
-      updated_at: user.updated_at || new Date().toISOString(),
+      is_active: userDataFromDb?.is_active ?? true,
+      last_login: userDataFromDb?.last_login || null,
+      created_at: userDataFromDb?.created_at || user.created_at,
+      updated_at:
+        userDataFromDb?.updated_at ||
+        user.updated_at ||
+        new Date().toISOString(),
     };
   }
 
