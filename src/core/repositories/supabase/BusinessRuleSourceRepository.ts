@@ -1,4 +1,4 @@
-import { type BusinessRuleSource } from "../entities/BusinessRuleSource";
+import { type BusinessRuleSource } from "../../entities/supabase/BusinessRuleSource";
 
 export interface BusinessRuleSourceRepository {
   findAll(businessRuleId?: string): Promise<BusinessRuleSource[]>;

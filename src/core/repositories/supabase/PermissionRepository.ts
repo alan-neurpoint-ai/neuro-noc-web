@@ -1,4 +1,4 @@
-import { type Permission } from "../entities/Permission";
+import { type Permission } from "../../entities/supabase/Permission";
 
 export interface PermissionRepository {
   findAll(): Promise<Permission[]>;

@@ -1,4 +1,4 @@
-import { type Role } from "../entities/Role";
+import { type Role } from "../../entities/supabase/Role";
 
 export interface RoleRepository {
   findAll(organizationId?: string | null): Promise<Role[]>;

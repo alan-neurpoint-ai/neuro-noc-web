@@ -1,4 +1,4 @@
-import { type RolePermission } from "../entities/RolePermission";
+import { type RolePermission } from "../../entities/supabase/RolePermission";
 
 export interface RolePermissionRepository {
   findByRole(roleId: string): Promise<RolePermission[]>;

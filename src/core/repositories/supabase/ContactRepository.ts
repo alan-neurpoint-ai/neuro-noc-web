@@ -1,4 +1,4 @@
-import { type Contact } from "../entities/Contact";
+import { type Contact } from "../../entities/supabase/Contact";
 
 export interface ContactRepository {
   findAll(organizationId: string): Promise<Contact[]>;

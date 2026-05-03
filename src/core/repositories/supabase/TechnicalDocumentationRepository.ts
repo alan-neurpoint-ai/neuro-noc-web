@@ -1,4 +1,4 @@
-import { type TechnicalDocumentation } from "../entities/TechnicalDocumentation";
+import { type TechnicalDocumentation } from "../../entities/supabase/TechnicalDocumentation";
 
 export interface TechnicalDocumentationRepository {
   findAll(organizationId?: string): Promise<TechnicalDocumentation[]>;

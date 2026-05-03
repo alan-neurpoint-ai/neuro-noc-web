@@ -1,4 +1,4 @@
-import { type AlertAction } from "../entities/AlertAction";
+import { type AlertAction } from "../../entities/supabase/AlertAction";
 
 export interface AlertActionRepository {
   findAll(alertId: string): Promise<AlertAction[]>;

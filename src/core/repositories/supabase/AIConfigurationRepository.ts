@@ -1,4 +1,4 @@
-import { type AIConfiguration } from "../entities/AIConfiguration";
+import { type AIConfiguration } from "../../entities/supabase/AIConfiguration";
 
 export interface AIConfigurationRepository {
   findAll(organizationId: string): Promise<AIConfiguration[]>;

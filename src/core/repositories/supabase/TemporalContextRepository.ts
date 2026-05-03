@@ -1,4 +1,4 @@
-import { type TemporalContext } from "../entities/TemporalContext";
+import { type TemporalContext } from "../../entities/supabase/TemporalContext";
 
 export interface TemporalContextRepository {
   findAll(organizationId?: string): Promise<TemporalContext[]>;

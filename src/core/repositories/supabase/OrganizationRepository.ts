@@ -1,4 +1,4 @@
-import { type Organization } from "../entities/Organization";
+import { type Organization } from "../../entities/supabase/Organization";
 
 export interface OrganizationRepository {
   findAll(): Promise<Organization[]>;
