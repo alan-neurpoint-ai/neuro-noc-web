@@ -10,10 +10,10 @@ import {
   MOCK_BILLING_INFO,
 } from "../../../utils/billingMockData";
 import type { BillingItem } from "../../../../core/entities/analytics";
-import { ClientHeader } from "./ClientHeader";
-import { ClientInfo } from "./ClientInfo";
-import { ClientStats } from "./ClientStats";
-import { BillingTable } from "./BillingTable";
+import { ClientHeader } from "./components/ClientHeader";
+import { ClientInfo } from "./components/ClientInfo";
+import { ClientStats } from "./components/ClientStats";
+import { BillingTable } from "./components/BillingTable";
 
 export default function ClientsPage() {
   const { user, userRole, logout } = useAuthStore();
@@ -106,7 +106,7 @@ export default function ClientsPage() {
       : "0";
 
   return (
-    <div className="flex h-screen bg-linear-to-br from-background via-background to-accent/5">
+    <div className="flex h-screen ">
       <Sidebar user={userData} onLogout={handleLogout} />
 
       <div className="flex-1 flex flex-col h-full overflow-hidden">

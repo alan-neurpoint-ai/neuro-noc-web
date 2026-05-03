@@ -6,7 +6,7 @@ import {
   HiCalendar,
   HiInformationCircle,
 } from "react-icons/hi";
-import { formatDate } from "../../../utils/formatters";
+import { formatDate } from "../../../../utils/formatters";
 import { InfoRow } from "./InfoRow";
 
 interface ClientInfoProps {

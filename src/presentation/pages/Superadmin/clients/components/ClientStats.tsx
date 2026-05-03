@@ -4,8 +4,8 @@ import {
   HiClock,
   HiCreditCard,
 } from "react-icons/hi";
-import type { AlertStats } from "../../../../core/entities/analytics";
-import { Card } from "../../../components/ui";
+import type { AlertStats } from "../../../../../core/entities/analytics";
+import { Card } from "../../../../components/ui";
 interface ClientStatsProps {
   stats: AlertStats;
   resolutionRate: string;

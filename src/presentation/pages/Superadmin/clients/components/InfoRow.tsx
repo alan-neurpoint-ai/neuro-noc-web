@@ -1,4 +1,4 @@
-import type { InfoRowProps } from "../../../../core/entities/analytics";
+import type { InfoRowProps } from "../../../../../core/entities/analytics";
 
 export const InfoRow = ({ label, value, icon }: InfoRowProps) => (
   <div className="flex items-start gap-3 p-3 rounded-lg bg-surface/20 border border-muted/10 hover:border-accent/20 transition-all">
