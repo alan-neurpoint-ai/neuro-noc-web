@@ -86,7 +86,7 @@ export const Button = ({
       disabled={disabled}
       className={`
         flex items-center justify-center gap-2 
-        px-4 py-2.5 min-w-110 w-full sm:w-auto
+        px-4 py-2.5 w-full sm:w-auto
         border transition-all duration-300 ease-out
         text-xs font-medium uppercase tracking-[0.15em]
         rounded-sm backdrop-blur-sm
@@ -95,8 +95,8 @@ export const Button = ({
         ${className}
       `}
     >
-      {config.icon}
       <span>{children || config.label}</span>
+      {config.icon}
     </button>
   );
 };
