@@ -1,23 +1,54 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import { HiTerminal } from "react-icons/hi";
 import { fondo } from "../../assets";
 import { Input } from "../../components/ui/Input/Input";
 import { Button } from "../../components/ui/Button/Button";
+import { useAuthStore } from "../../store/AuthStore";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const [errors, setErrors] = useState({ email: "", password: "" });
-  const [isLoading, setIsLoading] = useState(false);
+  const [localErrors, setLocalErrors] = useState({ email: "", password: "" });
+  const {
+    login,
+    isLoading,
+    error: authError,
+    isAuthenticated,
+    userRole,
+  } = useAuthStore();
+  const navigate = useNavigate();
+
+  console.log("LoginPage - Estado:", {
+    isAuthenticated,
+    userRole,
+    isLoading,
+    authError,
+  });
+
+  useEffect(() => {
+    console.log("LoginPage - useEffect ejecutado:", {
+      isAuthenticated,
+      userRole,
+    });
+
+    if (isAuthenticated && userRole) {
+      const redirectPath = `/dashboard/${userRole}`;
+      console.log("LoginPage - Redirigiendo a:", redirectPath);
+      navigate(redirectPath);
+    }
+  }, [isAuthenticated, userRole, navigate]);
 
   const validateEmail = (email: string) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    console.log("LoginPage - handleLogin iniciado", { email, password: "***" });
 
     const newErrors = { email: "", password: "" };
 
@@ -29,22 +60,18 @@ export default function LoginPage() {
 
     if (!password) {
       newErrors.password = "Password is required";
-    } else if (password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
     }
 
-    setErrors(newErrors);
+    setLocalErrors(newErrors);
 
     if (!newErrors.email && !newErrors.password) {
-      setIsLoading(true);
-
-      setTimeout(() => {
-        console.log("Iniciando conexión para:", email);
-        setIsLoading(false);
-      }, 1500);
+      console.log("LoginPage - Validaciones pasadas, llamando a login...");
+      await login(email, password);
+      console.log("LoginPage - Login completado");
+    } else {
+      console.log("LoginPage - Error de validación:", newErrors);
     }
   };
-
   return (
     <div className="min-h-screen flex bg-background text-text-primary font-sans selection:bg-accent/30">
       <div className="w-full lg:w-1/2 flex flex-col justify-between p-12 lg:p-24 relative overflow-hidden">
@@ -68,16 +95,26 @@ export default function LoginPage() {
           </header>
 
           <form onSubmit={handleLogin} className="space-y-6">
+            {/* Error general de autenticación */}
+            {authError && (
+              <div className="bg-red-950/20 border border-red-900/50 rounded-sm p-3">
+                <p className="text-red-400 text-xs uppercase tracking-wider text-center">
+                  {authError}
+                </p>
+              </div>
+            )}
+
             <Input
               type="email"
               label="EMAIL / USERNAME"
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
-                if (errors.email) setErrors({ ...errors, email: "" });
+                if (localErrors.email)
+                  setLocalErrors({ ...localErrors, email: "" });
               }}
               placeholder="admin@neuropoint.com"
-              error={errors.email}
+              error={localErrors.email}
               required
               disabled={isLoading}
             />
@@ -88,10 +125,11 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
-                if (errors.password) setErrors({ ...errors, password: "" });
+                if (localErrors.password)
+                  setLocalErrors({ ...localErrors, password: "" });
               }}
               placeholder="••••••••"
-              error={errors.password}
+              error={localErrors.password}
               required
               disabled={isLoading}
             />
