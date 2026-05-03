@@ -1,13 +1,15 @@
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
 import { HiChevronDown, HiOfficeBuilding, HiShieldCheck } from "react-icons/hi";
+
 export interface Organization {
-  slug: ReactNode;
-  org_type: ReactNode;
-  is_active: any;
-  created_at(created_at: any): import("react").ReactNode;
-  parent_organization_id: import("react/jsx-runtime").JSX.Element;
   id: string;
   name: string;
+  slug: string;
+  parent_organization_id: string | null;
+  org_type: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
   isInternal?: boolean;
 }
 
@@ -16,6 +18,7 @@ interface TopbarProps {
   currentOrg: Organization;
   onOrgChange: (org: Organization) => void;
 }
+
 export const Topbar = ({
   organizations,
   currentOrg,
@@ -54,7 +57,6 @@ export const Topbar = ({
               className="fixed inset-0 z-[-1]"
               onClick={() => setIsOpen(false)}
             />
-
             <div className="absolute right-0 mt-2 w-64 glass-card border border-accent/20 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
               <div className="flex flex-col">
                 {organizations.map((org) => (

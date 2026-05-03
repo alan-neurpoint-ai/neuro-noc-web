@@ -22,7 +22,8 @@ export const useUserData = () => {
     return {
       id: user?.id,
       name: fullName || user?.email || "Usuario",
-      role: ROLE_DISPLAY[userRole || "usuario"] || "Usuario",
+      roleDisplay: ROLE_DISPLAY[userRole || "usuario"] || "Usuario",
+      role: userRole || "usuario",
       email: user?.email || "",
       organization: organization?.name || "Cargando...",
       avatar: user?.avatar_url || undefined,
