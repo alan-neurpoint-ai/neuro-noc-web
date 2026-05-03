@@ -1,6 +1,16 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { BrowserRouter } from "react-router";
 import { Sidebar } from "./Sidebar";
+
+const mockNavigate = vi.fn();
+vi.mock("react-router", async () => {
+  const actual = await vi.importActual("react-router");
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
 
 describe("Sidebar Component", () => {
   const mockUser = {
@@ -14,15 +24,20 @@ describe("Sidebar Component", () => {
 
   beforeEach(() => {
     mockOnLogout.mockClear();
+    mockNavigate.mockClear();
   });
 
+  const renderWithRouter = (ui: React.ReactElement) => {
+    return render(<BrowserRouter>{ui}</BrowserRouter>);
+  };
+
   it("debe renderizar el nombre del usuario correctamente", () => {
-    render(<Sidebar user={mockUser} />);
+    renderWithRouter(<Sidebar user={mockUser} />);
     expect(screen.getByText(mockUser.name)).toBeInTheDocument();
   });
 
   it("debe mostrar el menú de usuario detallado al hacer clic en el perfil y NO estar colapsado", () => {
-    render(<Sidebar user={mockUser} onLogout={mockOnLogout} />);
+    renderWithRouter(<Sidebar user={mockUser} onLogout={mockOnLogout} />);
 
     const profileTrigger = screen.getByText(mockUser.name).closest("button");
     expect(profileTrigger).toBeDefined();
@@ -36,7 +51,7 @@ describe("Sidebar Component", () => {
   });
 
   it("debe llamar a la función onLogout cuando se hace clic en el botón de cerrar sesión", () => {
-    render(<Sidebar user={mockUser} onLogout={mockOnLogout} />);
+    renderWithRouter(<Sidebar user={mockUser} onLogout={mockOnLogout} />);
 
     const profileTrigger = screen.getByText(mockUser.name).closest("button");
     if (profileTrigger) {
@@ -50,7 +65,7 @@ describe("Sidebar Component", () => {
   });
 
   it("debe alternar entre estado colapsado y expandido al hacer clic en el botón de toggle", () => {
-    const { container } = render(<Sidebar user={mockUser} />);
+    const { container } = renderWithRouter(<Sidebar user={mockUser} />);
     const aside = container.querySelector("aside");
     const toggleButton = screen.getByRole("button", {
       name: /colapsar sidebar/i,
@@ -69,7 +84,7 @@ describe("Sidebar Component", () => {
   });
 
   it("no debe mostrar el menú de usuario cuando el sidebar está colapsado", () => {
-    const { container } = render(<Sidebar user={mockUser} />);
+    const { container } = renderWithRouter(<Sidebar user={mockUser} />);
 
     const toggleButton = screen.getByRole("button", {
       name: /colapsar sidebar/i,
@@ -91,22 +106,19 @@ describe("Sidebar Component", () => {
       role: "admin",
     };
 
-    render(<Sidebar user={adminUser} />);
+    renderWithRouter(<Sidebar user={adminUser} />);
     expect(screen.getByText(/Dashboard/i)).toBeInTheDocument();
   });
 
   it("debe navegar al hacer clic en un item del menú", () => {
-    delete (window as any).location;
-    (window as any).location = { href: "" };
-
-    render(<Sidebar user={mockUser} />);
+    renderWithRouter(<Sidebar user={mockUser} />);
 
     const dashboardLink = screen.getByText(/Dashboard/i).closest("button");
     expect(dashboardLink).toBeDefined();
 
     if (dashboardLink) {
       fireEvent.click(dashboardLink);
-      expect(window.location.href).toContain("/dashboard/super_admin");
+      expect(mockNavigate).toHaveBeenCalledWith("/dashboard/super_admin");
     }
   });
 
@@ -117,7 +129,7 @@ describe("Sidebar Component", () => {
       writable: true,
     });
 
-    render(<Sidebar user={mockUser} />);
+    renderWithRouter(<Sidebar user={mockUser} />);
 
     const activeItem = screen.getByText(/Dashboard/i).closest("button");
     expect(activeItem).toHaveClass("bg-blue-primary/20");
