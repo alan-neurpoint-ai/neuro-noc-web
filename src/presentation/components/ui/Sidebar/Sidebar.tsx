@@ -5,7 +5,7 @@ import { getMenuItemsByRole } from "./menuConfig";
 import { UserAvatar } from "./UserAvatar";
 import { UserMenu } from "./UserMenu";
 import { NavItem } from "./NavItem";
-import type { UserData } from "../../../../core/entities/analytics";
+import type { UserData } from "../../../types/UserData";
 
 interface SidebarProps {
   user: UserData;

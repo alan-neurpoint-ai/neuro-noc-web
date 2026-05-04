@@ -4,9 +4,37 @@ import { Topbar, type Organization } from "./Topbar";
 
 describe("Topbar Component", () => {
   const mockOrgs: Organization[] = [
-    { id: "1", name: "Organización 1" },
-    { id: "2", name: "Organización 2" },
-    { id: "3", name: "Interno", isInternal: true },
+    {
+      id: "1",
+      name: "Organización 1",
+      slug: "",
+      parent_organization_id: null,
+      org_type: "",
+      is_active: false,
+      created_at: "",
+      updated_at: "",
+    },
+    {
+      id: "2",
+      name: "Organización 2",
+      slug: "",
+      parent_organization_id: null,
+      org_type: "",
+      is_active: false,
+      created_at: "",
+      updated_at: "",
+    },
+    {
+      id: "3",
+      name: "Interno",
+      isInternal: true,
+      slug: "",
+      parent_organization_id: null,
+      org_type: "",
+      is_active: false,
+      created_at: "",
+      updated_at: "",
+    },
   ];
 
   const mockOnOrgChange = vi.fn();

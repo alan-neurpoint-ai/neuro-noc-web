@@ -1,16 +1,4 @@
-export interface UserData {
-  name: string;
-  role: string;
-  email: string;
-  organization: string;
-  avatar?: string;
-}
-
-export interface UserOrganization {
-  id: string;
-  name: string;
-  slug: string;
-}
+import type { UserOrganization } from "../supabase/Organization";
 
 export interface UserWithOrganization {
   id: string;
