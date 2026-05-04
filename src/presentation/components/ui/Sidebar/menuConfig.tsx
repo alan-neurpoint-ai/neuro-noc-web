@@ -4,11 +4,11 @@ import {
   HiChartBar,
   HiChip,
   HiCog,
-  HiDatabase,
   HiDocumentText,
   HiServer,
   HiUserGroup,
   HiUsers,
+  HiMail,
 } from "react-icons/hi";
 
 export interface MenuItem {
@@ -49,14 +49,9 @@ export const MENU_ITEMS_BY_ROLE: Record<string, MenuItem[]> = {
       path: `${BASE_PATHS.admin}/usuarios`,
     },
     {
-      icon: <HiServer size={22} />,
-      label: "Nodos",
-      path: `${BASE_PATHS.admin}/nodos`,
-    },
-    {
-      icon: <HiDatabase size={22} />,
-      label: "Storage",
-      path: `${BASE_PATHS.admin}/storage`,
+      icon: <HiMail size={22} />,
+      label: "Contactos",
+      path: `${BASE_PATHS.admin}/contactos`,
     },
     {
       icon: <HiBell size={22} />,
@@ -127,7 +122,7 @@ export const MENU_ITEMS_BY_ROLE: Record<string, MenuItem[]> = {
 
 const roleMapping: Record<string, string> = {
   "Super Administrador": "super_admin",
-  "Administrador de Organización": "admin",
+  Administrador: "admin",
   "Cliente VIP": "cliente",
   "Usuario Operador": "usuario",
 };
