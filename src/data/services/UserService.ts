@@ -2,7 +2,6 @@ import { UserRepositoryImpl } from "../repositories/UserRepositoryImpl";
 import { RoleRepositoryImpl } from "../repositories/RoleRepositoryImpl";
 import type { User } from "../../core/entities/supabase/User";
 import type { Role } from "../../core/entities/supabase/Role";
-import { supabase } from "../sources/supabase";
 
 export interface SimpleUser {
   id: string;
@@ -40,14 +39,15 @@ export class UserService {
   }
 
   async getUsers(organizationId: string): Promise<SimpleUser[]> {
-    const { data, error } = await supabase
-      .from("users")
-      .select("id, email, first_name, last_name")
-      .eq("organization_id", organizationId)
-      .eq("is_active", true)
-      .order("first_name", { ascending: true });
-
-    if (error) throw new Error(error.message);
-    return data || [];
+    const users = await this.userRepository.findAll(organizationId);
+    return users
+      .filter((user) => user.is_active === true)
+      .map((user) => ({
+        id: user.id,
+        email: user.email,
+        first_name: user.first_name || "",
+        last_name: user.last_name || "",
+      }))
+      .sort((a, b) => a.first_name.localeCompare(b.first_name));
   }
 }
