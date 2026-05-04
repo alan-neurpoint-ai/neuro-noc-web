@@ -1,6 +1,11 @@
 import { useState, useCallback } from "react";
-import { analyticsService } from "../../data/services/analyticsService";
+import { AnalyticsDataService } from "../../data/services/AnalyticsDataService";
+
 import type { AnalyticsData } from "../../core/entities/analytics/analytics";
+import { AnalyticsDomainService } from "../../data/services/AnalyticsDomainService";
+
+const dataService = new AnalyticsDataService();
+const domainService = new AnalyticsDomainService();
 
 export const useAdminAnalytics = () => {
   const [analytics, setAnalytics] = useState<AnalyticsData>({
@@ -21,12 +26,14 @@ export const useAdminAnalytics = () => {
       setIsLoading(true);
       try {
         const { alertsData, actionsData, nodesData } =
-          await analyticsService.fetchAlertsData(orgId, isInternal);
-        const processedData = analyticsService.processAnalyticsData(
+          await dataService.fetchAlertsData(orgId, isInternal);
+
+        const processedData = domainService.processAnalyticsData(
           alertsData,
           actionsData,
           nodesData,
         );
+
         setAnalytics(processedData);
       } catch (error) {
         console.error("Error fetching analytics:", error);
