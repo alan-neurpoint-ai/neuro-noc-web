@@ -8,7 +8,7 @@ export interface Alert {
   recommendations: string | null;
   criticality: "Information" | "Low" | "Average" | "High" | "Critical";
   diagnosis: string | null;
-  status: "PROBLEM" | "ACKNOWLEDGED" | "RESOLVED";
+  status: "PROBLEM" | "ACKNOWLEDGED" | "RESOLVED" | "DISCARDED";
   is_suppressed: boolean;
   created_at: string;
   resolved_at: string | null;
