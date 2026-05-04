@@ -26,7 +26,10 @@ export const contactService = {
   },
 
   async createContact(
-    contact: Omit<Contact, "id" | "created_at" | "updated_at" | "status" | "notes">,
+    contact: Omit<
+      Contact,
+      "id" | "created_at" | "updated_at" | "status" | "notes"
+    >,
   ): Promise<Contact> {
     const { data, error } = await supabase
       .from("contacts")
@@ -68,20 +71,5 @@ export const contactService = {
       .eq("id", id);
 
     if (error) throw error;
-  },
-
-  async getUsers(
-    organizationId: string,
-  ): Promise<
-    { id: string; email: string; first_name: string; last_name: string }[]
-  > {
-    const { data, error } = await supabase
-      .from("users")
-      .select("id, email, first_name, last_name")
-      .eq("organization_id", organizationId)
-      .eq("is_active", true);
-
-    if (error) throw error;
-    return data || [];
   },
 };

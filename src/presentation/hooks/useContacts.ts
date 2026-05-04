@@ -1,10 +1,15 @@
 import { useState, useCallback } from "react";
 import { contactService } from "../../data/services/contactService";
+import { UserService } from "../../data/services/UserService";
 import type { Contact } from "../../core/entities/supabase/Contact";
+
 type CreateContactInput = Omit<
   Contact,
   "id" | "created_at" | "updated_at" | "status" | "notes"
 >;
+
+const userService = new UserService();
+
 export const useContacts = (organizationId?: string) => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [users, setUsers] = useState<
@@ -24,7 +29,7 @@ export const useContacts = (organizationId?: string) => {
     try {
       const [contactsData, usersData] = await Promise.all([
         contactService.getContacts(organizationId),
-        contactService.getUsers(organizationId),
+        userService.getUsers(organizationId),
       ]);
       setContacts(contactsData);
       setUsers(usersData);
