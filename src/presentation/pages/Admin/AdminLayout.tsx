@@ -8,7 +8,7 @@ import { useOrganizations } from "../../hooks/useOrganizations";
 import type { Organization } from "../../components/ui/Topbar/Topbar";
 import { SelectedClientProvider } from "./context/SelectedClientContext";
 
-export const AdminLayout = () => {
+const AdminLayout = () => {
   const { logout } = useAuthStore();
   const navigate = useNavigate();
   const { userData, isLoading: isLoadingUser } = useUserData();
@@ -71,3 +71,5 @@ export const AdminLayout = () => {
     </div>
   );
 };
+
+export default AdminLayout;
