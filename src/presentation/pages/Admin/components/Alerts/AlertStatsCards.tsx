@@ -1,5 +1,5 @@
 import { HiBell, HiTrendingUp, HiCheckCircle, HiClock } from "react-icons/hi";
-import { Card } from "../../../components/ui";
+import { Card } from "../../../../components/ui";
 
 interface AlertStatsCardsProps {
   total: number;

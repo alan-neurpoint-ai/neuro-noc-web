@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useSelectedClient } from "../context/SelectedClientContext";
-import { AlertStatsCards } from "../components/AlertStatsCards";
-import { AlertChart } from "../components/AlertChart";
+import { AlertStatsCards } from "../components/Alerts/AlertStatsCards";
+import { AlertChart } from "../components/Alerts/AlertChart";
 import { useAlerts } from "../../../hooks/useAlerts";
 import { Table } from "../../../components/ui";
 import { getAlertColumns } from "../../../utils/alertColumns";

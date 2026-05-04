@@ -7,6 +7,7 @@ export const contactService = {
       .from("contacts")
       .select("*")
       .eq("organization_id", organizationId)
+      .eq("status", "active")
       .order("full_name", { ascending: true });
 
     if (error) throw error;
@@ -25,11 +26,15 @@ export const contactService = {
   },
 
   async createContact(
-    contact: Omit<Contact, "id" | "created_at" | "updated_at">,
+    contact: Omit<Contact, "id" | "created_at" | "updated_at" | "status" | "notes">,
   ): Promise<Contact> {
     const { data, error } = await supabase
       .from("contacts")
-      .insert(contact)
+      .insert({
+        ...contact,
+        status: "active",
+        notes: null,
+      })
       .select()
       .single();
 
@@ -52,8 +57,15 @@ export const contactService = {
     return data;
   },
 
-  async deleteContact(id: string): Promise<void> {
-    const { error } = await supabase.from("contacts").delete().eq("id", id);
+  async softDeleteContact(id: string, reason?: string): Promise<void> {
+    const { error } = await supabase
+      .from("contacts")
+      .update({
+        status: "inactive",
+        notes: reason || "Contacto eliminado del sistema",
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", id);
 
     if (error) throw error;
   },

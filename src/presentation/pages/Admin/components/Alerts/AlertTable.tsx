@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
-import type { Alert } from "../../../../core/entities/supabase/Alert";
-import { Table } from "../../../components/ui";
-import { getAlertColumns } from "../../../utils/alertColumns";
+import type { Alert } from "../../../../../core/entities/supabase/Alert";
+import { Table } from "../../../../components/ui";
+import { getAlertColumns } from "../../../../utils/alertColumns";
 
 interface AlertTableProps {
   alerts: Alert[];

@@ -8,9 +8,9 @@ import {
   HiMail,
   HiPhone,
 } from "react-icons/hi";
-import { useSelectedClient } from "../context/SelectedClientContext";
-import { useAlerts } from "../../../hooks/useAlerts";
-import { Button } from "../../../components/ui";
+import { useSelectedClient } from "../../context/SelectedClientContext";
+import { useAlerts } from "../../../../hooks/useAlerts";
+import { Button } from "../../../../components/ui";
 
 export default function AdminAlertDetail() {
   const { alertId } = useParams<{ alertId: string }>();

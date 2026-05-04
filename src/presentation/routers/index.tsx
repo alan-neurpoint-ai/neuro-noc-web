@@ -23,10 +23,13 @@ const AdminDashboard = lazy(() => import("../pages/Admin/AdminDashboard"));
 const AdminContacts = lazy(
   () => import("../pages/Admin/sections/AdminContacts"),
 );
+const AdminContactDetail = lazy(
+  () => import("../pages/Admin/components/Contacts/AdminContactDetail"),
+);
 const AdminUsers = lazy(() => import("../pages/Admin/sections/AdminUsers"));
 const AdminAlerts = lazy(() => import("../pages/Admin/sections/AdminAlerts"));
 const AdminAlertDetail = lazy(
-  () => import("../pages/Admin/components/AlertDetail"),
+  () => import("../pages/Admin/components/Alerts/AlertDetail"),
 );
 const AdminIAConfig = lazy(
   () => import("../pages/Admin/sections/AdminIAConfig"),
@@ -84,13 +87,29 @@ export default function Index() {
             }
           >
             <Route index element={<AdminDashboard />} />
-            <Route path="usuarios" element={<AdminUsers />} />
-            <Route path="contactos" element={<AdminContacts />} />
-            <Route path="alertas" element={<AdminAlerts />} />
-            <Route path="alertas/:alertId" element={<AdminAlertDetail />} />
-            <Route path="ia-config" element={<AdminIAConfig />} />
-            <Route path="docs" element={<AdminDocs />} />
-            <Route path="settings" element={<AdminSettings />} />
+            <Route path="/dashboard/admin/usuarios" element={<AdminUsers />} />
+            <Route
+              path="/dashboard/admin/contactos"
+              element={<AdminContacts />}
+            />
+            <Route
+              path="/dashboard/admin/contactos/:contactId"
+              element={<AdminContactDetail />}
+            />
+            <Route path="/dashboard/admin/alertas" element={<AdminAlerts />} />
+            <Route
+              path="/dashboard/admin/alertas/:alertId"
+              element={<AdminAlertDetail />}
+            />
+            <Route
+              path="/dashboard/admin/ia-config"
+              element={<AdminIAConfig />}
+            />
+            <Route path="/dashboard/admin/docs" element={<AdminDocs />} />
+            <Route
+              path="/dashboard/admin/settings"
+              element={<AdminSettings />}
+            />
           </Route>
 
           <Route

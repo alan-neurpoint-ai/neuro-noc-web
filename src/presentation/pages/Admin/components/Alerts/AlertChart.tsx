@@ -1,4 +1,4 @@
-import { CustomLineChart } from "../../../components/ui/LineChart/LineChart";
+import { CustomLineChart } from "../../../../components/ui/LineChart/LineChart";
 
 interface AlertChartProps {
   data: { name: string; value: number }[];

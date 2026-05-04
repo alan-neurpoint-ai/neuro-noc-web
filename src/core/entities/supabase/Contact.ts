@@ -9,4 +9,6 @@ export interface Contact {
   organization_id: string;
   created_at: string;
   updated_at: string;
+  status: "active" | "inactive";
+  notes: string | null;
 }

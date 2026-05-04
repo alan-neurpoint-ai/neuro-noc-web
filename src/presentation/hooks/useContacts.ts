@@ -1,7 +1,10 @@
 import { useState, useCallback } from "react";
 import { contactService } from "../../data/services/contactService";
 import type { Contact } from "../../core/entities/supabase/Contact";
-
+type CreateContactInput = Omit<
+  Contact,
+  "id" | "created_at" | "updated_at" | "status" | "notes"
+>;
 export const useContacts = (organizationId?: string) => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [users, setUsers] = useState<
@@ -32,19 +35,16 @@ export const useContacts = (organizationId?: string) => {
     }
   }, [organizationId]);
 
-  const createContact = useCallback(
-    async (contact: Omit<Contact, "id" | "created_at" | "updated_at">) => {
-      try {
-        const newContact = await contactService.createContact(contact);
-        setContacts((prev) => [newContact, ...prev]);
-        return newContact;
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Error creating contact");
-        throw err;
-      }
-    },
-    [],
-  );
+  const createContact = useCallback(async (contact: CreateContactInput) => {
+    try {
+      const newContact = await contactService.createContact(contact);
+      setContacts((prev) => [newContact, ...prev]);
+      return newContact;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error creating contact");
+      throw err;
+    }
+  }, []);
 
   const updateContact = useCallback(
     async (
@@ -65,9 +65,9 @@ export const useContacts = (organizationId?: string) => {
     [],
   );
 
-  const deleteContact = useCallback(async (id: string) => {
+  const softDeleteContact = useCallback(async (id: string, reason?: string) => {
     try {
-      await contactService.deleteContact(id);
+      await contactService.softDeleteContact(id, reason);
       setContacts((prev) => prev.filter((c) => c.id !== id));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error deleting contact");
@@ -83,6 +83,6 @@ export const useContacts = (organizationId?: string) => {
     fetchContacts,
     createContact,
     updateContact,
-    deleteContact,
+    softDeleteContact,
   };
 };
