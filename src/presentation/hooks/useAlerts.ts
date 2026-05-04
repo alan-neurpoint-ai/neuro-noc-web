@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { AlertRepositoryImpl } from "../../data/repositories/AlertRepositoryImpl";
 import { AlertActionRepositoryImpl } from "../../data/repositories/AlertActionRepositoryImpl";
-import { supabase } from "../../data/sources/supabase/client";
+import { ContactRepositoryImpl } from "../../data/repositories/ContactRepositoryImpl"; // ← Nuevo
 import type { Alert } from "../../core/entities/supabase/Alert";
 import type { AlertAction } from "../../core/entities/supabase/AlertAction";
 import type { Contact } from "../../core/entities/supabase/Contact";
 
 const alertRepository = new AlertRepositoryImpl();
 const alertActionRepository = new AlertActionRepositoryImpl();
+const contactRepository = new ContactRepositoryImpl(); // ← Nuevo
 
 interface AlertStats {
   total: number;
@@ -82,15 +83,7 @@ export const useAlerts = (organizationId?: string) => {
 
       let contact = null;
       if (actions && actions.length > 0 && actions[0].contact_id) {
-        const { data: contactData, error: contactError } = await supabase
-          .from("contacts")
-          .select("*")
-          .eq("id", actions[0].contact_id)
-          .single();
-
-        if (!contactError && contactData) {
-          contact = contactData;
-        }
+        contact = await contactRepository.findById(actions[0].contact_id);
       }
 
       if (alert) {
