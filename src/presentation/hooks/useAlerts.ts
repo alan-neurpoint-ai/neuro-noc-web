@@ -1,21 +1,15 @@
 import { useState, useEffect, useCallback } from "react";
 import { AlertRepositoryImpl } from "../../data/repositories/AlertRepositoryImpl";
 import { AlertActionRepositoryImpl } from "../../data/repositories/AlertActionRepositoryImpl";
-import { ContactRepositoryImpl } from "../../data/repositories/ContactRepositoryImpl"; // ← Nuevo
+import { ContactRepositoryImpl } from "../../data/repositories/ContactRepositoryImpl";
 import type { Alert } from "../../core/entities/supabase/Alert";
 import type { AlertAction } from "../../core/entities/supabase/AlertAction";
 import type { Contact } from "../../core/entities/supabase/Contact";
+import { AlertStatisticsService } from "../../data/services/AlertStatisticsService";
 
 const alertRepository = new AlertRepositoryImpl();
 const alertActionRepository = new AlertActionRepositoryImpl();
-const contactRepository = new ContactRepositoryImpl(); // ← Nuevo
-
-interface AlertStats {
-  total: number;
-  critical: number;
-  resolved: number;
-  pending: number;
-}
+const contactRepository = new ContactRepositoryImpl();
 
 interface AlertWithDetails extends Alert {
   actions?: AlertAction[];
@@ -24,7 +18,7 @@ interface AlertWithDetails extends Alert {
 
 export const useAlerts = (organizationId?: string) => {
   const [alerts, setAlerts] = useState<Alert[]>([]);
-  const [stats, setStats] = useState<AlertStats>({
+  const [stats, setStats] = useState({
     total: 0,
     critical: 0,
     resolved: 0,
@@ -47,27 +41,11 @@ export const useAlerts = (organizationId?: string) => {
       const alertsData = await alertRepository.findAll(organizationId);
       setAlerts(alertsData);
 
-      const total = alertsData.length;
-      const critical = alertsData.filter(
-        (a) => a.criticality === "Critical",
-      ).length;
-      const resolved = alertsData.filter(
-        (a) => a.status === "RESOLVED" || a.status === "DISCARDED",
-      ).length;
-      setStats({ total, critical, resolved, pending: total - resolved });
+      const statsData = AlertStatisticsService.calculateStats(alertsData);
+      setStats(statsData);
 
-      const last7Days = Array.from({ length: 7 }, (_, i) => {
-        const date = new Date();
-        date.setDate(date.getDate() - i);
-        return date.toISOString().split("T")[0];
-      }).reverse();
-
-      const alertsByDay = last7Days.map((date) => ({
-        name: date.slice(5),
-        value: alertsData.filter((a) => a.created_at?.startsWith(date)).length,
-      }));
-
-      setAlertsOverTime(alertsByDay);
+      const timeData = AlertStatisticsService.calculateTimeSeries(alertsData);
+      setAlertsOverTime(timeData);
     } catch (error) {
       console.error("Error fetching alerts:", error);
     } finally {
@@ -124,34 +102,28 @@ export const useAlerts = (organizationId?: string) => {
   );
 
   const resolveAlert = useCallback(
-    async (id: string, diagnosis?: string) => {
-      return await updateAlertStatus(id, "RESOLVED", diagnosis);
-    },
+    (id: string, diagnosis?: string) =>
+      updateAlertStatus(id, "RESOLVED", diagnosis),
     [updateAlertStatus],
   );
 
   const acknowledgeAlert = useCallback(
-    async (id: string) => {
-      return await updateAlertStatus(id, "ACKNOWLEDGED");
-    },
+    (id: string) => updateAlertStatus(id, "ACKNOWLEDGED"),
     [updateAlertStatus],
   );
 
   const discardAlert = useCallback(
-    async (id: string) => {
-      return await updateAlertStatus(
+    (id: string) =>
+      updateAlertStatus(
         id,
         "DISCARDED",
         "Alerta descartada - No requiere acción",
-      );
-    },
+      ),
     [updateAlertStatus],
   );
 
   const markAsProblem = useCallback(
-    async (id: string) => {
-      return await updateAlertStatus(id, "PROBLEM");
-    },
+    (id: string) => updateAlertStatus(id, "PROBLEM"),
     [updateAlertStatus],
   );
 
