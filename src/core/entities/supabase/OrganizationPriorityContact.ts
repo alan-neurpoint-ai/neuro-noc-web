@@ -4,4 +4,5 @@ export interface OrganizationPriorityContact {
   contact_id: string;
   priority_level: number;
   created_at: string;
+  status: "active" | "inactive";
 }

@@ -5,4 +5,5 @@ export interface Role {
   description: string | null;
   organization_id: string | null;
   created_at: string;
+  status: "active" | "inactive";
 }

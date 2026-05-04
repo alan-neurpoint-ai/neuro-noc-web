@@ -5,4 +5,5 @@ export interface BusinessRuleSource {
   page_reference: string | null;
   extracted_snippet: string | null;
   created_at: string;
+  status: "active" | "inactive";
 }

@@ -7,4 +7,5 @@ export interface AlertAction {
   email_execution_id: string | null;
   contact_id: string | null;
   created_at: string;
+  status: "active" | "inactive";
 }

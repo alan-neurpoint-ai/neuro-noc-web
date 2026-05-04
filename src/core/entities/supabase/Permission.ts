@@ -5,4 +5,5 @@ export interface Permission {
   action: string;
   description: string | null;
   created_at: string;
+  status: "active" | "inactive";
 }
