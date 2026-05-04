@@ -2,13 +2,36 @@ import { type Contact } from "../../core/entities/supabase/Contact";
 import type { ContactRepository } from "../../core/repositories/supabase/ContactRepository";
 import { supabase } from "../sources/supabase/client";
 
+type CreateContactDTO = Omit<Contact, "id" | "created_at" | "updated_at">;
+type UpdateContactDTO = Partial<
+  Omit<Contact, "id" | "created_at" | "updated_at">
+>;
 export class ContactRepositoryImpl implements ContactRepository {
-  findActive(_organizationId: string): Promise<Contact[]> {
-    throw new Error("Method not implemented.");
+  async findAll(filters?: {
+    organizationId: string;
+    status?: string;
+  }): Promise<Contact[]> {
+    if (!filters?.organizationId) {
+      return [];
+    }
+
+    let query = supabase
+      .from("contacts")
+      .select("*")
+      .eq("organization_id", filters.organizationId);
+
+    if (filters.status) {
+      query = query.eq("status", filters.status);
+    } else {
+      query = query.eq("status", "active");
+    }
+
+    const { data, error } = await query.order("full_name", { ascending: true });
+
+    if (error) throw new Error(error.message);
+    return data || [];
   }
-  softDelete(_id: string, _reason?: string): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
+
   async findById(id: string): Promise<Contact | null> {
     const { data, error } = await supabase
       .from("contacts")
@@ -20,56 +43,10 @@ export class ContactRepositoryImpl implements ContactRepository {
     return data;
   }
 
-  async findAll(organizationId: string): Promise<Contact[]> {
-    const { data, error } = await supabase
-      .from("contacts")
-      .select("*")
-      .eq("organization_id", organizationId)
-      .eq("status", "active");
-
-    if (error) throw new Error(error.message);
-    return data || [];
-  }
-
-  async findByEmail(email: string): Promise<Contact | null> {
-    const { data, error } = await supabase
-      .from("contacts")
-      .select("*")
-      .eq("email", email)
-      .single();
-
-    if (error) throw new Error(error.message);
-    return data;
-  }
-
-  async findInternal(organizationId: string): Promise<Contact[]> {
-    const { data, error } = await supabase
-      .from("contacts")
-      .select("*")
-      .eq("organization_id", organizationId)
-      .eq("is_internal", true);
-
-    if (error) throw new Error(error.message);
-    return data || [];
-  }
-
-  async findExternal(organizationId: string): Promise<Contact[]> {
-    const { data, error } = await supabase
-      .from("contacts")
-      .select("*")
-      .eq("organization_id", organizationId)
-      .eq("is_internal", false);
-
-    if (error) throw new Error(error.message);
-    return data || [];
-  }
-
-  async create(
-    data: Omit<Contact, "id" | "created_at" | "updated_at">,
-  ): Promise<Contact> {
+  async create(data: CreateContactDTO): Promise<Contact> {
     const { data: created, error } = await supabase
       .from("contacts")
-      .insert(data)
+      .insert({ ...data, status: "active", notes: null })
       .select()
       .single();
 
@@ -77,10 +54,7 @@ export class ContactRepositoryImpl implements ContactRepository {
     return created;
   }
 
-  async update(
-    id: string,
-    data: Partial<Omit<Contact, "id" | "created_at" | "updated_at">>,
-  ): Promise<Contact> {
+  async update(id: string, data: UpdateContactDTO): Promise<Contact> {
     const { data: updated, error } = await supabase
       .from("contacts")
       .update({ ...data, updated_at: new Date().toISOString() })
@@ -92,8 +66,62 @@ export class ContactRepositoryImpl implements ContactRepository {
     return updated;
   }
 
-  async delete(id: string): Promise<void> {
-    const { error } = await supabase.from("contacts").delete().eq("id", id);
+  async softDelete(id: string, reason?: string): Promise<void> {
+    const { error } = await supabase
+      .from("contacts")
+      .update({
+        status: "inactive",
+        notes: reason || "Contacto eliminado del sistema",
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", id);
+
     if (error) throw new Error(error.message);
+  }
+
+  async findByEmail(email: string): Promise<Contact | null> {
+    const { data, error } = await supabase
+      .from("contacts")
+      .select("*")
+      .eq("email", email)
+      .maybeSingle();
+
+    if (error) throw new Error(error.message);
+    return data;
+  }
+
+  async findInternal(organizationId: string): Promise<Contact[]> {
+    const { data, error } = await supabase
+      .from("contacts")
+      .select("*")
+      .eq("organization_id", organizationId)
+      .eq("is_internal", true)
+      .eq("status", "active");
+
+    if (error) throw new Error(error.message);
+    return data || [];
+  }
+
+  async findExternal(organizationId: string): Promise<Contact[]> {
+    const { data, error } = await supabase
+      .from("contacts")
+      .select("*")
+      .eq("organization_id", organizationId)
+      .eq("is_internal", false)
+      .eq("status", "active");
+
+    if (error) throw new Error(error.message);
+    return data || [];
+  }
+
+  async findActive(organizationId: string): Promise<Contact[]> {
+    const { data, error } = await supabase
+      .from("contacts")
+      .select("*")
+      .eq("organization_id", organizationId)
+      .eq("status", "active");
+
+    if (error) throw new Error(error.message);
+    return data || [];
   }
 }
