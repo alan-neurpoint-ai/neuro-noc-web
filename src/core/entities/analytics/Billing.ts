@@ -14,9 +14,3 @@ export interface BillingItem {
   status: "paid" | "pending" | "overdue";
   dueDate: string;
 }
-
-export interface InfoRowProps {
-  label: string;
-  value: string;
-  icon: React.ReactNode;
-}
