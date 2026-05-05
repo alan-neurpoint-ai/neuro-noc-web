@@ -11,8 +11,23 @@ import {
 import { useSelectedClient } from "../../context/SelectedClientContext";
 import { useAlerts } from "../../../../hooks/useAlerts";
 import { Button } from "../../../../components/ui";
+import {
+  getCriticalityColor,
+  getStatusColor,
+  getStatusText,
+} from "../../../../utils/alertColors";
+import { VapiModals } from "./VapiModals";
 
 export default function AdminAlertDetail() {
+  const [vapiModal, setVapiModal] = useState<{
+    isOpen: boolean;
+    type: "transcript" | "audio" | null;
+    vapiId: string | null;
+  }>({ isOpen: false, type: null, vapiId: null });
+  const openVapiModal = (type: "transcript" | "audio", vapiId: string) => {
+    setVapiModal({ isOpen: true, type, vapiId });
+  };
+
   const { alertId } = useParams<{ alertId: string }>();
   const navigate = useNavigate();
   const { selectedClient } = useSelectedClient();
@@ -91,37 +106,6 @@ export default function AdminAlertDetail() {
     } finally {
       setIsProcessing(false);
     }
-  };
-
-  const getCriticalityColor = (criticality: string) => {
-    const colors: Record<string, string> = {
-      Critical: "text-red-400 bg-red-500/10",
-      High: "text-orange-400 bg-orange-500/10",
-      Average: "text-yellow-400 bg-yellow-500/10",
-      Low: "text-blue-400 bg-blue-500/10",
-      Information: "text-emerald-400 bg-emerald-500/10",
-    };
-    return colors[criticality] || colors.Information;
-  };
-
-  const getStatusColor = (status: string) => {
-    const colors: Record<string, string> = {
-      RESOLVED: "text-emerald-400 bg-emerald-500/10",
-      DISCARDED: "text-gray-400 bg-gray-500/10",
-      ACKNOWLEDGED: "text-accent bg-accent/10",
-      PROBLEM: "text-rose-400 bg-rose-500/10",
-    };
-    return colors[status] || colors.PROBLEM;
-  };
-
-  const getStatusText = (status: string) => {
-    const texts: Record<string, string> = {
-      RESOLVED: "Resuelto",
-      DISCARDED: "Descartado",
-      ACKNOWLEDGED: "En Proceso",
-      PROBLEM: "Sin Resolver",
-    };
-    return texts[status] || status;
   };
 
   if (isLoadingDetail) {
@@ -341,8 +325,32 @@ export default function AdminAlertDetail() {
                     <div>Email ID: {action.email_execution_id}</div>
                   )}
                   {action.vapi_execution_id && (
-                    <div>VAPI ID: {action.vapi_execution_id}</div>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 bg-accent/5 p-3 rounded-lg border border-accent/10">
+                      <div>VAPI ID: {action.vapi_execution_id}</div>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() =>
+                            openVapiModal(
+                              "transcript",
+                              action.vapi_execution_id!,
+                            )
+                          }
+                          className="flex items-center gap-1.5 px-3 py-1 bg-accent/20 hover:bg-accent/30 text-accent rounded border border-accent/20 transition-all font-bold text-[10px]"
+                        >
+                          LEER LLAMADA
+                        </button>
+                        <button
+                          onClick={() =>
+                            openVapiModal("audio", action.vapi_execution_id!)
+                          }
+                          className="flex items-center gap-1.5 px-3 py-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 rounded border border-blue-500/20 transition-all font-bold text-[10px]"
+                        >
+                          OÍR LLAMADA
+                        </button>
+                      </div>
+                    </div>
                   )}
+
                   <div>
                     Ejecutado: {new Date(action.created_at).toLocaleString()}
                   </div>
@@ -437,6 +445,11 @@ export default function AdminAlertDetail() {
           </div>
         </div>
       )}
+
+      <VapiModals
+        {...vapiModal}
+        onClose={() => setVapiModal({ ...vapiModal, isOpen: false })}
+      />
     </div>
   );
 }
