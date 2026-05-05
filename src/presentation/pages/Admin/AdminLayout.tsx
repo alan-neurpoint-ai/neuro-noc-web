@@ -12,6 +12,7 @@ const AdminLayout = () => {
   const { logout } = useAuthStore();
   const navigate = useNavigate();
   const { userData, isLoading: isLoadingUser } = useUserData();
+  console.log("organization_id", userData.organization);
   const {
     organizations,
     currentOrg,
@@ -21,6 +22,8 @@ const AdminLayout = () => {
   const [selectedClient, setSelectedClient] = useState<Organization | null>(
     currentOrg,
   );
+
+  console.log("Current Organization:", currentOrg?.id);
 
   useEffect(() => {
     if (currentOrg) {
