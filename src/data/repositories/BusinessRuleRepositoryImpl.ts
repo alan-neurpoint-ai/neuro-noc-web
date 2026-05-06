@@ -1,8 +1,21 @@
 import { type BusinessRule } from "../../core/entities/supabase/BusinessRule";
+import type { BusinessRuleSource } from "../../core/entities/supabase/BusinessRuleSource";
 import type { BusinessRuleRepository } from "../../core/repositories/supabase/BusinessRuleRepository";
 import { supabase } from "../sources/supabase/client";
 
 export class BusinessRuleRepositoryImpl implements BusinessRuleRepository {
+  async findByDocumentation(
+    documentationId: string,
+  ): Promise<BusinessRuleSource[]> {
+    const { data, error } = await supabase
+      .from("business_rule_source")
+      .select("*")
+      .eq("documentation_id", documentationId)
+      .eq("status", "active");
+
+    if (error) throw new Error(error.message);
+    return data || [];
+  }
   async findAll(organizationId?: string): Promise<BusinessRule[]> {
     let query = supabase
       .from("business_rule")
