@@ -21,11 +21,13 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
-type TableDefinition<T> = {
+type TableDefinition<T, K extends string> = {
   Row: T;
-  Insert: T extends { id: unknown }
-    ? Omit<T, "id" | "created_at" | "updated_at">
-    : T;
+  Insert: K extends "users"
+    ? Omit<T, "created_at" | "updated_at">
+    : T extends { id: unknown }
+      ? Omit<T, "id" | "created_at" | "updated_at">
+      : T;
   Update: Partial<T>;
 };
 
@@ -49,7 +51,7 @@ interface TablesRecord {
 export interface Database {
   public: {
     Tables: {
-      [K in keyof TablesRecord]: TableDefinition<TablesRecord[K]>;
+      [K in keyof TablesRecord & string]: TableDefinition<TablesRecord[K], K>;
     };
     Views: { [_ in never]: never };
     Functions: { [_ in never]: never };
