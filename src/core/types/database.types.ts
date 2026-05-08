@@ -1,3 +1,8 @@
+import type {
+  AIConfigurationInsert,
+  AIConfigurationRow,
+  AIConfigurationUpdate,
+} from "./ai-configurations.sql";
 import type { AlertActionInsert, AlertActionRow } from "./alert-actions.sql";
 import type { AlertInsert, AlertRow } from "./alerts.sql";
 import type {
@@ -110,6 +115,11 @@ export interface Database {
         Row: AlertActionRow;
         Insert: AlertActionInsert;
         Update: Partial<AlertActionRow>;
+      };
+      ai_configurations: {
+        Row: AIConfigurationRow;
+        Insert: AIConfigurationInsert;
+        Update: AIConfigurationUpdate;
       };
     };
 
