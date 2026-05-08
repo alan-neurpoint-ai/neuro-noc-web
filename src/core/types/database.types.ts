@@ -1,4 +1,9 @@
 import type {
+  OrganizationInsert,
+  OrganizationRow,
+  OrganizationUpdate,
+} from "./organizations.sql";
+import type {
   PermissionInsert,
   PermissionRow,
   PermissionUpdate,
@@ -34,6 +39,11 @@ export interface Database {
         Row: RolePermissionRow;
         Insert: RolePermissionInsert;
         Update: Partial<RolePermissionRow>;
+      };
+      organizations: {
+        Row: OrganizationRow;
+        Insert: OrganizationInsert;
+        Update: OrganizationUpdate;
       };
     };
 
