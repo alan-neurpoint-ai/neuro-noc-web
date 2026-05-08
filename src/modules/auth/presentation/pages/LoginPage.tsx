@@ -1,5 +1,3 @@
-import { Loading } from "../../../../core/presentation/components/ui/Loading";
-
 export const LoginPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0a0f1e] px-4">
@@ -12,7 +10,6 @@ export const LoginPage = () => {
             Network Operations Center Management
           </p>
         </div>
-        <Loading />
       </div>
     </div>
   );
