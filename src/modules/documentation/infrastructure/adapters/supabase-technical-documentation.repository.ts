@@ -4,7 +4,7 @@ import type {
   TechnicalDocumentationRow,
   TechnicalDocumentationInsert,
 } from "../../../../core/types/technical-documentation.sql";
-import type { TechnicalDocumentationRepository } from "../../ports/technical-documentation.repository";
+import type { TechnicalDocumentationRepository } from "../../domain/ports/technical-documentation.repository";
 
 export const createSupabaseTechnicalDocumentationRepository =
   (): TechnicalDocumentationRepository => {
