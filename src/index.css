@@ -12,6 +12,41 @@
   --color-text-muted: #9ca3af;
   --color-status-error: #7c0808;
   --image-gradient-deep: linear-gradient(135deg, #672da9 0%, #361f77 100%);
+
+  @keyframes wave {
+    0% {
+      transform: translateY(0) skewY(-2deg);
+    }
+    50% {
+      transform: translateY(-5px) skewY(2deg);
+    }
+    100% {
+      transform: translateY(0) skewY(-2deg);
+    }
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(-40px);
+      opacity: 0;
+    }
+  }
+
+  @keyframes progress {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
 }
 
 @layer base {
@@ -28,6 +63,10 @@
   body {
     overflow-y: auto;
   }
+  .mask-exclude {
+    mask-composite: exclude;
+    -webkit-mask-composite: destination-out;
+  }
 }
 
 @utility scrollbar-hide {
@@ -36,4 +75,4 @@
   }
   scrollbar-width: none;
   -ms-overflow-style: none;
-}                                                                                                                                                               
+}
