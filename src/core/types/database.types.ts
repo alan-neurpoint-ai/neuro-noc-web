@@ -33,6 +33,10 @@ import type {
   TechnicalDocumentationRow,
   TechnicalDocumentationUpdate,
 } from "./technical-documentation.sql";
+import type {
+  TemporalContextInsert,
+  TemporalContextRow,
+} from "./temporal-contexts.sql";
 
 export type Json =
   | string
@@ -89,6 +93,11 @@ export interface Database {
         Row: BusinessRuleSourceRow;
         Insert: BusinessRuleSourceInsert;
         Update: Partial<BusinessRuleSourceRow>;
+      };
+      temporal_contexts: {
+        Row: TemporalContextRow;
+        Insert: TemporalContextInsert;
+        Update: Partial<TemporalContextRow>;
       };
     };
 
