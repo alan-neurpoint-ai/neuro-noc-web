@@ -44,6 +44,7 @@ import type {
   TemporalContextInsert,
   TemporalContextRow,
 } from "./temporal-contexts.sql";
+import type { UserInsert, UserRow, UserUpdate } from "./users.sql";
 
 export type Json =
   | string
@@ -120,6 +121,11 @@ export interface Database {
         Row: AIConfigurationRow;
         Insert: AIConfigurationInsert;
         Update: AIConfigurationUpdate;
+      };
+      users: {
+        Row: UserRow;
+        Insert: UserInsert;
+        Update: UserUpdate;
       };
     };
 
