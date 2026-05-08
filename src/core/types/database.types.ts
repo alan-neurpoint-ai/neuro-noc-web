@@ -1,3 +1,4 @@
+import type { AlertActionInsert, AlertActionRow } from "./alert-actions.sql";
 import type { AlertInsert, AlertRow } from "./alerts.sql";
 import type {
   BusinessRuleSourceInsert,
@@ -104,6 +105,11 @@ export interface Database {
         Row: AlertRow;
         Insert: AlertInsert;
         Update: Partial<AlertRow>;
+      };
+      alert_actions: {
+        Row: AlertActionRow;
+        Insert: AlertActionInsert;
+        Update: Partial<AlertActionRow>;
       };
     };
 
