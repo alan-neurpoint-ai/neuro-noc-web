@@ -1,4 +1,8 @@
 import type {
+  BusinessRuleSourceInsert,
+  BusinessRuleSourceRow,
+} from "./business-rule-sources.sql";
+import type {
   BusinessRuleInsert,
   BusinessRuleRow,
   BusinessRuleUpdate,
@@ -80,6 +84,11 @@ export interface Database {
         Row: BusinessRuleRow;
         Insert: BusinessRuleInsert;
         Update: BusinessRuleUpdate;
+      };
+      business_rule_sources: {
+        Row: BusinessRuleSourceRow;
+        Insert: BusinessRuleSourceInsert;
+        Update: Partial<BusinessRuleSourceRow>;
       };
     };
 
