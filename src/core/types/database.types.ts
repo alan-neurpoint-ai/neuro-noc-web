@@ -19,6 +19,11 @@ import type {
   RolePermissionRow,
 } from "./role-permissions.sql";
 import type { RoleInsert, RoleRow, RoleUpdate } from "./roles.sql";
+import type {
+  TechnicalDocumentationInsert,
+  TechnicalDocumentationRow,
+  TechnicalDocumentationUpdate,
+} from "./technical-documentation.sql";
 
 export type Json =
   | string
@@ -60,6 +65,11 @@ export interface Database {
         Row: PriorityContactRow;
         Insert: PriorityContactInsert;
         Update: PriorityContactUpdate;
+      };
+      technical_documentation: {
+        Row: TechnicalDocumentationRow;
+        Insert: TechnicalDocumentationInsert;
+        Update: TechnicalDocumentationUpdate;
       };
     };
 
