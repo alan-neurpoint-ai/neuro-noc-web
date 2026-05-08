@@ -1,3 +1,5 @@
+import type { RoleInsert, RoleRow, RoleUpdate } from "./roles.sql";
+
 export type Json =
   | string
   | number
@@ -8,7 +10,11 @@ export type Json =
 
 export interface Database {
   public: {
-    Tables: object;
+    roles: {
+      Row: RoleRow;
+      Insert: RoleInsert;
+      Update: RoleUpdate;
+    };
     Views: {
       [_ in never]: never;
     };
