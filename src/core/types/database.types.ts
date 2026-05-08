@@ -10,6 +10,11 @@ import type {
   PermissionUpdate,
 } from "./permissions.sql";
 import type {
+  PriorityContactInsert,
+  PriorityContactRow,
+  PriorityContactUpdate,
+} from "./priority-contacts.sql";
+import type {
   RolePermissionInsert,
   RolePermissionRow,
 } from "./role-permissions.sql";
@@ -50,6 +55,11 @@ export interface Database {
         Row: ContactRow;
         Insert: ContactInsert;
         Update: ContactUpdate;
+      };
+      priority_contacts: {
+        Row: PriorityContactRow;
+        Insert: PriorityContactInsert;
+        Update: PriorityContactUpdate;
       };
     };
 
