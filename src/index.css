@@ -1,1 +1,39 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@200..700&display=swap");
+
+@theme {
+  --font-headline: "Stack Sans Headline", sans-serif;
+  --color-bg-main: #000000;
+  --color-bg-surface: #2d1b69;
+  --color-bg-card: #361f77;
+  --color-brand-primary: #672da9;
+  --color-brand-accent: #b29af4;
+  --color-text-main: #ffffff;
+  --color-text-muted: #9ca3af;
+  --color-status-error: #7c0808;
+  --image-gradient-deep: linear-gradient(135deg, #672da9 0%, #361f77 100%);
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  *::-webkit-scrollbar {
+    display: none;
+  }
+
+  body {
+    overflow-y: auto;
+  }
+}
+
+@utility scrollbar-hide {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
