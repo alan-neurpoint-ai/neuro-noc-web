@@ -1,17 +1,17 @@
-import type { RoleRow } from "./roles.sql";
-import type { PermissionRow } from "./permissions.sql";
-import type { RolePermissionRow } from "./role-permissions.sql";
-import type { OrganizationRow } from "./organizations.sql";
-import type { ContactRow } from "./contacts.sql";
-import type { PriorityContactRow } from "./priority-contacts.sql";
-import type { TechnicalDocumentationRow } from "./technical-documentation.sql";
-import type { BusinessRuleRow } from "./business-rules.sql";
-import type { BusinessRuleSourceRow } from "./business-rule-sources.sql";
-import type { TemporalContextRow } from "./temporal-contexts.sql";
-import type { AlertRow } from "./alerts.sql";
-import type { AlertActionRow } from "./alert-actions.sql";
-import type { AIConfigurationRow } from "./ai-configurations.sql";
-import type { UserRow } from "./users.sql";
+import type { RoleRow } from "./auth/roles.sql";
+import type { PermissionRow } from "./auth/permissions.sql";
+import type { RolePermissionRow } from "./auth/role-permissions.sql";
+import type { OrganizationRow } from "./tenant/organizations.sql";
+import type { ContactRow } from "./tenant/contacts.sql";
+import type { PriorityContactRow } from "./tenant/priority-contacts.sql";
+import type { TechnicalDocumentationRow } from "./knowledge/technical-documentation.sql";
+import type { BusinessRuleRow } from "./knowledge/business-rules.sql";
+import type { BusinessRuleSourceRow } from "./knowledge/business-rule-sources.sql";
+import type { TemporalContextRow } from "./monitoring/temporal-contexts.sql";
+import type { AlertRow } from "./monitoring/alerts.sql";
+import type { AlertActionRow } from "./monitoring/alert-actions.sql";
+import type { AIConfigurationRow } from "./knowledge/ai-configurations.sql";
+import type { UserRow } from "./auth/users.sql";
 
 export type Json =
   | string

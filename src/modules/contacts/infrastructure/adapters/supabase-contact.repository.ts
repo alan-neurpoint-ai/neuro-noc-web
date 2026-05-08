@@ -4,7 +4,7 @@ import type { ContactRepository } from "../../domain/ports/contact.repository";
 import type {
   ContactRow,
   ContactInsert,
-} from "../../../../core/types/contacts.sql";
+} from "../../../../core/types/tenant/contacts.sql";
 
 export const createSupabaseContactRepository = (): ContactRepository => {
   const mapToEntity = (row: ContactRow): ContactEntity => ({

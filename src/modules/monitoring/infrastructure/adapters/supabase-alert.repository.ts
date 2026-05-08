@@ -5,7 +5,10 @@ import type {
   AlertStatus,
 } from "../../domain/entities/alert.entity";
 import type { AlertRepository } from "../../domain/ports/alert.repository";
-import type { AlertRow, AlertInsert } from "../../../../core/types/alerts.sql";
+import type {
+  AlertRow,
+  AlertInsert,
+} from "../../../../core/types/monitoring/alerts.sql";
 
 export const createSupabaseAlertRepository = (): AlertRepository => {
   const mapToEntity = (row: AlertRow): AlertEntity => ({

@@ -4,7 +4,7 @@ import type { BusinessRuleSourceRepository } from "../../domain/ports/business-r
 import type {
   BusinessRuleSourceRow,
   BusinessRuleSourceInsert,
-} from "../../../../core/types/business-rule-sources.sql";
+} from "../../../../core/types/knowledge/business-rule-sources.sql";
 
 export const createSupabaseBusinessRuleSourceRepository =
   (): BusinessRuleSourceRepository => {

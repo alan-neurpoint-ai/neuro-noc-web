@@ -4,7 +4,7 @@ import type { BusinessRuleRepository } from "../../domain/ports/business-rule.re
 import type {
   BusinessRuleRow,
   BusinessRuleInsert,
-} from "../../../../core/types/business-rules.sql";
+} from "../../../../core/types/knowledge/business-rules.sql";
 import type { Json } from "../../../../core/types/database.types";
 
 export const createSupabaseBusinessRuleRepository =

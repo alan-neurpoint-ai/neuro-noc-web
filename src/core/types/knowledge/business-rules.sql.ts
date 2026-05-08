@@ -1,4 +1,4 @@
-import { type Json } from "./database.types";
+import { type Json } from "../database.types";
 
 export interface BusinessRuleRow {
   id: string;

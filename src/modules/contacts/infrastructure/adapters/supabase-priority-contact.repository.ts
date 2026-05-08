@@ -4,7 +4,7 @@ import type { PriorityContactRepository } from "../../domain/ports/priority-cont
 import type {
   PriorityContactRow,
   PriorityContactInsert,
-} from "../../../../core/types/priority-contacts.sql";
+} from "../../../../core/types/tenant/priority-contacts.sql";
 
 export const createSupabasePriorityContactRepository =
   (): PriorityContactRepository => {

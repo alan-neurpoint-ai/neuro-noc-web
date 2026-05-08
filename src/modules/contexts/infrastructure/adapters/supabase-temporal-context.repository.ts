@@ -3,7 +3,7 @@ import type { TemporalContextEntity } from "../../domain/entities/temporal-conte
 import type {
   TemporalContextRow,
   TemporalContextInsert,
-} from "../../../../core/types/temporal-contexts.sql";
+} from "../../../../core/types/monitoring/temporal-contexts.sql";
 import type { TemporalContextRepository } from "../../domain/domain/ports/temporal-context.repository";
 
 export const createSupabaseTemporalContextRepository =

@@ -4,7 +4,7 @@ import type { AIConfigurationRepository } from "../../domain/ports/ai-configurat
 import type {
   AIConfigurationRow,
   AIConfigurationInsert,
-} from "../../../../core/types/ai-configurations.sql";
+} from "../../../../core/types/knowledge/ai-configurations.sql";
 
 export const createSupabaseAIConfigurationRepository =
   (): AIConfigurationRepository => {

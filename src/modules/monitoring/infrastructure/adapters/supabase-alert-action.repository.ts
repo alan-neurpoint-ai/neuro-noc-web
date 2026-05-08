@@ -4,7 +4,7 @@ import type { AlertActionRepository } from "../../domain/ports/alert-action.repo
 import type {
   AlertActionRow,
   AlertActionInsert,
-} from "../../../../core/types/alert-actions.sql";
+} from "../../../../core/types/monitoring/alert-actions.sql";
 
 export const createSupabaseAlertActionRepository =
   (): AlertActionRepository => {

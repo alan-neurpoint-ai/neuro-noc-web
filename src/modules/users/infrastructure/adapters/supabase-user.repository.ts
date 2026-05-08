@@ -1,7 +1,10 @@
 import { supabase } from "../../../../core/supabase";
 import type { UserEntity } from "../../domain/entities/user.entity";
 import type { UserRepository } from "../../domain/ports/user.repository";
-import type { UserRow, UserInsert } from "../../../../core/types/users.sql";
+import type {
+  UserRow,
+  UserInsert,
+} from "../../../../core/types/auth/users.sql";
 
 export const createSupabaseUserRepository = (): UserRepository => {
   const mapToEntity = (row: UserRow): UserEntity => ({

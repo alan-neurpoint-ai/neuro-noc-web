@@ -1,5 +1,5 @@
 import { supabase } from "../../../../core/supabase";
-import type { PermissionRow } from "../../../../core/types/permissions.sql";
+import type { PermissionRow } from "../../../../core/types/auth/permissions.sql";
 import type { PermissionEntity } from "../../domain/entities/permission.entity";
 import type { PermissionRepository } from "../../domain/ports/permission.repository";
 

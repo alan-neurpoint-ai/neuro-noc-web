@@ -3,7 +3,7 @@ import type { TechnicalDocumentationEntity } from "../../domain/entities/technic
 import type {
   TechnicalDocumentationRow,
   TechnicalDocumentationInsert,
-} from "../../../../core/types/technical-documentation.sql";
+} from "../../../../core/types/knowledge/technical-documentation.sql";
 import type { TechnicalDocumentationRepository } from "../../domain/ports/technical-documentation.repository";
 
 export const createSupabaseTechnicalDocumentationRepository =

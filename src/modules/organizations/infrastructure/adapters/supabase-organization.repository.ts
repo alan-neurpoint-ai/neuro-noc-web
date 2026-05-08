@@ -4,7 +4,7 @@ import type { OrganizationRepository } from "../../domain/ports/organization.rep
 import type {
   OrganizationRow,
   OrganizationInsert,
-} from "../../../../core/types/organizations.sql";
+} from "../../../../core/types/tenant/organizations.sql";
 
 export const createSupabaseOrganizationRepository =
   (): OrganizationRepository => {

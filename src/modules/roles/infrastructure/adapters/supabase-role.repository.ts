@@ -1,5 +1,5 @@
 import { supabase } from "../../../../core/supabase";
-import type { RoleRow } from "../../../../core/types/roles.sql";
+import type { RoleRow } from "../../../../core/types/auth/roles.sql";
 import type { RoleEntity } from "../../domain/entities/role.entity";
 import type { RoleRepository } from "../../domain/ports/role.repository";
 
