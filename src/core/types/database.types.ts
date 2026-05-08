@@ -1,3 +1,4 @@
+import type { ContactInsert, ContactRow, ContactUpdate } from "./contacts.sql";
 import type {
   OrganizationInsert,
   OrganizationRow,
@@ -44,6 +45,11 @@ export interface Database {
         Row: OrganizationRow;
         Insert: OrganizationInsert;
         Update: OrganizationUpdate;
+      };
+      contacts: {
+        Row: ContactRow;
+        Insert: ContactInsert;
+        Update: ContactUpdate;
       };
     };
 
