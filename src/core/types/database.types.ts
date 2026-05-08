@@ -1,3 +1,4 @@
+import type { AlertInsert, AlertRow } from "./alerts.sql";
 import type {
   BusinessRuleSourceInsert,
   BusinessRuleSourceRow,
@@ -98,6 +99,11 @@ export interface Database {
         Row: TemporalContextRow;
         Insert: TemporalContextInsert;
         Update: Partial<TemporalContextRow>;
+      };
+      alerts: {
+        Row: AlertRow;
+        Insert: AlertInsert;
+        Update: Partial<AlertRow>;
       };
     };
 
