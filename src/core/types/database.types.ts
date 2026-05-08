@@ -3,6 +3,10 @@ import type {
   PermissionRow,
   PermissionUpdate,
 } from "./permissions.sql";
+import type {
+  RolePermissionInsert,
+  RolePermissionRow,
+} from "./role-permissions.sql";
 import type { RoleInsert, RoleRow, RoleUpdate } from "./roles.sql";
 
 export type Json =
@@ -15,15 +19,22 @@ export type Json =
 
 export interface Database {
   public: {
-    roles: {
-      Row: RoleRow;
-      Insert: RoleInsert;
-      Update: RoleUpdate;
-    };
-    permissions: {
-      Row: PermissionRow;
-      Insert: PermissionInsert;
-      Update: PermissionUpdate;
+    Tables: {
+      roles: {
+        Row: RoleRow;
+        Insert: RoleInsert;
+        Update: RoleUpdate;
+      };
+      permissions: {
+        Row: PermissionRow;
+        Insert: PermissionInsert;
+        Update: PermissionUpdate;
+      };
+      role_permissions: {
+        Row: RolePermissionRow;
+        Insert: RolePermissionInsert;
+        Update: Partial<RolePermissionRow>;
+      };
     };
 
     Views: {
