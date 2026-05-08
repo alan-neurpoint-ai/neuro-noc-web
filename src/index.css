@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url("https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@200..700&display=swap");
+@import "tailwindcss";
 
 @theme {
   --font-headline: "Stack Sans Headline", sans-serif;
@@ -36,4 +36,4 @@
   }
   scrollbar-width: none;
   -ms-overflow-style: none;
-}
+}                                                                                                                                                               
