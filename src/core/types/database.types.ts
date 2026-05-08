@@ -1,3 +1,8 @@
+import type {
+  BusinessRuleInsert,
+  BusinessRuleRow,
+  BusinessRuleUpdate,
+} from "./business-rules.sql";
 import type { ContactInsert, ContactRow, ContactUpdate } from "./contacts.sql";
 import type {
   OrganizationInsert,
@@ -70,6 +75,11 @@ export interface Database {
         Row: TechnicalDocumentationRow;
         Insert: TechnicalDocumentationInsert;
         Update: TechnicalDocumentationUpdate;
+      };
+      business_rules: {
+        Row: BusinessRuleRow;
+        Insert: BusinessRuleInsert;
+        Update: BusinessRuleUpdate;
       };
     };
 
