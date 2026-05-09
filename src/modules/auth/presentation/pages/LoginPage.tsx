@@ -1,5 +1,3 @@
-import { Pagination } from "../../../../core/presentation/components/ui/Pagination";
-
 export const LoginPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0a0f1e] px-4">
@@ -11,11 +9,6 @@ export const LoginPage = () => {
           <p className="mt-2 text-sm text-blue-300/60 font-medium">
             Network Operations Center Management
           </p>
-          <Pagination
-            currentPage={1}
-            totalItems={100}
-            onPageChange={() => {}}
-          />
         </div>
       </div>
     </div>
