@@ -1,4 +1,4 @@
-import { DonutChart } from "../../../../core/presentation/components/ui/DonutChart";
+import { CustomSelect } from "../../../../core/presentation/components/ui/CustomSelect";
 
 export const LoginPage = () => {
   return (
@@ -11,21 +11,15 @@ export const LoginPage = () => {
           <p className="mt-2 text-sm text-blue-300/60 font-medium">
             Network Operations Center Management
           </p>
-          <DonutChart
-            data={[
-              {
-                label: "Online",
-                value: 70,
-                strokeDashoffset: undefined,
-                strokeDasharray: undefined,
-              },
-              {
-                label: "Offline",
-                value: 30,
-                strokeDashoffset: undefined,
-                strokeDasharray: undefined,
-              },
+          <CustomSelect
+            options={[
+              { value: "option1", label: "Option 1" },
+              { value: "option2", label: "Option 2" },
+              { value: "option3", label: "Option 3" },
             ]}
+            onChange={function (): void {
+              throw new Error("Function not implemented.");
+            }}
           />
         </div>
       </div>
