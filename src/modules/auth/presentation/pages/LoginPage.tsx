@@ -1,4 +1,4 @@
-import { LineChart } from "../../../../core/presentation/components/ui/LineChart";
+import { DonutChart } from "../../../../core/presentation/components/ui/DonutChart";
 
 export const LoginPage = () => {
   return (
@@ -11,7 +11,22 @@ export const LoginPage = () => {
           <p className="mt-2 text-sm text-blue-300/60 font-medium">
             Network Operations Center Management
           </p>
-          <LineChart data={[{ value: 10 }, { value: 20 }, { value: 15 }]} />
+          <DonutChart
+            data={[
+              {
+                label: "Online",
+                value: 70,
+                strokeDashoffset: undefined,
+                strokeDasharray: undefined,
+              },
+              {
+                label: "Offline",
+                value: 30,
+                strokeDashoffset: undefined,
+                strokeDasharray: undefined,
+              },
+            ]}
+          />
         </div>
       </div>
     </div>
