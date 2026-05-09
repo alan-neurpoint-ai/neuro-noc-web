@@ -1,3 +1,5 @@
+import { LineChart } from "../../../../core/presentation/components/ui/LineChart";
+
 export const LoginPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0a0f1e] px-4">
@@ -9,6 +11,7 @@ export const LoginPage = () => {
           <p className="mt-2 text-sm text-blue-300/60 font-medium">
             Network Operations Center Management
           </p>
+          <LineChart data={[{ value: 10 }, { value: 20 }, { value: 15 }]} />
         </div>
       </div>
     </div>
