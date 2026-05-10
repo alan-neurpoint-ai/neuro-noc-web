@@ -6,6 +6,7 @@ import { useAuthStore } from "../../../auth/presentation/stores/useAuthStore";
 import { authService } from "../../../auth/infrastructure/services/auth.service";
 import { organizationService } from "../../../organizations/infrastructure/services/organization.service";
 import { navigationService } from "../../../../core/services/navigation.service";
+import { DashboardSummary } from "../components/DashboardSummary";
 import type {
   RoleName,
   OrganizationOption,
@@ -120,7 +121,8 @@ export const DashboardLayout = () => {
           onEnvChange={handleOrgChange}
         />
         <main className="flex-1 overflow-y-auto p-6 bg-[#0d1224]">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-7xl mx-auto space-y-6">
+            <DashboardSummary />
             <Outlet />
           </div>
         </main>
