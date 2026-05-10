@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { BiChevronLeft, BiLogOut } from "react-icons/bi";
+import { BiLogOut } from "react-icons/bi";
+import { TbLayoutSidebarLeftCollapseFilled } from "react-icons/tb";
 
 export interface NavItem {
   id: string;
@@ -31,20 +32,22 @@ const Avatar = ({
   size: number;
 }) => (
   <div
-    className="shrink-0 flex items-center justify-center font-black uppercase overflow-hidden"
+    className="shrink-0 flex items-center justify-center font-bold uppercase overflow-hidden"
     style={{
       width: size,
       height: size,
-      borderRadius: size / 3,
-      background: "linear-gradient(135deg, #672da9 0%, #361f77 100%)",
-      boxShadow:
-        "0 0 0 2px rgba(178,154,244,0.3), 0 0 16px rgba(103,45,169,0.4)",
+      borderRadius: size / 4,
+      background: "linear-gradient(135deg, #672da9 0%, #8b5cf6 100%)",
+      boxShadow: "0 4px 12px rgba(103, 45, 169, 0.4)",
     }}
   >
     {src ? (
       <img src={src} alt={name} className="w-full h-full object-cover" />
     ) : (
-      <span style={{ fontSize: size * 0.4, color: "#b29af4" }}>
+      <span
+        className="text-white font-headline font-bold"
+        style={{ fontSize: size * 0.4 }}
+      >
         {name.charAt(0)}
       </span>
     )}
@@ -55,7 +58,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   navItems,
   userName,
   userRole,
-  userCompany = "Neuro NOC",
+  userCompany = "NeuroNOC",
   userAvatar,
   activeId,
   onNavigate,
@@ -64,46 +67,83 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-  const glassEffect = "backdrop-blur-xl border border-white/10 shadow-2xl";
-  const headlineFont = { fontFamily: "'Stack Sans Headline', sans-serif" };
 
   return (
     <aside
       className={`relative h-screen flex flex-col z-50 transition-all duration-300 ${isCollapsed ? "w-20" : "w-64"} ${className}`}
       style={{
-        background:
-          "linear-gradient(180deg, #2d1b69 0%, #1e1248 50%, #0d0820 100%)",
+        background: "linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 100%)",
       }}
     >
-      <div className="absolute -top-10 -left-10 w-48 h-48 rounded-full bg-brand-primary/20 blur-2xl pointer-events-none" />
+      <div
+        className="absolute inset-0 opacity-30"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)
+          `,
+          backgroundSize: "40px 40px",
+        }}
+      />
 
-      <div className="relative flex items-center px-4 py-6 border-b border-white/5">
-        {!isCollapsed && (
-          <div className="flex items-center gap-3 flex-1 animate-in fade-in duration-300">
-            <div className="w-8 h-8 rounded-lg bg-linear-to-br from-brand-primary to-bg-card flex items-center justify-center border border-brand-accent/30 shadow-[0_0_15px_rgba(103,45,169,0.5)]">
-              <div className="w-2 h-2 rounded-full bg-brand-accent animate-pulse" />
-            </div>
-            <span
-              className="text-white font-black uppercase italic tracking-tighter"
-              style={headlineFont}
+      <div className="absolute top-0 left-0 w-full h-32 bg-linear-to-b from-brand-primary/10 to-transparent pointer-events-none" />
+
+      <div className="relative flex items-center justify-between px-5 py-5 border-b border-white/5">
+        <div className="flex items-center gap-3">
+          <div
+            className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+            style={{
+              background: "linear-gradient(135deg, #672da9 0%, #8b5cf6 100%)",
+              boxShadow: "0 0 20px rgba(103, 45, 169, 0.5)",
+            }}
+          >
+            <svg
+              className="w-5 h-5 text-white"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
             >
-              Neuro <span className="text-brand-accent">NOC</span>
-            </span>
+              <path
+                d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </div>
-        )}
-        <button
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          className={`p-1.5 rounded-lg bg-white/5 hover:bg-brand-accent/20 text-brand-accent/60 hover:text-brand-accent transition-all ${isCollapsed ? "mx-auto rotate-180" : ""}`}
-        >
-          <BiChevronLeft size={20} />
-        </button>
+          {!isCollapsed && (
+            <div>
+              <span className="text-lg font-headline font-bold text-white tracking-wide">
+                NeuroNOC
+              </span>
+              <p className="text-[9px] text-white/30 font-headline tracking-wider">
+                NETWORK INTELLIGENCE
+              </p>
+            </div>
+          )}
+        </div>
+        <div className="flex items-center gap-2 p-2">
+          <button
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-headline font-bold uppercase tracking-wider transition-all"
+          >
+            <TbLayoutSidebarLeftCollapseFilled
+              size={17}
+              className={`transition-transform duration-300 ${isCollapsed ? "rotate-180" : ""}`}
+            />
+          </button>
+        </div>
       </div>
 
-      <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1.5 custom-scroll">
+      <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
         {!isCollapsed && (
-          <p className="px-3 pb-2 text-[9px] font-black uppercase tracking-[0.3em] text-brand-accent/30">
-            Menú
-          </p>
+          <div className="flex items-center gap-2 px-3 pb-3">
+            <div className="h-px flex-1 bg-linear-to-r from-brand-primary/50 to-transparent" />
+            <span className="text-[10px] font-headline font-bold uppercase tracking-[0.25em] text-white/30">
+              Menú
+            </span>
+            <div className="h-px flex-1 bg-linear-to-l from-brand-primary/50 to-transparent" />
+          </div>
         )}
         {navItems.map((item) => {
           const isActive = activeId === item.id;
@@ -111,30 +151,32 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               key={item.id}
               onClick={() => onNavigate?.(item.id, item.path)}
-              className={`group relative w-full flex items-center gap-3 p-2.5 rounded-xl transition-all ${
+              className={`group relative w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${
                 isActive
-                  ? "bg-brand-primary/30 border border-brand-accent/20 shadow-lg"
-                  : "hover:bg-white/5 text-white/40 hover:text-white/80"
+                  ? "bg-linear-to-r from-brand-primary/20 to-transparent border-l-2 border-brand-primary"
+                  : "hover:bg-white/5 text-white/50 hover:text-white/80"
               } ${isCollapsed ? "justify-center" : ""}`}
             >
-              {isActive && (
-                <div className="absolute left-0 w-1 h-5 bg-brand-accent rounded-full shadow-[0_0_8px_#b29af4]" />
-              )}
               <div
-                className={`shrink-0 transition-colors ${isActive ? "text-brand-accent" : "group-hover:text-brand-accent/80"}`}
+                className={`shrink-0 transition-colors ${
+                  isActive
+                    ? "text-brand-accent"
+                    : "text-white/40 group-hover:text-brand-accent/80"
+                }`}
               >
                 {item.icon}
               </div>
               {!isCollapsed && (
-                <div className="flex items-center justify-between flex-1 truncate">
+                <div className="flex items-center justify-between flex-1 min-w-0">
                   <span
-                    className={`text-sm font-bold truncate ${isActive ? "text-white" : ""}`}
-                    style={headlineFont}
+                    className={`text-sm font-headline truncate ${
+                      isActive ? "text-white font-semibold" : "font-medium"
+                    }`}
                   >
                     {item.label}
                   </span>
                   {item.badge && (
-                    <span className="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-brand-accent/10 border border-brand-accent/20 text-brand-accent">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-brand-accent/20 text-brand-accent border border-brand-accent/30">
                       {item.badge}
                     </span>
                   )}
@@ -142,7 +184,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               )}
 
               {isCollapsed && (
-                <div className="absolute left-full ml-4 px-3 py-1.5 bg-[#1a0f3e] border border-brand-accent/20 rounded-lg text-xs font-bold text-white opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 whitespace-nowrap">
+                <div className="absolute left-full ml-3 px-3 py-2 bg-[#1a1a2e] border border-white/10 rounded-lg text-xs font-headline text-white opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 whitespace-nowrap shadow-xl">
                   {item.label}
                 </div>
               )}
@@ -151,41 +193,61 @@ export const Sidebar: React.FC<SidebarProps> = ({
         })}
       </nav>
 
-      <div className="p-4 mt-auto border-t border-white/5 relative">
+      <div className="p-3 mt-auto border-t border-white/5 relative">
         {profileOpen && !isCollapsed && (
           <div
-            className={`absolute bottom-[110%] left-4 right-4 p-4 rounded-2xl ${glassEffect} bg-[#1a0f3e]/95 animate-in slide-in-from-bottom-2 duration-200`}
+            className="absolute bottom-full left-3 right-3 mb-3 p-4 rounded-xl overflow-hidden"
+            style={{
+              background: "linear-gradient(160deg, #2d1b69 0%, #1a0f3e 100%)",
+              border: "1px solid rgba(178,154,244,0.15)",
+              boxShadow:
+                "0 0 40px rgba(103, 45, 169, 0.3), 0 20px 40px rgba(0,0,0,0.5)",
+            }}
           >
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center gap-3">
-                <Avatar src={userAvatar} name={userName} size={40} />
-                <div className="min-w-0">
-                  <p
-                    className="text-xs font-black text-white truncate uppercase"
-                    style={headlineFont}
-                  >
-                    {userName}
-                  </p>
-                  <p className="text-[10px] font-bold text-brand-accent truncate uppercase tracking-widest">
-                    {userRole}
-                  </p>
-                </div>
+            <div className="flex items-center gap-3 mb-4">
+              <Avatar src={userAvatar} name={userName} size={42} />
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-headline font-bold text-white truncate">
+                  {userName}
+                </p>
+                <p className="text-[10px] font-headline text-brand-accent truncate uppercase tracking-wider">
+                  {userRole}
+                </p>
               </div>
-              <div className="space-y-2 pt-2 border-t border-white/5">
-                <div className="flex justify-between text-[9px] uppercase font-black text-white/30">
-                  <span>Status</span>
-                  <span className="text-green-400">Online</span>
-                </div>
-                <div className="flex justify-between text-[9px] uppercase font-black text-white/30">
-                  <span>Company</span>
-                  <span className="text-white/70">{userCompany}</span>
-                </div>
+            </div>
+
+            <div className="space-y-2 pb-3 border-b border-white/5">
+              <div className="flex justify-between items-center">
+                <span className="text-[10px] font-headline text-white/40 uppercase">
+                  Organización
+                </span>
+                <span className="text-xs font-headline text-white/70">
+                  {userCompany}
+                </span>
               </div>
+              <div className="flex justify-between items-center">
+                <span className="text-[10px] font-headline text-white/40 uppercase">
+                  Status
+                </span>
+                <span className="text-xs font-headline text-emerald-400 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Online
+                </span>
+              </div>
+            </div>
+
+            <div className="pt-3 flex flex-col gap-2">
               <button
                 onClick={onLogout}
-                className="w-full flex items-center justify-center gap-2 py-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition-all text-[10px] font-black uppercase"
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg transition-all text-xs font-headline font-semibold uppercase tracking-wider"
+                style={{
+                  background: "rgba(239, 68, 68, 0.1)",
+                  border: "1px solid rgba(239, 68, 68, 0.2)",
+                  color: "#ef4444",
+                }}
               >
-                <BiLogOut size={14} /> Cerrar Sesión
+                <BiLogOut size={14} />
+                Cerrar Sesión
               </button>
             </div>
           </div>
@@ -193,21 +255,25 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         <button
           onClick={() => !isCollapsed && setProfileOpen(!profileOpen)}
-          className={`w-full flex items-center gap-3 p-2.5 rounded-xl transition-all border ${profileOpen ? "bg-brand-primary/20 border-brand-accent/30 shadow-lg" : "bg-white/5 border-white/10"} ${isCollapsed ? "justify-center" : ""}`}
+          className={`w-full flex items-center gap-3 p-2.5 rounded-lg transition-all border ${
+            profileOpen
+              ? "bg-brand-primary/10 border-brand-primary/30"
+              : "bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/10"
+          } ${isCollapsed ? "justify-center" : ""}`}
         >
           <div className="relative">
-            <Avatar src={userAvatar} name={userName} size={34} />
-            <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-green-500 border-2 border-[#0d0820] rounded-full shadow-[0_0_8px_#22c55e]" />
+            <Avatar src={userAvatar} name={userName} size={32} />
+            <div
+              className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-[#0f0f1a]"
+              style={{ background: "#10b981" }}
+            />
           </div>
           {!isCollapsed && (
             <div className="flex-1 min-w-0 text-left">
-              <p
-                className="text-xs font-black text-white truncate uppercase"
-                style={headlineFont}
-              >
+              <p className="text-sm font-headline font-semibold text-white truncate">
                 {userName}
               </p>
-              <p className="text-[9px] font-bold text-white/40 truncate uppercase">
+              <p className="text-[10px] font-headline text-white/40 truncate uppercase">
                 {userRole}
               </p>
             </div>
