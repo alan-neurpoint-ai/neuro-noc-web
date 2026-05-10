@@ -11,4 +11,6 @@ export interface UserEntity {
   lastLogin: Date | null;
   createdAt: Date;
   updatedAt: Date;
+  role?: { name: string } | null;
+  organization?: { name: string; status: string } | null;
 }
