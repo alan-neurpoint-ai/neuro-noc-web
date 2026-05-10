@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { supabase } from "../../../../core/supabase";
 import { LineChart, type DataPoint } from "../../../../core/presentation/components/ui/LineChart";
 import { Card } from "../../../../core/presentation/components/ui/Card";
+import { DataTable } from "../../../../core/presentation/components/ui/DataTable";
 import { useAuthStore } from "../../../auth/presentation/stores/useAuthStore";
 import { alertService } from "../../../monitoring/infrastructure/services/alert.service";
 
@@ -12,6 +13,17 @@ interface AlertMetrics {
   pendingAlerts: number;
   emailsSent: number;
   callsMade: number;
+}
+
+interface RecentAlert {
+  id: string;
+  host_name: string;
+  issue: string;
+  criticality: string;
+  status: string;
+  created_at: string;
+  organization_id: string;
+  organization_name?: string;
 }
 
 export const DashboardSummary = () => {
@@ -25,6 +37,8 @@ export const DashboardSummary = () => {
     warning: number;
     resolved: number;
   }[]>([]);
+  const [recentAlerts, setRecentAlerts] = useState<RecentAlert[]>([]);
+  const [hasOrgChildren, setHasOrgChildren] = useState(false);
   const [metrics, setMetrics] = useState<AlertMetrics>({
     totalAlerts: 0,
     criticalRate: 0,
@@ -36,6 +50,7 @@ export const DashboardSummary = () => {
 
   const isInternal = selectedOrganization?.isInternal;
   const currentOrgId = user?.organizationId;
+  const showOrganizationColumn = isInternal && hasOrgChildren;
 
   useEffect(() => {
     if (!selectedOrganization || !selectedOrganization.id || !currentOrgId) {
@@ -48,20 +63,27 @@ export const DashboardSummary = () => {
       try {
         const includeChildren = Boolean(isInternal && currentOrgId === selectedOrganization.id);
         const childrenIds: string[] = [];
+        let allOrgIds: string[] = [];
 
         if (includeChildren) {
           const { data: children } = await supabase
             .from("organizations")
-            .select("id")
+            .select("id, name")
             .eq("parent_organization_id", currentOrgId)
             .eq("is_active", true);
 
-          if (children && children.length > 0) {
+          const hasChildrenData = Boolean(children && children.length > 0);
+          setHasOrgChildren(hasChildrenData);
+
+          if (hasChildrenData && children) {
             childrenIds.push(...children.map((c: { id: string }) => c.id));
+            allOrgIds = [currentOrgId, ...childrenIds];
           }
+        } else {
+          setHasOrgChildren(false);
         }
 
-        const [alertsResult, metricsResult] = await Promise.all([
+        const [alertsResult, metricsResult, recentResult] = await Promise.all([
           alertService.getAlertsGroupedByWeek(
             selectedOrganization.id,
             includeChildren,
@@ -72,10 +94,31 @@ export const DashboardSummary = () => {
             includeChildren,
             childrenIds,
           ),
+          alertService.getRecentAlerts(
+            selectedOrganization.id,
+            includeChildren,
+            childrenIds,
+            10,
+          ),
         ]);
+
+        let alertsWithOrg = recentResult;
+        if (allOrgIds.length > 1) {
+          const { data: orgsData } = await supabase
+            .from("organizations")
+            .select("id, name")
+            .in("id", allOrgIds);
+
+          const orgMap = new Map((orgsData || []).map((o: { id: string; name: string }) => [o.id, o.name]));
+          alertsWithOrg = recentResult.map((a) => ({
+            ...a,
+            organization_name: orgMap.get(a.organization_id),
+          }));
+        }
 
         setAlertsData(alertsResult);
         setMetrics(metricsResult);
+        setRecentAlerts(alertsWithOrg as RecentAlert[]);
       } catch (error) {
         console.error("Error loading data:", error);
         setAlertsData([]);
@@ -87,6 +130,7 @@ export const DashboardSummary = () => {
           emailsSent: 0,
           callsMade: 0,
         });
+        setRecentAlerts([]);
       } finally {
         setLoading(false);
         setLoadingMetrics(false);
@@ -106,6 +150,32 @@ export const DashboardSummary = () => {
     }));
   }, [alertsData]);
 
+  const getCriticalityColor = (criticality: string) => {
+    switch (criticality) {
+      case "High":
+        return "text-red-400 bg-red-400/10";
+      case "Average":
+        return "text-amber-400 bg-amber-400/10";
+      case "Low":
+        return "text-blue-400 bg-blue-400/10";
+      default:
+        return "text-gray-400 bg-gray-400/10";
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "PROBLEM":
+        return "text-red-400";
+      case "RESOLVED":
+        return "text-emerald-400";
+      case "ACKNOWLEDGED":
+        return "text-amber-400";
+      default:
+        return "text-gray-400";
+    }
+  };
+
   if (!selectedOrganization) {
     return null;
   }
@@ -124,7 +194,7 @@ export const DashboardSummary = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-10">
         <div>
           <h2 className="text-base font-headline font-bold text-white">
             Alertas - Últimas 4 semanas
@@ -133,7 +203,9 @@ export const DashboardSummary = () => {
         </div>
       </div>
 
-      {!loadingMetrics && (
+      <div className="space-y-2 mb-10">
+        <h3 className="text-xs font-headline text-white/40 uppercase">Métricas</h3>
+        {!loadingMetrics && (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
           <Card variant="glass" className="p-3">
             <p className="text-[10px] font-headline text-white/40 uppercase">Total Alerts</p>
@@ -165,10 +237,12 @@ export const DashboardSummary = () => {
             <p className="text-xl font-bold text-purple-400 mt-1">{metrics.callsMade}</p>
           </Card>
         </div>
-      )}
+        )}
+      </div>
 
-      {chartData.length > 0 && chartData.some((d) => d.value > 0) ? (
-        <div className="h-[120px]">
+ <div className="space-y-2 mb-10">
+       {chartData.length > 0 && chartData.some((d) => d.value > 0) ? (
+        <div >
           <LineChart
             data={chartData}
             height={120}
@@ -183,6 +257,65 @@ export const DashboardSummary = () => {
           <p className="text-white/40 text-sm">Sin alertas en las últimas 4 semanas</p>
         </div>
       )}
+ </div>
+
+   <div className="space-y-2 mb-10">
+       <DataTable
+        title="Alertas Recientes"
+        subtitle={`${recentAlerts.length} últimas alertas`}
+        columns={[
+          {
+            header: "Dispositivo",
+            accessor: (alert: RecentAlert) => (
+              <div>
+                <div className="text-white font-medium">{alert.host_name}</div>
+                <div className="text-white/40 text-[10px] truncate max-w-[200px]">{alert.issue}</div>
+              </div>
+            ),
+          },
+          {
+            header: "Criticidad",
+            accessor: (alert: RecentAlert) => (
+              <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${getCriticalityColor(alert.criticality)}`}>
+                {alert.criticality}
+              </span>
+            ),
+          },
+          {
+            header: "Fecha",
+            accessor: (alert: RecentAlert) => (
+              <span className="text-white/60">
+                {new Date(alert.created_at).toLocaleDateString("es-ES", {
+                  day: "2-digit",
+                  month: "short",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
+            ),
+          },
+          ...(showOrganizationColumn
+            ? [
+                {
+                  header: "Organización",
+                  accessor: (alert: RecentAlert) => (
+                    <span className="text-white/60">{alert.organization_name || "-"}</span>
+                  ),
+                },
+              ]
+            : []),
+          {
+            header: "Estado",
+            accessor: (alert: RecentAlert) => (
+              <span className={`font-medium ${getStatusColor(alert.status)}`}>
+                {alert.status}
+              </span>
+            ),
+          },
+        ]}
+        data={recentAlerts}
+      />
+   </div>
     </div>
   );
 };
