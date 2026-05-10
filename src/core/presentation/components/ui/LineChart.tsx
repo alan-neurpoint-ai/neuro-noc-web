@@ -113,7 +113,7 @@ export const LineChart: React.FC<LineChartProps> = ({
 
   return (
     <div
-      className={`w-full flex flex-col rounded-2xl overflow-hidden shadow-2xl ${className}`}
+      className={`w-full h-120 flex flex-col rounded-2xl overflow-hidden shadow-2xl ${className}`}
       style={{
         background:
           "linear-gradient(160deg, #2d1b69 0%, #1a0f3e 55%, #0d0820 100%)",
