@@ -31,7 +31,6 @@ describe("Topbar Component - Neuro NOC", () => {
   it("✓ Renderizado: Debe mostrar el entorno inicial por defecto", () => {
     render(<Topbar {...defaultProps} />);
     expect(screen.getByText("Interno")).toBeInTheDocument();
-    expect(screen.getByText("Red Privada")).toBeInTheDocument();
   });
 
   it("✓ Interacción: Debe abrir el menú y mostrar todas las opciones", () => {
@@ -56,7 +55,8 @@ describe("Topbar Component - Neuro NOC", () => {
     const { container } = render(<Topbar {...defaultProps} />);
     const header = container.querySelector("header");
     expect(header).toHaveClass("sticky", "top-0", "backdrop-blur-xl");
-    expect(header).toHaveClass("bg-brand-primary/40");
+    const headerStyle = header?.getAttribute("style") || "";
+    expect(headerStyle).toContain("linear-gradient");
   });
 
   it("✓ Prop currentEnv: Debe respetar el valor controlado externamente", () => {

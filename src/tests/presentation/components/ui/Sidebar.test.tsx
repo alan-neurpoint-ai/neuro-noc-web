@@ -68,8 +68,8 @@ describe("Sidebar Component - Neuro NOC Premium", () => {
   it("✓ Estilos: item activo", () => {
     render(<Sidebar {...defaultProps} activeId="dash" />);
     const dashBtn = screen.getByRole("button", { name: /Dashboard/i });
-    expect(dashBtn).toHaveClass("bg-brand-primary/30");
-    expect(dashBtn).toHaveClass("border-brand-accent/20");
+    expect(dashBtn).toHaveClass("border-l-2");
+    expect(dashBtn).toHaveClass("border-brand-primary");
   });
 
   it("✓ Tooltip: visibilidad en hover cuando está colapsado", () => {
