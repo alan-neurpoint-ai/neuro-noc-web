@@ -3,6 +3,8 @@ import { supabase } from "../../../../core/supabase";
 interface AlertData {
   id: string;
   organization_id: string;
+  host_name: string;
+  issue: string;
   status: string;
   criticality: string;
   created_at: string;
@@ -24,7 +26,7 @@ export const alertService = {
   ): Promise<AlertData[]> {
     let query = supabase
       .from("alerts")
-      .select("id, organization_id, status, criticality, created_at")
+      .select("id, organization_id, host_name, issue, status, criticality, created_at")
       .order("created_at", { ascending: false })
       .limit(100);
 
@@ -138,5 +140,29 @@ export const alertService = {
       emailsSent,
       callsMade,
     };
+  },
+
+  async getRecentAlerts(
+    orgId: string,
+    includeChildren: boolean,
+    childrenIds: string[],
+    limit: number = 10,
+  ): Promise<AlertData[]> {
+    let query = supabase
+      .from("alerts")
+      .select("id, organization_id, host_name, issue, criticality, status, created_at")
+      .order("created_at", { ascending: false })
+      .limit(limit);
+
+    if (includeChildren && childrenIds.length > 0) {
+      query = query.in("organization_id", [orgId, ...childrenIds]);
+    } else {
+      query = query.eq("organization_id", orgId);
+    }
+
+    const { data, error } = await query;
+
+    if (error) throw error;
+    return (data as AlertData[]) || [];
   },
 };
