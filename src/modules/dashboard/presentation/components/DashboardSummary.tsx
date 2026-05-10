@@ -5,6 +5,7 @@ import { Card } from "../../../../core/presentation/components/ui/Card";
 import { DataTable } from "../../../../core/presentation/components/ui/DataTable";
 import { useAuthStore } from "../../../auth/presentation/stores/useAuthStore";
 import { alertService } from "../../../monitoring/infrastructure/services/alert.service";
+import { Loading } from "../../../../core/presentation/components/ui/Loading";
 
 interface AlertMetrics {
   totalAlerts: number;
@@ -181,11 +182,7 @@ export const DashboardSummary = () => {
   }
 
   if (loading) {
-    return (
-      <div className="w-full h-32 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-accent" />
-      </div>
-    );
+    return <Loading message="Cargando datos del dashboard..." variant="fullscreen" />;
   }
 
   const viewLabel = isInternal

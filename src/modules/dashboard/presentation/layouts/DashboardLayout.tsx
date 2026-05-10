@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router";
+import { Outlet, useNavigate, useLocation } from "react-router";
 import { useState, useEffect } from "react";
 import { Sidebar } from "../../../../core/presentation/components/ui/Sidebar";
 import { Topbar } from "../../../../core/presentation/components/ui/Topbar";
@@ -6,7 +6,6 @@ import { useAuthStore } from "../../../auth/presentation/stores/useAuthStore";
 import { authService } from "../../../auth/infrastructure/services/auth.service";
 import { organizationService } from "../../../organizations/infrastructure/services/organization.service";
 import { navigationService } from "../../../../core/services/navigation.service";
-import { DashboardSummary } from "../components/DashboardSummary";
 import type {
   RoleName,
   OrganizationOption,
@@ -14,17 +13,22 @@ import type {
 
 export const DashboardLayout = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const {
     user,
     logout: clearAuth,
     selectedOrganization,
     setSelectedOrganization,
+    hideTopbar,
+    setHideTopbar,
   } = useAuthStore();
   const [activeNavId, setActiveNavId] = useState("dashboard");
   const [orgOptions, setOrgOptions] = useState<OrganizationOption[]>([]);
 
   const roleName = user?.role?.name as RoleName | undefined;
   const navItems = navigationService.getNavigationByRole(roleName);
+
+  const isOrganizationsPage = location.pathname.startsWith("/dashboard/organizations");
 
   useEffect(() => {
     const loadOrganizations = async () => {
@@ -34,9 +38,15 @@ export const DashboardLayout = () => {
         const currentOrgId = user.organizationId;
         const currentOrgName = user.organization?.name || "Interno";
 
-        const childrenOrgs = await organizationService.getOrganizationsByParent(
+        const childrenOrgsData = await organizationService.getOrganizationsByParent(
           currentOrgId,
         );
+
+        const orgChildrenOptions: OrganizationOption[] = childrenOrgsData.map((org) => ({
+          value: org.id,
+          label: org.name,
+          description: org.slug,
+        }));
 
         const options: OrganizationOption[] = [
           {
@@ -44,11 +54,7 @@ export const DashboardLayout = () => {
             label: "Interno",
             description: currentOrgName,
           },
-          ...childrenOrgs.map((org) => ({
-            value: org.id,
-            label: org.name,
-            description: org.slug,
-          })),
+          ...orgChildrenOptions,
         ];
 
         setOrgOptions(options);
@@ -68,6 +74,16 @@ export const DashboardLayout = () => {
 
     loadOrganizations();
   }, [roleName, user, selectedOrganization, setSelectedOrganization]);
+
+  // Ocultar el Topbar cuando estamos en la página de organizaciones y la vista es "Interno"
+  useEffect(() => {
+    if (isOrganizationsPage) {
+      const shouldHide = selectedOrganization?.isInternal;
+      setHideTopbar(shouldHide || false);
+    } else {
+      setHideTopbar(false);
+    }
+  }, [isOrganizationsPage, selectedOrganization?.isInternal, setHideTopbar]);
 
   const userName =
     user?.firstName && user?.lastName
@@ -99,6 +115,10 @@ export const DashboardLayout = () => {
         slug: org.description,
         isInternal: isInterno,
       });
+
+      if (!isInterno) {
+        navigate("/dashboard/organization");
+      }
     }
   };
 
@@ -115,14 +135,15 @@ export const DashboardLayout = () => {
       />
 
       <div className="flex-1 flex flex-col min-w-0">
-        <Topbar
-          envOptions={orgOptions}
-          currentEnv={selectedOrganization?.id}
-          onEnvChange={handleOrgChange}
-        />
+        {!hideTopbar && (
+          <Topbar
+            envOptions={orgOptions}
+            currentEnv={selectedOrganization?.id}
+            onEnvChange={handleOrgChange}
+          />
+        )}
         <main className="flex-1 overflow-y-auto p-6 bg-[#0d1224]">
-          <div className="max-w-7xl mx-auto space-y-6">
-            <DashboardSummary />
+          <div className="max-w-7xl mx-auto">
             <Outlet />
           </div>
         </main>
