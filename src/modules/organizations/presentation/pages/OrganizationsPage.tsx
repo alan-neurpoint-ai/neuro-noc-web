@@ -16,6 +16,9 @@ interface Organization {
   updated_at: string;
 }
 
+// Cache a nivel de módulo para evitar re-fetches innecesarios
+const childrenCache = new Map<string, Organization[]>();
+
 async function fetchChildOrganizations(
   parentId: string,
 ): Promise<Organization[]> {
@@ -40,8 +43,14 @@ export const OrganizationsPage = () => {
 
   useEffect(() => {
     if (!currentOrgId) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setOrganizations([]);
+      setLoading(false);
+      return;
+    }
+
+    // Devolver de cache si existe
+    if (childrenCache.has(currentOrgId)) {
+      setOrganizations(childrenCache.get(currentOrgId)!);
       setLoading(false);
       return;
     }
@@ -51,6 +60,9 @@ export const OrganizationsPage = () => {
 
     fetchChildOrganizations(currentOrgId)
       .then((data) => {
+        if (!cancelled && currentOrgId) {
+          childrenCache.set(currentOrgId, data);
+        }
         if (!cancelled) {
           setOrganizations(data);
           setLoading(false);
@@ -70,7 +82,11 @@ export const OrganizationsPage = () => {
   }, [currentOrgId]);
 
   if (loading) {
-    return <Loading message="Cargando organizaciones..." variant="fullscreen" />;
+    return (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-accent" />
+      </div>
+    );
   }
 
   const getOrgTypeLabel = (type: string) => {
@@ -86,7 +102,9 @@ export const OrganizationsPage = () => {
     }
   };
 
-  const viewLabel = isInternal ? "Interno" : selectedOrganization?.name || "Organización";
+  const viewLabel = isInternal
+    ? "Interno"
+    : selectedOrganization?.name || "Organización";
 
   return (
     <div className="space-y-4">
