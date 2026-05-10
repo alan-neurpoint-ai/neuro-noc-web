@@ -1,4 +1,4 @@
-import type { TechnicalDocumentationEntity } from "../domain/entities/technical-documentation.entity";
+import type { TechnicalDocumentationEntity } from "../entities/technical-documentation.entity";
 
 export interface TechnicalDocumentationRepository {
   getByOrganization(orgId: string): Promise<TechnicalDocumentationEntity[]>;

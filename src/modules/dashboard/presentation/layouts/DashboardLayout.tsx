@@ -27,46 +27,41 @@ export const DashboardLayout = () => {
 
   useEffect(() => {
     const loadOrganizations = async () => {
-      if (roleName === "super_admin") {
-        try {
-          const orgs = await organizationService.getAllActiveOrganizations();
+      if (!user?.organizationId) return;
 
-          const clientOrgs = orgs
-            .filter((org) => org.org_type === "client")
-            .map((org) => ({
-              value: org.id,
-              label: org.name,
-              description: org.slug,
-            }));
+      try {
+        const currentOrgId = user.organizationId;
+        const currentOrgName = user.organization?.name || "Interno";
 
-          if (clientOrgs.length > 0) {
-            setOrgOptions(clientOrgs);
-            if (!selectedOrganization) {
-              setSelectedOrganization({
-                id: clientOrgs[0].value,
-                name: clientOrgs[0].label,
-                slug: clientOrgs[0].description,
-              });
-            }
-          }
-        } catch (error) {
-          console.error("Error loading organizations:", error);
-        }
-      } else if (user?.organization && user?.organizationId) {
-        setOrgOptions([
+        const childrenOrgs = await organizationService.getOrganizationsByParent(
+          currentOrgId,
+        );
+
+        const options: OrganizationOption[] = [
           {
-            value: user.organizationId,
-            label: user.organization.name,
-            description: user.organization.status,
+            value: currentOrgId,
+            label: "Interno",
+            description: currentOrgName,
           },
-        ]);
+          ...childrenOrgs.map((org) => ({
+            value: org.id,
+            label: org.name,
+            description: org.slug,
+          })),
+        ];
+
+        setOrgOptions(options);
+
         if (!selectedOrganization) {
           setSelectedOrganization({
-            id: user.organizationId,
-            name: user.organization.name,
-            slug: user.organization.status,
+            id: currentOrgId,
+            name: currentOrgName,
+            slug: options[0].description,
+            isInternal: true,
           });
         }
+      } catch (error) {
+        console.error("Error loading organizations:", error);
       }
     };
 
@@ -96,10 +91,12 @@ export const DashboardLayout = () => {
   const handleOrgChange = (value: string | number) => {
     const org = orgOptions.find((o) => o.value === value);
     if (org) {
+      const isInterno = org.value === user?.organizationId;
       setSelectedOrganization({
         id: org.value,
         name: org.label,
         slug: org.description,
+        isInternal: isInterno,
       });
     }
   };

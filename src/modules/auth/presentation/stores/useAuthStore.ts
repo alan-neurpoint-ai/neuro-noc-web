@@ -5,6 +5,7 @@ interface SelectedOrganization {
   id: string;
   name: string;
   slug: string;
+  isInternal?: boolean;
 }
 
 interface AuthState {
