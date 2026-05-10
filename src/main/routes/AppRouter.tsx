@@ -10,7 +10,7 @@ export const AppRouter = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route element={<ProtectedRoute />}>
           <Route element={<DashboardLayout />}>
-            <Route path="/dashboard" element={<div>Resumen del Sistema</div>} />
+            <Route path="/dashboard" />
           </Route>
         </Route>
 
