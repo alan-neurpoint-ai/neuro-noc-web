@@ -1,8 +1,35 @@
+import { useState } from "react";
+import { useNavigate } from "react-router";
 import { BiEnvelope, BiLockAlt, BiShield } from "react-icons/bi";
 import { Button } from "../../../../core/presentation/components/ui/Button";
 import { Input } from "../../../../core/presentation/components/ui/Input";
+import { authService } from "../../infrastructure/services/auth.service";
+import { useAuthStore } from "../stores/useAuthStore";
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
+  const setAuth = useAuthStore((state) => state.setAuth);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const result = await authService.signIn(email, password);
+      setAuth(result.profile);
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error al iniciar sesión");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex">
       <div className="hidden lg:flex lg:w-[55%] xl:w-[58%] relative bg-[#0c0c0c] overflow-hidden">
@@ -165,12 +192,15 @@ export const LoginPage = () => {
               </p>
             </div>
 
-            <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-5" onSubmit={handleLogin}>
               <Input
                 label="CORREO ELECTRÓNICO"
                 type="email"
                 placeholder="nombre@empresa.com"
                 icon={<BiEnvelope className="text-lg" />}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isLoading}
               />
 
               <Input
@@ -178,7 +208,16 @@ export const LoginPage = () => {
                 type="password"
                 placeholder="••••••••"
                 icon={<BiLockAlt className="text-lg" />}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={isLoading}
               />
+
+              {error && (
+                <div className="p-3 rounded-lg bg-red-50 border border-red-200">
+                  <p className="text-xs text-red-600 font-headline">{error}</p>
+                </div>
+              )}
 
               <div className="flex items-center justify-between">
                 <label className="flex items-center gap-2.5 cursor-pointer">
@@ -210,7 +249,12 @@ export const LoginPage = () => {
                 </a>
               </div>
 
-              <Button variant="login" fullWidth className="mt-2">
+              <Button
+                variant="login"
+                fullWidth
+                className="mt-2"
+                isLoading={isLoading}
+              >
                 Iniciar Sesión
               </Button>
             </form>
