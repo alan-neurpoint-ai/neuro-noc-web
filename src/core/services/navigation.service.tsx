@@ -12,6 +12,32 @@ import {
 } from "react-icons/bi";
 import type { NavItem, RoleName } from "../types/navigation/navigation.types";
 
+const knowledgeGroup: NavItem = {
+  id: "knowledge-group",
+  label: "Gestión del Conocimiento",
+  icon: <BiBook className="text-xl" />,
+  children: [
+    {
+      id: "contexts",
+      label: "Contextos Temporales",
+      icon: <BiNetworkChart className="text-xl" />,
+      path: "/dashboard/contexts",
+    },
+    {
+      id: "rules",
+      label: "Reglas de Negocio",
+      icon: <BiData className="text-xl" />,
+      path: "/dashboard/rules",
+    },
+    {
+      id: "documentation",
+      label: "Documentación",
+      icon: <BiBook className="text-xl" />,
+      path: "/dashboard/documentation",
+    },
+  ],
+};
+
 const navigationConfig: Record<RoleName, NavItem[]> = {
   super_admin: [
     {
@@ -25,7 +51,7 @@ const navigationConfig: Record<RoleName, NavItem[]> = {
       label: "Organizaciones",
       icon: <BiBuilding className="text-xl" />,
       path: "/dashboard/organizations",
-    },
+    }
   ],
   admin: [
     {
@@ -52,29 +78,12 @@ const navigationConfig: Record<RoleName, NavItem[]> = {
       icon: <BiData className="text-xl" />,
       path: "/dashboard/permissions",
     },
-    {
-      id: "contexts",
-      label: "Contextos Temporales",
-      icon: <BiNetworkChart className="text-xl" />,
-      path: "/dashboard/contexts",
-    },
+    knowledgeGroup,
     {
       id: "ai-config",
       label: "Configuración IA",
       icon: <BiBrain className="text-xl" />,
       path: "/dashboard/ai-config",
-    },
-    {
-      id: "rules",
-      label: "Reglas de Negocio",
-      icon: <BiData className="text-xl" />,
-      path: "/dashboard/rules",
-    },
-    {
-      id: "documentation",
-      label: "Documentación",
-      icon: <BiBook className="text-xl" />,
-      path: "/dashboard/documentation",
     },
     {
       id: "settings",

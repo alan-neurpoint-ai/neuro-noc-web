@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { supabase } from "../../../../core/supabase";
 import { Card } from "../../../../core/presentation/components/ui/Card";
-import { Loading } from "../../../../core/presentation/components/ui/Loading";
 import { useAuthStore } from "../../../auth/presentation/stores/useAuthStore";
 
 interface Organization {
@@ -43,6 +42,7 @@ export const OrganizationsPage = () => {
 
   useEffect(() => {
     if (!currentOrgId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setOrganizations([]);
       setLoading(false);
       return;

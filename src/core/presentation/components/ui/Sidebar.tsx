@@ -1,14 +1,8 @@
 import React, { useState } from "react";
 import { BiLogOut } from "react-icons/bi";
 import { TbLayoutSidebarLeftCollapseFilled } from "react-icons/tb";
-
-export interface NavItem {
-  id: string;
-  label: string;
-  icon: React.ReactNode;
-  path: string;
-  badge?: string | number;
-}
+import { NavGroup } from "./NavGroup";
+import type { NavItem } from "../../../types/navigation/navigation.types";
 
 interface SidebarProps {
   navItems: NavItem[];
@@ -68,9 +62,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
+  const handleNavigate = (id: string, path: string) => {
+    onNavigate?.(id, path);
+  };
+
   return (
     <aside
-      className={`relative h-screen flex flex-col z-50 transition-all duration-300 ${isCollapsed ? "w-20" : "w-64"} ${className}`}
+      className={`relative h-screen flex flex-col z-50 transition-all duration-300 ${
+        isCollapsed ? "w-20" : "w-64"
+      } ${className}`}
       style={{
         background: "linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 100%)",
       }}
@@ -129,7 +129,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
           >
             <TbLayoutSidebarLeftCollapseFilled
               size={17}
-              className={`transition-transform duration-300 ${isCollapsed ? "rotate-180" : ""}`}
+              className={`transition-transform duration-300 ${
+                isCollapsed ? "rotate-180" : ""
+              }`}
             />
           </button>
         </div>
@@ -146,11 +148,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
         )}
         {navItems.map((item) => {
+          if (item.children && item.children.length > 0) {
+            return (
+              <NavGroup
+                key={item.id}
+                item={item}
+                isCollapsed={isCollapsed}
+                activeId={activeId}
+                onNavigate={handleNavigate}
+              />
+            );
+          }
+
           const isActive = activeId === item.id;
           return (
             <button
               key={item.id}
-              onClick={() => onNavigate?.(item.id, item.path)}
+              onClick={() => handleNavigate(item.id, item.path ?? "")}
               className={`group relative w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${
                 isActive
                   ? "bg-linear-to-r from-brand-primary/20 to-transparent border-l-2 border-brand-primary"
@@ -238,7 +252,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
             <div className="pt-3 flex flex-col gap-2">
               <button
-                onClick={onLogout}
+                onClick={() => {
+                  onLogout?.();
+                }}
                 className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg transition-all text-xs font-headline font-semibold uppercase tracking-wider"
                 style={{
                   background: "rgba(239, 68, 68, 0.1)",

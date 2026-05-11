@@ -4,8 +4,9 @@ export interface NavItem {
   id: string;
   label: string;
   icon: ReactNode;
-  path: string;
+  path?: string;
   badge?: string | number;
+  children?: NavItem[];
 }
 
 export type RoleName = "super_admin" | "admin" | "client" | "user";
