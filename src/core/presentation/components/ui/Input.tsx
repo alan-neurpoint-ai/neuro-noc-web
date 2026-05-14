@@ -1,4 +1,8 @@
-import type { InputHTMLAttributes, ReactNode, ChangeEvent } from "react";
+import {
+  type InputHTMLAttributes,
+  type ReactNode,
+  type ChangeEvent,
+} from 'react';
 
 const INPUT_PATTERNS = {
   text: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/,
@@ -6,78 +10,78 @@ const INPUT_PATTERNS = {
   decimal: /^\d*\.?\d*$/,
   alphanumeric: /^[a-zA-Z0-9]*$/,
   email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-  phonePrefix: /^\+[0-9]*$/, // Para casos como "+52"
+  phonePrefix: /^\+[0-9]*$/,
 };
 
 export type InputValidationType =
   | keyof typeof INPUT_PATTERNS
-  | "password"
-  | "datetime"
-  | "none";
+  | 'password'
+  | 'datetime'
+  | 'none';
 
-interface InputProps extends Omit<
+interface InputProperties extends Omit<
   InputHTMLAttributes<HTMLInputElement>,
-  "type"
+  'type'
 > {
   label?: string;
   icon?: ReactNode;
   error?: string;
   validationType?: InputValidationType;
-  type?: "text" | "password" | "email" | "number" | "datetime-local" | "tel";
+  type?: 'text' | 'password' | 'email' | 'number' | 'datetime-local' | 'tel';
 }
 
 export const Input = ({
   label,
   icon,
   error,
-  validationType = "none",
+  validationType = 'none',
   onChange,
-  className = "",
-  type = "text",
+  className = '',
+  type = 'text',
   ...props
-}: InputProps) => {
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+}: InputProperties) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (
-      validationType !== "none" &&
-      validationType !== "password" &&
-      validationType !== "datetime"
+      validationType !== 'none' &&
+      validationType !== 'password' &&
+      validationType !== 'datetime'
     ) {
-      const pattern =
+      const validationPattern =
         INPUT_PATTERNS[validationType as keyof typeof INPUT_PATTERNS];
-      if (pattern && !pattern.test(e.target.value)) {
+      if (validationPattern && !validationPattern.test(event.target.value)) {
         return;
       }
     }
-    if (onChange) onChange(e);
+    if (onChange) onChange(event);
   };
 
   return (
-    <div className="w-full space-y-2">
+    <div className="w-full space-y-1.5">
       {label && (
-        <label className="text-[10px] font-headline font-black uppercase tracking-[0.2em] text-brand-accent ml-1">
+        <label className="font-label text-[10px] font-black uppercase tracking-[0.15em] text-brand-secondary ml-1">
           {label}
         </label>
       )}
 
       <div className="relative group">
         {icon && (
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-brand-accent transition-colors duration-300">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-brand-primary transition-colors duration-300 z-10">
             {icon}
           </div>
         )}
 
         <input
           type={type}
-          onChange={handleChange}
+          onChange={handleInputChange}
           className={`
-            w-full bg-bg-surface font-headline text-sm text-text-main transition-all duration-300
-            ${icon ? "pl-12 pr-4" : "px-5"} py-3.5
-            ${"rounded-[15px]"}
-            border-2 
+            w-full bg-bg-surface font-body text-sm text-text-main transition-all duration-300
+            ${icon ? 'pl-12 pr-4' : 'px-5'} py-3.5
+            rounded-[12px]
+            border border-white/5
             ${
               error
-                ? "border-status-error shadow-[0_0_15px_rgba(124,8,8,0.3)]"
-                : "border-white/5 focus:border-brand-accent focus:shadow-[0_0_20px_rgba(178,154,244,0.2)]"
+                ? 'border-status-error ring-4 ring-status-error/10'
+                : 'focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10'
             }
             placeholder:text-text-muted/30 outline-none
             ${className}
@@ -87,7 +91,7 @@ export const Input = ({
       </div>
 
       {error && (
-        <span className="text-[10px] font-bold text-status-error uppercase tracking-widest ml-2 italic">
+        <span className="font-label text-[9px] font-bold text-status-error uppercase tracking-widest ml-1">
           {error}
         </span>
       )}

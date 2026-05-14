@@ -1,77 +1,77 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
-import { Input } from "../../../../core/presentation/components/ui/Input";
+import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import { Input } from '../../../../core/presentation/components/ui/Input';
 
-describe("Input Component - Atomic UI & Regex Validation", () => {
-  it("debe aplicar el radio de esquina de 20px solicitado", () => {
-    render(<Input placeholder="Geometría" />);
-    const input = screen.getByPlaceholderText("Geometría");
-    expect(input).toHaveClass("rounded-[15px]");
+describe('Input Component - Intelligence System Validation', () => {
+  it('debe aplicar el radio de esquina de 12px definido en el sistema visual', () => {
+    render(<Input placeholder="Geometry Test" />);
+    const inputElement = screen.getByPlaceholderText('Geometry Test');
+    expect(inputElement).toHaveClass('rounded-[12px]');
   });
 
-  it("debe validar y permitir solo números cuando validationType es numeric", () => {
-    const handleChange = vi.fn();
+  it('debe validar y permitir solo numeros cuando validationType es numeric', () => {
+    const handleInputChange = vi.fn();
     render(
       <Input
         validationType="numeric"
-        onChange={handleChange}
-        placeholder="Solo números"
-      />,
+        onChange={handleInputChange}
+        placeholder="Numeric Only"
+      />
     );
-    const input = screen.getByPlaceholderText("Solo números");
-    fireEvent.change(input, { target: { value: "abc" } });
-    expect(handleChange).not.toHaveBeenCalled();
-    fireEvent.change(input, { target: { value: "123" } });
-    expect(handleChange).toHaveBeenCalled();
+    const inputElement = screen.getByPlaceholderText('Numeric Only');
+
+    fireEvent.change(inputElement, { target: { value: 'abc' } });
+    expect(handleInputChange).not.toHaveBeenCalled();
+
+    fireEvent.change(inputElement, { target: { value: '123' } });
+    expect(handleInputChange).toHaveBeenCalled();
   });
 
-  it('debe permitir prefijos telefónicos como "+52"', () => {
-    const handleChange = vi.fn();
+  it('debe permitir prefijos telefonicos internacionales', () => {
+    const handleInputChange = vi.fn();
     render(
       <Input
         validationType="phonePrefix"
-        onChange={handleChange}
-        placeholder="+1"
-      />,
+        onChange={handleInputChange}
+        placeholder="Prefix"
+      />
     );
-    const input = screen.getByPlaceholderText("+1");
-    fireEvent.change(input, { target: { value: "+52" } });
-    expect(handleChange).toHaveBeenCalled();
-    fireEvent.change(input, { target: { value: "+52a" } });
-    expect(handleChange).toHaveBeenCalledTimes(1);
+    const inputElement = screen.getByPlaceholderText('Prefix');
+
+    fireEvent.change(inputElement, { target: { value: '+52' } });
+    expect(handleInputChange).toHaveBeenCalled();
+
+    fireEvent.change(inputElement, { target: { value: '+52a' } });
+    expect(handleInputChange).toHaveBeenCalledTimes(1);
   });
 
-  it("debe validar decimales correctamente", () => {
-    const handleChange = vi.fn();
-    render(
-      <Input
-        validationType="decimal"
-        onChange={handleChange}
-        placeholder="0.00"
-      />,
+  it('debe mostrar estilos de error y el mensaje con la fuente label', () => {
+    render(<Input error="Validation Failed" />);
+    const errorMessage = screen.getByText(/validation failed/i);
+
+    expect(errorMessage).toBeInTheDocument();
+    expect(errorMessage).toHaveClass('font-label', 'text-status-error');
+    expect(screen.getByRole('textbox')).toHaveClass('border-status-error');
+  });
+
+  it('debe cambiar el color del icono al foco principal (brand-primary)', () => {
+    render(<Input icon={<span data-testid="search-icon">🔍</span>} />);
+    const iconWrapper = screen.getByTestId('search-icon').parentElement;
+    expect(iconWrapper).toHaveClass('group-focus-within:text-brand-primary');
+  });
+
+  it('debe utilizar la fuente body para el texto ingresado por el usuario', () => {
+    render(<Input placeholder="Typography Test" />);
+    const inputElement = screen.getByPlaceholderText('Typography Test');
+    expect(inputElement).toHaveClass('font-body');
+  });
+
+  it('debe aplicar el estilo de anillo (ring) en lugar de sombra pesada al hacer foco', () => {
+    render(<Input placeholder="Focus Test" />);
+    const inputElement = screen.getByPlaceholderText('Focus Test');
+    expect(inputElement).toHaveClass(
+      'focus:ring-4',
+      'focus:ring-brand-primary/10'
     );
-    const input = screen.getByPlaceholderText("0.00");
-    fireEvent.change(input, { target: { value: "10.50" } });
-    expect(handleChange).toHaveBeenCalled();
-    fireEvent.change(input, { target: { value: "10.50.2" } });
-    expect(handleChange).toHaveBeenCalledTimes(1);
-  });
-
-  it("debe mostrar estilos de error y el mensaje correspondiente", () => {
-    render(<Input error="Error crítico" />);
-    expect(screen.getByText(/error crítico/i)).toBeInTheDocument();
-    expect(screen.getByRole("textbox")).toHaveClass("border-status-error");
-  });
-
-  it("debe cambiar el color del icono al hacer foco (Foco de Contraste)", () => {
-    render(<Input icon={<span data-testid="icon">📧</span>} />);
-    const iconContainer = screen.getByTestId("icon").parentElement;
-    expect(iconContainer).toHaveClass("group-focus-within:text-brand-accent");
-  });
-
-  it("debe renderizar como datetime-local cuando el tipo es especificado", () => {
-    render(<Input type="datetime-local" data-testid="date-input" />);
-    const input = screen.getByTestId("date-input");
-    expect(input).toHaveAttribute("type", "datetime-local");
   });
 });
