@@ -1,18 +1,15 @@
-import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router";
-import { supabase } from "../../../../core/supabase";
-import { Card } from "../../../../core/presentation/components/ui/Card";
-import { DataTable } from "../../../../core/presentation/components/ui/DataTable";
-import { Loading } from "../../../../core/presentation/components/ui/Loading";
+import { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router';
+import { supabase } from '../../../../core/supabase';
+import { Card } from '../../../../core/presentation/components/ui/Card';
+import { DataTable } from '../../../../core/presentation/components/ui/DataTable';
+import { Loading } from '../../../../core/presentation/components/ui/Loading';
 import {
   BiBuilding,
-  BiLink,
   BiCalendar,
   BiCheckbox,
-  BiGitBranch,
-  BiIdCard,
   BiArrowBack,
-} from "react-icons/bi";
+} from 'react-icons/bi';
 
 interface Organization {
   id: string;
@@ -30,7 +27,7 @@ interface PaymentRecord {
   date: string;
   amount: number;
   method: string;
-  status: "completed" | "pending" | "failed";
+  status: 'completed' | 'pending' | 'failed';
   description: string;
 }
 
@@ -39,9 +36,9 @@ const detailCache = new Map<string, Organization>();
 
 async function fetchOrganization(id: string): Promise<Organization> {
   const { data, error } = await supabase
-    .from("organizations")
-    .select("*")
-    .eq("id", id)
+    .from('organizations')
+    .select('*')
+    .eq('id', id)
     .single();
 
   if (error) throw error;
@@ -51,100 +48,100 @@ async function fetchOrganization(id: string): Promise<Organization> {
 // Datos mock de historial de pagos
 const mockPayments: PaymentRecord[] = [
   {
-    id: "PAY-2026-00147",
-    date: "2026-05-09",
+    id: 'PAY-2026-00147',
+    date: '2026-05-09',
     amount: 12500.0,
-    method: "Transferencia Bancaria",
-    status: "completed",
-    description: "Factura mensual - Servicio monitorización",
+    method: 'Transferencia Bancaria',
+    status: 'completed',
+    description: 'Factura mensual - Servicio monitorización',
   },
   {
-    id: "PAY-2026-00146",
-    date: "2026-04-15",
+    id: 'PAY-2026-00146',
+    date: '2026-04-15',
     amount: 8400.0,
-    method: "Tarjeta de crédito",
-    status: "completed",
-    description: "Renovación licencia anual - Plataforma NOC",
+    method: 'Tarjeta de crédito',
+    status: 'completed',
+    description: 'Renovación licencia anual - Plataforma NOC',
   },
   {
-    id: "PAY-2026-00145",
-    date: "2026-04-01",
+    id: 'PAY-2026-00145',
+    date: '2026-04-01',
     amount: 3200.0,
-    method: "Transferencia Bancaria",
-    status: "pending",
-    description: "Ajuste por servicios adicionales",
+    method: 'Transferencia Bancaria',
+    status: 'pending',
+    description: 'Ajuste por servicios adicionales',
   },
   {
-    id: "PAY-2026-00144",
-    date: "2026-03-20",
+    id: 'PAY-2026-00144',
+    date: '2026-03-20',
     amount: 15000.0,
-    method: "Pago contra entrega",
-    status: "completed",
-    description: "Implementación módulo IA - Primera fase",
+    method: 'Pago contra entrega',
+    status: 'completed',
+    description: 'Implementación módulo IA - Primera fase',
   },
   {
-    id: "PAY-2026-00143",
-    date: "2026-03-05",
+    id: 'PAY-2026-00143',
+    date: '2026-03-05',
     amount: 4500.0,
-    method: "Tarjeta de crédito",
-    status: "failed",
-    description: "Cargo por penalización - SLA incumplido",
+    method: 'Tarjeta de crédito',
+    status: 'failed',
+    description: 'Cargo por penalización - SLA incumplido',
   },
   {
-    id: "PAY-2026-00142",
-    date: "2026-02-28",
+    id: 'PAY-2026-00142',
+    date: '2026-02-28',
     amount: 6700.0,
-    method: "Transferencia Bancaria",
-    status: "completed",
-    description: "Soporte técnico premium - Febrero",
+    method: 'Transferencia Bancaria',
+    status: 'completed',
+    description: 'Soporte técnico premium - Febrero',
   },
   {
-    id: "PAY-2026-00141",
-    date: "2026-02-10",
+    id: 'PAY-2026-00141',
+    date: '2026-02-10',
     amount: 22100.0,
-    method: "Transferencia Bancaria",
-    status: "completed",
-    description: "Paquete integral Q1 - Monitoreo + IA",
+    method: 'Transferencia Bancaria',
+    status: 'completed',
+    description: 'Paquete integral Q1 - Monitoreo + IA',
   },
   {
-    id: "PAY-2026-00140",
-    date: "2026-01-15",
+    id: 'PAY-2026-00140',
+    date: '2026-01-15',
     amount: 9800.0,
-    method: "Tarjeta de débito",
-    status: "completed",
-    description: "Licencia de usuario - 10 nodos",
+    method: 'Tarjeta de débito',
+    status: 'completed',
+    description: 'Licencia de usuario - 10 nodos',
   },
   {
-    id: "PAY-2026-00139",
-    date: "2026-01-03",
+    id: 'PAY-2026-00139',
+    date: '2026-01-03',
     amount: 14200.0,
-    method: "Transferencia Bancaria",
-    status: "completed",
-    description: "Setup inicial + onboarding",
+    method: 'Transferencia Bancaria',
+    status: 'completed',
+    description: 'Setup inicial + onboarding',
   },
   {
-    id: "PAY-2025-01201",
-    date: "2025-12-20",
+    id: 'PAY-2025-01201',
+    date: '2025-12-20',
     amount: 5300.0,
-    method: "Tarjeta de crédito",
-    status: "completed",
-    description: "Mantenimiento preventivo - Diciembre",
+    method: 'Tarjeta de crédito',
+    status: 'completed',
+    description: 'Mantenimiento preventivo - Diciembre',
   },
   {
-    id: "PAY-2025-01200",
-    date: "2025-12-01",
+    id: 'PAY-2025-01200',
+    date: '2025-12-01',
     amount: 18500.0,
-    method: "Transferencia Bancaria",
-    status: "completed",
-    description: "Contrato anual - Ciclo 2025",
+    method: 'Transferencia Bancaria',
+    status: 'completed',
+    description: 'Contrato anual - Ciclo 2025',
   },
   {
-    id: "PAY-2025-01199",
-    date: "2025-11-18",
+    id: 'PAY-2025-01199',
+    date: '2025-11-18',
     amount: 7600.0,
-    method: "Pago contra entrega",
-    status: "completed",
-    description: "Consultoría especializada - Red core",
+    method: 'Pago contra entrega',
+    status: 'completed',
+    description: 'Consultoría especializada - Red core',
   },
 ];
 
@@ -155,6 +152,7 @@ export const OrganizationDetailPage = () => {
 
   useEffect(() => {
     if (!id) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLoading(false);
       return;
     }
@@ -178,7 +176,7 @@ export const OrganizationDetailPage = () => {
         }
       })
       .catch((error) => {
-        console.error("Error loading organization:", error);
+        console.error('Error loading organization:', error);
         if (!cancelled) {
           setOrg(null);
           setLoading(false);
@@ -192,12 +190,12 @@ export const OrganizationDetailPage = () => {
 
   const getOrgTypeLabel = (type: string) => {
     switch (type) {
-      case "provider":
-        return "Proveedor";
-      case "client":
-        return "Cliente";
-      case "distributor":
-        return "Distribuidor";
+      case 'provider':
+        return 'Proveedor';
+      case 'client':
+        return 'Cliente';
+      case 'distributor':
+        return 'Distribuidor';
       default:
         return type;
     }
@@ -231,8 +229,8 @@ export const OrganizationDetailPage = () => {
         <div
           className="w-14 h-14 rounded-xl flex items-center justify-center"
           style={{
-            background: "linear-gradient(135deg, #672da9 0%, #8b5cf6 100%)",
-            boxShadow: "0 0 30px rgba(103, 45, 169, 0.6)",
+            background: 'linear-gradient(135deg, #672da9 0%, #8b5cf6 100%)',
+            boxShadow: '0 0 30px rgba(103, 45, 169, 0.6)',
           }}
         >
           <BiBuilding className="text-2xl text-white" />
@@ -246,76 +244,6 @@ export const OrganizationDetailPage = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-1 space-y-4">
-          <Card variant="glass" className="p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <BiIdCard className="text-brand-accent text-lg" />
-              <h3 className="text-sm font-headline font-bold text-white uppercase">
-                Estado
-              </h3>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-white/60">Estado actual</span>
-              {org.is_active ? (
-                <span className="px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                  Activo
-                </span>
-              ) : (
-                <span className="px-3 py-1 rounded-full text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/20">
-                  Inactivo
-                </span>
-              )}
-            </div>
-          </Card>
-
-          <Card variant="glass" className="p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <BiLink className="text-brand-accent text-lg" />
-              <h3 className="text-sm font-headline font-bold text-white uppercase">
-                Relación
-              </h3>
-            </div>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-white/60">Tipo</span>
-                <span className="text-white font-medium">
-                  {getOrgTypeLabel(org.org_type)}
-                </span>
-              </div>
-              {org.parent_organization_id ? (
-                <div className="flex items-center justify-between">
-                  <span className="text-white/60">Padre</span>
-                  <span className="text-white/60 text-xs font-mono">
-                    {org.parent_organization_id.slice(0, 8)}...
-                  </span>
-                </div>
-              ) : (
-                <div className="flex items-center justify-between">
-                  <span className="text-white/60">Rol</span>
-                  <span className="text-brand-accent text-xs font-medium">
-                    Organización Raíz
-                  </span>
-                </div>
-              )}
-            </div>
-          </Card>
-
-          <Card variant="glass" className="p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <BiGitBranch className="text-brand-accent text-lg" />
-              <h3 className="text-sm font-headline font-bold text-white uppercase">
-                Identificador
-              </h3>
-            </div>
-            <div className="space-y-2">
-              <p className="text-[10px] text-white/40 uppercase">ID</p>
-              <p className="text-xs text-white/80 font-mono break-all">
-                {org.id}
-              </p>
-            </div>
-          </Card>
-        </div>
-
         <div className="lg:col-span-2 space-y-4">
           <Card variant="glass" className="p-5">
             <div className="flex items-center gap-2 mb-4">
@@ -346,7 +274,7 @@ export const OrganizationDetailPage = () => {
                   Estado
                 </p>
                 <p className="text-white">
-                  {org.is_active ? "Activa" : "Inactiva"}
+                  {org.is_active ? 'Activa' : 'Inactiva'}
                 </p>
               </div>
             </div>
@@ -366,12 +294,12 @@ export const OrganizationDetailPage = () => {
                 </p>
                 <p className="text-white">
                   {org.created_at
-                    ? new Date(org.created_at).toLocaleDateString("es-ES", {
-                        day: "2-digit",
-                        month: "long",
-                        year: "numeric",
+                    ? new Date(org.created_at).toLocaleDateString('es-ES', {
+                        day: '2-digit',
+                        month: 'long',
+                        year: 'numeric',
                       })
-                    : "-"}
+                    : '-'}
                 </p>
               </div>
               <div>
@@ -380,12 +308,12 @@ export const OrganizationDetailPage = () => {
                 </p>
                 <p className="text-white">
                   {org.updated_at
-                    ? new Date(org.updated_at).toLocaleDateString("es-ES", {
-                        day: "2-digit",
-                        month: "long",
-                        year: "numeric",
+                    ? new Date(org.updated_at).toLocaleDateString('es-ES', {
+                        day: '2-digit',
+                        month: 'long',
+                        year: 'numeric',
                       })
-                    : "-"}
+                    : '-'}
                 </p>
               </div>
             </div>
@@ -402,35 +330,35 @@ export const OrganizationDetailPage = () => {
         </div>
         <DataTable
           columns={[
-            { header: "ID Pago", accessor: "id" },
-            { header: "Fecha", accessor: "date" },
+            { header: 'ID Pago', accessor: 'id' },
+            { header: 'Fecha', accessor: 'date' },
             {
-              header: "Monto",
+              header: 'Monto',
               accessor: (item: PaymentRecord) =>
-                `$${item.amount.toLocaleString("es-ES")}`,
+                `$${item.amount.toLocaleString('es-ES')}`,
             },
-            { header: "Método", accessor: "method" },
+            { header: 'Método', accessor: 'method' },
             {
-              header: "Estado",
+              header: 'Estado',
               accessor: (item: PaymentRecord) => (
                 <span
                   className={`px-2 py-1 rounded-full text-[10px] font-medium ${
-                    item.status === "completed"
-                      ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                      : item.status === "pending"
-                      ? "bg-amber-500/10 text-amber-400 border border-amber-500/20"
-                      : "bg-red-500/10 text-red-400 border border-red-500/20"
+                    item.status === 'completed'
+                      ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                      : item.status === 'pending'
+                        ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                        : 'bg-red-500/10 text-red-400 border border-red-500/20'
                   }`}
                 >
-                  {item.status === "completed"
-                    ? "Completado"
-                    : item.status === "pending"
-                    ? "Pendiente"
-                    : "Fallido"}
+                  {item.status === 'completed'
+                    ? 'Completado'
+                    : item.status === 'pending'
+                      ? 'Pendiente'
+                      : 'Fallido'}
                 </span>
               ),
             },
-            { header: "Descripción", accessor: "description" },
+            { header: 'Descripción', accessor: 'description' },
           ]}
           data={mockPayments}
         />
