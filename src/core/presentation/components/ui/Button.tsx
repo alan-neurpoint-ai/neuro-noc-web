@@ -1,16 +1,15 @@
-import type { ReactNode, ButtonHTMLAttributes } from "react";
+import { type ReactNode, type ButtonHTMLAttributes } from 'react';
 
 export type ButtonVariant =
-  | "login"
-  | "edit"
-  | "delete"
-  | "logout"
-  | "view"
-  | "action"
-  | "filter"
-  | "ghost";
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'danger'
+  | 'outline'
+  | 'ghost'
+  | 'action';
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProperties extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   icon?: ReactNode;
   isLoading?: boolean;
@@ -19,41 +18,45 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export const Button = ({
-  variant = "action",
+  variant = 'primary',
   icon,
   isLoading,
   fullWidth,
   children,
-  className = "",
+  className = '',
   ...props
-}: ButtonProps) => {
+}: ButtonProperties) => {
   const variantStyles: Record<ButtonVariant, string> = {
-    login:
-      "bg-brand-primary hover:brightness-110 text-white shadow-[0_0_15px_rgba(103,45,169,0.4)]",
+    primary:
+      'bg-brand-primary text-white hover:brightness-110 shadow-lg shadow-brand-primary/20',
 
-    action: "bg-brand-accent hover:bg-white text-bg-surface shadow-md",
+    secondary: 'bg-brand-secondary text-white hover:brightness-110',
 
-    edit: "bg-blue-500 hover:bg-blue-400 text-white",
-    delete: "bg-status-error hover:brightness-110 text-white",
-    logout:
-      "bg-transparent border border-status-error/40 text-status-error hover:bg-status-error/10",
+    tertiary: 'bg-brand-tertiary text-bg-main hover:bg-white',
 
-    view: "bg-bg-card border border-brand-accent/20 text-brand-accent hover:border-brand-accent/50",
-    filter:
-      "bg-bg-surface border border-white/10 text-text-muted hover:text-white",
-    ghost: "bg-transparent hover:bg-white/5 text-text-muted",
+    danger: 'bg-status-error text-white hover:brightness-110',
+
+    outline:
+      'bg-transparent border border-white/10 text-text-main hover:bg-white/5 hover:border-white/20',
+
+    ghost: 'bg-transparent text-text-muted hover:text-white hover:bg-white/5',
+
+    action:
+      'bg-brand-primary/10 text-brand-primary border border-brand-primary/20 hover:bg-brand-primary hover:text-white',
   };
+
   const baseStyles = `
     inline-flex items-center justify-center 
     font-headline font-bold tracking-tight 
     transition-all duration-300 
-    active:scale-[0.98] 
-    disabled:opacity-50 disabled:pointer-events-none 
+    active:scale-[0.97] 
+    disabled:opacity-40 disabled:pointer-events-none 
     px-6 py-2.5 text-sm 
-    rounded-[10px]
+    rounded-[12px]
+    antialiased
   `;
 
-  const widthStyle = fullWidth ? "w-full" : "w-auto";
+  const widthStyle = fullWidth ? 'w-full' : 'w-auto';
 
   return (
     <button
@@ -62,7 +65,7 @@ export const Button = ({
       {...props}
     >
       {isLoading ? (
-        <span className="flex items-center space-x-2">
+        <div className="flex items-center space-x-3">
           <svg
             className="animate-spin h-4 w-4 text-current"
             viewBox="0 0 24 24"
@@ -82,13 +85,17 @@ export const Button = ({
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             />
           </svg>
-          <span className="uppercase text-[9px] tracking-widest opacity-80 font-black">
-            Procesando
+          <span className="font-label uppercase text-[10px] tracking-[0.15em] font-black">
+            Processing
           </span>
-        </span>
+        </div>
       ) : (
         <div className="flex items-center space-x-2">
-          {icon && <span className="text-lg leading-none">{icon}</span>}
+          {icon && (
+            <span className="text-lg leading-none flex items-center">
+              {icon}
+            </span>
+          )}
           {children && <span>{children}</span>}
         </div>
       )}
