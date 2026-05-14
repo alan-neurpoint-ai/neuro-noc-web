@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import { ProtectedRoute } from '../../modules/auth/presentation/components/ProtectedRoute';
-import { LoginPage } from '../../modules/auth/presentation/pages/LoginPage';
+import LoginPage from '../../modules/auth/presentation/pages/LoginPage';
 import { DashboardLayout } from '../../modules/dashboard/presentation/layouts/DashboardLayout';
 import { DashboardPage } from '../../modules/dashboard/presentation/pages/DashboardPage';
 import { OrganizationsPage } from '../../modules/organizations/presentation/pages/OrganizationsPage';
