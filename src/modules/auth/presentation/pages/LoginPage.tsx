@@ -1,30 +1,30 @@
-import { useState } from "react";
-import { useNavigate } from "react-router";
-import { BiEnvelope, BiLockAlt, BiShield } from "react-icons/bi";
-import { Button } from "../../../../core/presentation/components/ui/Button";
-import { Input } from "../../../../core/presentation/components/ui/Input";
-import { authService } from "../../infrastructure/services/auth.service";
-import { useAuthStore } from "../stores/useAuthStore";
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
+import { BiEnvelope, BiLockAlt, BiShield } from 'react-icons/bi';
+import { Button } from '../../../../core/presentation/components/ui/Button';
+import { Input } from '../../../../core/presentation/components/ui/Input';
+import { authService } from '../../infrastructure/services/auth.service';
+import { useAuthStore } from '../stores/useAuthStore';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
   const setAuth = useAuthStore((state) => state.setAuth);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError("");
+    setError('');
 
     try {
       const result = await authService.signIn(email, password);
       setAuth(result.profile);
-      navigate("/dashboard");
+      navigate('/dashboard');
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error al iniciar sesión");
+      setError(err instanceof Error ? err.message : 'Error al iniciar sesión');
     } finally {
       setIsLoading(false);
     }
@@ -38,8 +38,8 @@ export const LoginPage = () => {
             className="absolute inset-0 opacity-40"
             style={{
               backgroundImage: `url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80')`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
             }}
           />
           <div className="absolute inset-0 bg-linear-to-br from-[#0c0c0c] via-[#0c0c0c]/95 to-[#1a1a2e]" />
@@ -52,7 +52,7 @@ export const LoginPage = () => {
             linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
             linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)
           `,
-            backgroundSize: "60px 60px",
+            backgroundSize: '60px 60px',
           }}
         />
 
@@ -100,7 +100,7 @@ export const LoginPage = () => {
               </span>
             </div>
             <h1 className="text-4xl xl:text-5xl 2xl:text-6xl font-headline font-bold text-white leading-[1.15]">
-              Inteligencia en el{" "}
+              Inteligencia en el{' '}
               <span className="text-transparent bg-clip-text bg-linear-to-r from-brand-accent to-brand-primary">
                 borde
               </span>
@@ -249,12 +249,7 @@ export const LoginPage = () => {
                 </a>
               </div>
 
-              <Button
-                variant="login"
-                fullWidth
-                className="mt-2"
-                isLoading={isLoading}
-              >
+              <Button fullWidth className="mt-2" isLoading={isLoading}>
                 Iniciar Sesión
               </Button>
             </form>
