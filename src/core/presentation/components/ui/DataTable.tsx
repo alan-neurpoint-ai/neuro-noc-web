@@ -28,7 +28,7 @@ export function DataTable<T>({
 }: DataTableProps<T>) {
   return (
     <div
-      className="w-full rounded-2xl overflow-hidden flex flex-col"
+      className="w-full rounded-2xl h-170 overflow-hidden flex flex-col"
       style={{
         background:
           'linear-gradient(160deg, #2d1b69 0%, #1a0f3e 60%, #0d0820 100%)',
