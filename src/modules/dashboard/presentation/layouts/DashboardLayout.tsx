@@ -1,15 +1,15 @@
-import { Outlet, useNavigate, useLocation } from "react-router";
-import { useState, useEffect } from "react";
-import { Sidebar } from "../../../../core/presentation/components/ui/Sidebar";
-import { Topbar } from "../../../../core/presentation/components/ui/Topbar";
-import { useAuthStore } from "../../../auth/presentation/stores/useAuthStore";
-import { authService } from "../../../auth/infrastructure/services/auth.service";
-import { organizationService } from "../../../organizations/infrastructure/services/organization.service";
-import { navigationService } from "../../../../core/services/navigation.service";
+import { Outlet, useNavigate, useLocation } from 'react-router';
+import { useState, useEffect } from 'react';
+import { Sidebar } from '../../../../core/presentation/components/ui/Sidebar';
+import { Topbar } from '../../../../core/presentation/components/ui/Topbar';
+import { useAuthStore } from '../../../auth/presentation/stores/useAuthStore';
+import { authService } from '../../../auth/infrastructure/services/auth.service';
+import { organizationService } from '../../../organizations/infrastructure/services/organization.service';
+import { navigationService } from '../../../../core/services/navigation.service';
 import type {
   RoleName,
   OrganizationOption,
-} from "../../../../core/types/navigation/navigation.types";
+} from '../../../../core/types/navigation/navigation.types';
 
 export const DashboardLayout = () => {
   const navigate = useNavigate();
@@ -22,13 +22,15 @@ export const DashboardLayout = () => {
     hideTopbar,
     setHideTopbar,
   } = useAuthStore();
-  const [activeNavId, setActiveNavId] = useState("dashboard");
+  const [activeNavId, setActiveNavId] = useState('dashboard');
   const [orgOptions, setOrgOptions] = useState<OrganizationOption[]>([]);
 
   const roleName = user?.role?.name as RoleName | undefined;
   const navItems = navigationService.getNavigationByRole(roleName);
 
-  const isOrganizationsPage = location.pathname.startsWith("/dashboard/organizations");
+  const isOrganizationsPage = location.pathname.startsWith(
+    '/dashboard/organizations'
+  );
 
   useEffect(() => {
     const loadOrganizations = async () => {
@@ -36,22 +38,23 @@ export const DashboardLayout = () => {
 
       try {
         const currentOrgId = user.organizationId;
-        const currentOrgName = user.organization?.name || "Interno";
+        const currentOrgName = user.organization?.name || 'Interno';
 
-        const childrenOrgsData = await organizationService.getOrganizationsByParent(
-          currentOrgId,
+        const childrenOrgsData =
+          await organizationService.getOrganizationsByParent(currentOrgId);
+
+        const orgChildrenOptions: OrganizationOption[] = childrenOrgsData.map(
+          (org) => ({
+            value: org.id,
+            label: org.name,
+            description: org.slug,
+          })
         );
-
-        const orgChildrenOptions: OrganizationOption[] = childrenOrgsData.map((org) => ({
-          value: org.id,
-          label: org.name,
-          description: org.slug,
-        }));
 
         const options: OrganizationOption[] = [
           {
             value: currentOrgId,
-            label: "Interno",
+            label: 'Interno',
             description: currentOrgName,
           },
           ...orgChildrenOptions,
@@ -68,7 +71,7 @@ export const DashboardLayout = () => {
           });
         }
       } catch (error) {
-        console.error("Error loading organizations:", error);
+        console.error('Error loading organizations:', error);
       }
     };
 
@@ -88,16 +91,16 @@ export const DashboardLayout = () => {
   const userName =
     user?.firstName && user?.lastName
       ? `${user.firstName} ${user.lastName}`
-      : user?.email?.split("@")[0] || "Usuario";
+      : user?.email?.split('@')[0] || 'Usuario';
 
   const handleLogout = async () => {
     try {
       await authService.signOut();
     } catch (error) {
-      console.error("Error signing out:", error);
+      console.error('Error signing out:', error);
     }
     clearAuth();
-    navigate("/login");
+    navigate('/login');
   };
 
   const handleNavigate = (id: string, path: string) => {
@@ -115,10 +118,6 @@ export const DashboardLayout = () => {
         slug: org.description,
         isInternal: isInterno,
       });
-
-      if (!isInterno) {
-        navigate("/dashboard/organization");
-      }
     }
   };
 
@@ -127,8 +126,8 @@ export const DashboardLayout = () => {
       <Sidebar
         navItems={navItems}
         userName={userName}
-        userRole={user?.role?.name || "user"}
-        userCompany={user?.organization?.name || "NeuroNOC"}
+        userRole={user?.role?.name || 'user'}
+        userCompany={user?.organization?.name || 'NeuroNOC'}
         activeId={activeNavId}
         onNavigate={handleNavigate}
         onLogout={handleLogout}

@@ -1,14 +1,14 @@
 interface LoadingProps {
   message?: string;
-  variant?: "fullscreen" | "overlay";
+  variant?: 'fullscreen' | 'overlay';
 }
 
 export const Loading = ({
-  message = "Espere un momento por favor...",
-  variant = "fullscreen",
+  message = 'Espere un momento por favor...',
+  variant = 'fullscreen',
 }: LoadingProps) => {
   const containerBase =
-    "flex flex-col items-center justify-center backdrop-blur-2xl transition-all duration-500 font-headline";
+    'flex flex-col items-center justify-center backdrop-blur-2xl transition-all duration-500 font-headline';
 
   const variants = {
     fullscreen: `${containerBase} fixed inset-0 z-[9999] bg-bg-main/95`,
@@ -75,7 +75,7 @@ export const Loading = ({
               r="1.5"
               fill="white"
               className="animate-[float_2s_infinite_ease-in] opacity-0"
-              style={{ animationDelay: "0s" }}
+              style={{ animationDelay: '0s' }}
             />
             <circle
               cx="55"
@@ -83,7 +83,7 @@ export const Loading = ({
               r="1"
               fill="white"
               className="animate-[float_2.5s_infinite_ease-in] opacity-0"
-              style={{ animationDelay: "0.5s" }}
+              style={{ animationDelay: '0.5s' }}
             />
             <circle
               cx="50"
@@ -91,7 +91,7 @@ export const Loading = ({
               r="2"
               fill="white"
               className="animate-[float_3s_infinite_ease-in] opacity-0"
-              style={{ animationDelay: "1s" }}
+              style={{ animationDelay: '1s' }}
             />
           </svg>
         </div>

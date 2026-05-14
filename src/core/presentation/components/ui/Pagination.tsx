@@ -1,11 +1,11 @@
-import {} from "react-icons";
-import { Button } from "./Button";
+import {} from 'react-icons';
+import { Button } from './Button';
 import {
   BiChevronLeft,
   BiChevronRight,
   BiChevronsLeft,
   BiChevronsRight,
-} from "react-icons/bi";
+} from 'react-icons/bi';
 
 interface PaginationProps {
   currentPage: number;
@@ -65,8 +65,8 @@ export const Pagination = ({
                 w-10 h-10 text-xs font-black transition-all duration-300 rounded-[20px]
                 ${
                   currentPage === page
-                    ? "bg-brand-primary text-white shadow-[0_0_15px_rgba(103,45,169,0.4)]"
-                    : "text-text-muted hover:bg-brand-primary/10 hover:text-brand-primary"
+                    ? 'bg-brand-primary text-white shadow-[0_0_15px_rgba(103,45,169,0.4)]'
+                    : 'text-text-muted hover:bg-brand-primary/10 hover:text-brand-primary'
                 }
               `}
             >
@@ -91,11 +91,6 @@ export const Pagination = ({
           icon={<BiChevronsRight size={16} />}
         />
       </div>
-
-      <p className="text-[10px] font-bold text-text-muted uppercase tracking-[0.2em]">
-        Mostrando <span className="text-brand-accent">{PAGE_SIZE}</span> de{" "}
-        <span className="text-brand-accent">{totalItems}</span> registros
-      </p>
     </div>
   );
 };
