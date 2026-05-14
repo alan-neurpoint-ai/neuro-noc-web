@@ -1,8 +1,14 @@
-import type { ReactNode } from "react";
+import { ReactNode, useMemo, KeyboardEvent } from 'react';
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
-interface CardProps {
+function combineClasses(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+interface CardProperties {
   children: ReactNode;
-  variant?: "glass" | "surface" | "stat" | "profile";
+  variant?: 'glass' | 'surface' | 'stat' | 'profile';
   className?: string;
   onClick?: () => void;
   noPadding?: boolean;
@@ -10,31 +16,53 @@ interface CardProps {
 
 export const Card = ({
   children,
-  variant = "glass",
-  className = "",
+  variant = 'glass',
+  className = '',
   onClick,
   noPadding = false,
-}: CardProps) => {
-  const variants = {
-    surface: "bg-[#f3f0ff] border-2 border-brand-primary/40",
-    stat: "bg-[#f3f0ff] border-2 border-brand-primary/30 hover:border-brand-primary transition-colors",
-    glass: "bg-white/[0.03] backdrop-blur-xl border border-white/10",
-    profile: "bg-[#f3f0ff] border-2 border-brand-primary shadow-lg",
+}: CardProperties) => {
+  const variantStyles = useMemo(
+    () => ({
+      surface: 'bg-white border-2 border-brand-primary/20',
+      stat: 'bg-white border border-gray-100 hover:border-brand-primary/40 shadow-sm transition-all duration-300',
+      glass:
+        'bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.05)]',
+      profile:
+        'bg-white border-2 border-brand-primary shadow-xl shadow-brand-primary/10',
+    }),
+    []
+  );
+
+  const interactiveStyles = onClick
+    ? 'cursor-pointer select-none active:scale-[0.98] transition-transform duration-200'
+    : '';
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (onClick && (event.key === 'Enter' || event.key === ' ')) {
+      event.preventDefault();
+      onClick();
+    }
   };
 
   return (
     <div
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
       onClick={onClick}
-      className={`
-        relative overflow-hidden
-        rounded-[20px] 
-        ${variants[variant]}
-        ${noPadding ? "p-0" : "p-6"}
-        ${onClick ? "cursor-pointer active:scale-[0.98] transition-all" : ""}
-        ${className}
-      `}
+      onKeyDown={handleKeyDown}
+      className={combineClasses(
+        'relative overflow-hidden rounded-[20px]',
+        variantStyles[variant],
+        noPadding ? 'p-0' : 'p-6',
+        interactiveStyles,
+        className
+      )}
     >
-      {children}
+      {variant === 'glass' && (
+        <div className="absolute inset-0 bg-linear-to-br from-white/10 to-transparent pointer-events-none" />
+      )}
+
+      <div className="relative z-10">{children}</div>
     </div>
   );
 };
