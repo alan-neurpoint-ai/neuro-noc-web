@@ -1,46 +1,45 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
 import {
   LineChart,
   type DataPoint,
-} from "../../../../core/presentation/components/ui/LineChart";
+} from '../../../../core/presentation/components/ui/LineChart';
 
 const mockData: DataPoint[] = [
-  { value: 10, label: "ENE" },
-  { value: 40, label: "FEB" },
-  { value: 25, label: "MAR" },
+  { value: 10, label: 'ENE' },
+  { value: 40, label: 'FEB' },
+  { value: 25, label: 'MAR' },
 ];
 
-describe("LineChart Component", () => {
-  it("debe renderizar el contenedor principal y el título", () => {
+describe('LineChart Component', () => {
+  it('debe renderizar el contenedor principal y el título', () => {
     render(<LineChart data={mockData} title="NETWORK TRAFFIC" />);
     expect(screen.getByText(/NETWORK TRAFFIC/i)).toBeInTheDocument();
   });
 
-  it("debe calcular correctamente la tendencia (delta)", () => {
+  it('debe calcular correctamente la tendencia (delta)', () => {
     render(<LineChart data={mockData} showDelta={true} />);
-    expect(screen.getByText(/150\.00%/)).toBeInTheDocument();
+    expect(screen.getByText(/150\.0%/)).toBeInTheDocument();
     expect(screen.getByText(/▲/)).toBeInTheDocument();
   });
 
-  it("no debe renderizar nada si el array de datos está vacío", () => {
+  it('no debe renderizar nada si el array de datos está vacío', () => {
     const { container } = render(<LineChart data={[]} />);
     expect(container.firstChild).toBeNull();
   });
 
-  it("debe renderizar los elementos SVG críticos (path y grid)", () => {
+  it('debe renderizar los elementos SVG críticos (filtros de resplandor y paths)', () => {
     const { container } = render(<LineChart data={mockData} />);
-    const path = container.querySelector("path");
-    expect(path).toBeInTheDocument();
-    expect(path).toHaveAttribute("d");
+    const filter = container.querySelector('#glow-line');
+    expect(filter).toBeInTheDocument();
+    const paths = container.querySelectorAll('path');
+    expect(paths.length).toBeGreaterThanOrEqual(2);
   });
 
-  it("debe mostrar el tooltip al interactuar con el mouse (hover)", () => {
+  it('debe mostrar el tooltip al interactuar con el mouse (hover)', () => {
     const { container } = render(<LineChart data={mockData} unit="Mbps" />);
-    const svg = container.querySelector("svg");
-
-    if (!svg) throw new Error("SVG no encontrado");
-
+    const svg = container.querySelector('svg');
+    if (!svg) throw new Error('SVG no encontrado');
     svg.getBoundingClientRect = vi.fn(
       () =>
         ({
@@ -53,9 +52,8 @@ describe("LineChart Component", () => {
           x: 0,
           y: 0,
           toJSON: () => {},
-        }) as DOMRect,
+        }) as DOMRect
     );
-
     fireEvent.mouseMove(svg, { clientX: 50 });
     const tooltips = screen.getAllByText(/40\.00/);
     expect(tooltips.length).toBeGreaterThanOrEqual(1);
@@ -63,13 +61,27 @@ describe("LineChart Component", () => {
     expect(febElements.length).toBeGreaterThanOrEqual(1);
   });
 
-  it("debe aplicar el color de tendencia negativo correctamente", () => {
+  it('debe aplicar el color de tendencia negativo correctamente', () => {
     const negativeData = [
-      { value: 100, label: "A" },
-      { value: 20, label: "B" },
+      { value: 100, label: 'A' },
+      { value: 20, label: 'B' },
     ];
     render(<LineChart data={negativeData} />);
+    const deltaIcon = screen.getByText(/▼/);
+    expect(deltaIcon).toBeInTheDocument();
+    const deltaContainer = deltaIcon.closest('div');
+    expect(deltaContainer).toHaveClass('text-red-400');
+    expect(deltaContainer).not.toHaveClass('text-emerald-400');
+  });
 
-    expect(screen.getByText(/▼/)).toBeInTheDocument();
+  it('debe ocultar el tooltip al retirar el mouse (mouseLeave)', () => {
+    const { container } = render(<LineChart data={mockData} />);
+    const svg = container.querySelector('svg');
+    if (!svg) throw new Error('SVG no encontrado');
+    fireEvent.mouseMove(svg, { clientX: 50 });
+    expect(screen.queryByText(/FEB/i)).toBeInTheDocument();
+    fireEvent.mouseLeave(svg);
+    const febValues = screen.queryAllByText(/40\.00/);
+    expect(febValues.length).toBe(0);
   });
 });
