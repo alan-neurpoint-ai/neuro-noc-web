@@ -58,6 +58,29 @@
       transform: translateY(0) scale(1);
     }
   }
+
+  @keyframes radarSweep {
+    from {
+      transform: rotate(0deg);
+      transform-origin: 100px 100px;
+    }
+    to {
+      transform: rotate(360deg);
+      transform-origin: 100px 100px;
+    }
+  }
+
+  @keyframes blip {
+    0%,
+    100% {
+      opacity: 0.3;
+      r: 1;
+    }
+    50% {
+      opacity: 1;
+      r: 3;
+    }
+  }
 }
 
 @layer base {

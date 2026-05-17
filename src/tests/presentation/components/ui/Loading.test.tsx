@@ -1,52 +1,74 @@
-import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
-import { Loading } from "../../../../core/presentation/components/ui/Loading";
+import { render, screen } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import { Loading } from '../../../../core/presentation/components/ui/Loading';
 
-describe("Loading Component - Flask Lab Design", () => {
-  it("debe renderizar el título principal de la marca", () => {
+describe('Loading Component - Radar Design', () => {
+  it('debe renderizar el título principal de la marca', () => {
     render(<Loading />);
-    expect(screen.getByText("NEURO NOC")).toBeInTheDocument();
+    expect(screen.getByText('NEURO NOC')).toBeInTheDocument();
   });
 
-  it("debe aplicar el efecto de desenfoque profundo (backdrop-blur-2xl)", () => {
+  it('debe aplicar el efecto de desenfoque profundo (backdrop-blur-2xl)', () => {
     const { container } = render(<Loading />);
-    expect(container.firstChild).toHaveClass("backdrop-blur-2xl");
+    expect(container.firstChild).toHaveClass('backdrop-blur-2xl');
   });
 
-  it("debe contener el SVG del matraz con su máscara de onda", () => {
+  it('debe contener el SVG del radar con gradiente y máscara', () => {
     const { container } = render(<Loading />);
-    const svg = container.querySelector("svg");
-    const mask = container.querySelector("mask#flaskMask");
+    const svg = container.querySelector('svg');
+    const gradient = container.querySelector('linearGradient#sweepGradient');
+    const mask = container.querySelector('mask#sweepMask');
 
     expect(svg).toBeInTheDocument();
+    expect(gradient).toBeInTheDocument();
     expect(mask).toBeInTheDocument();
   });
 
-  it("debe aplicar la animación de onda al líquido interno", () => {
+  it('debe aplicar la animación de sweep al radar', () => {
     const { container } = render(<Loading />);
-    const liquid = container.querySelector("rect");
-    expect(liquid).toHaveClass("animate-[wave_3s_infinite_linear]");
+    const sweep = container.querySelector(
+      '.animate-\\[radarSweep_4s_infinite_linear\\]'
+    );
+    expect(sweep).toBeInTheDocument();
   });
 
-  it("debe mostrar el mensaje de proceso técnico dinámico", () => {
-    render(<Loading message="Sincronizando Nodos..." />);
-    expect(screen.getByText(/sincronizando nodos/i)).toBeInTheDocument();
-    expect(screen.getByText(/procesando.../i)).toBeInTheDocument();
+  it('debe mostrar el mensaje personalizado y estado de monitoreo', () => {
+    render(<Loading message="Escaneando red..." />);
+    expect(screen.getByText(/escaneando red/i)).toBeInTheDocument();
+    expect(screen.getByText(/monitoreando/i)).toBeInTheDocument();
   });
 
-  it("debe renderizar la barra de progreso con animación", () => {
+  it('debe renderizar la barra de progreso con animación', () => {
     const { container } = render(<Loading />);
     const progressBar = container.querySelector(
-      ".animate-\\[progress_2s_infinite_ease-in-out\\]",
+      '.animate-\\[progress_2s_infinite_ease-in-out\\]'
     );
     expect(progressBar).toBeInTheDocument();
   });
 
-  it("debe incluir las burbujas decorativas con animación de flotación", () => {
+  it('debe incluir los blips (puntos de contacto) con animación de blip', () => {
     const { container } = render(<Loading />);
-    const bubbles = container.querySelectorAll(
-      'circle[class*="animate-[float"]',
-    );
-    expect(bubbles.length).toBe(3);
+    const blips = container.querySelectorAll('circle[class*="animate-[blip"]');
+    expect(blips.length).toBe(4);
+  });
+
+  it('debe renderizar los círculos concéntricos del radar', () => {
+    const { container } = render(<Loading />);
+    const circles = container.querySelectorAll("circle[fill='none']");
+    // 4 círculos concéntricos + 1 anillo exterior = 5
+    expect(circles.length).toBe(5);
+  });
+
+  it('debe aplicar la variante fullscreen por defecto', () => {
+    const { container } = render(<Loading />);
+    expect(container.firstChild).toHaveClass('fixed');
+    expect(container.firstChild).toHaveClass('inset-0');
+    expect(container.firstChild).toHaveClass('z-[9999]');
+  });
+
+  it('debe aplicar la variante overlay cuando se especifica', () => {
+    const { container } = render(<Loading variant="overlay" />);
+    expect(container.firstChild).toHaveClass('absolute');
+    expect(container.firstChild).toHaveClass('z-50');
   });
 });

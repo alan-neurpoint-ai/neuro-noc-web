@@ -4,7 +4,7 @@ interface LoadingProps {
 }
 
 export const Loading = ({
-  message = 'Espere un momento por favor...',
+  message = 'Escaneando red...',
   variant = 'fullscreen',
 }: LoadingProps) => {
   const containerBase =
@@ -18,80 +18,164 @@ export const Loading = ({
   return (
     <div className={variants[variant]}>
       <div className="relative flex flex-col items-center">
-        <div className="relative w-40 h-40 flex items-center justify-center">
-          <div className="absolute w-32 h-32 bg-brand-primary/20 rounded-full blur-[50px] animate-pulse" />
+        <div className="relative w-56 h-56 flex items-center justify-center">
+          <div className="absolute inset-0 bg-brand-primary/5 rounded-full blur-[60px]" />
 
+          {/* Radar SVG */}
           <svg
-            viewBox="0 0 100 100"
-            className="w-full h-full drop-shadow-[0_0_15px_rgba(178,154,244,0.5)]"
+            viewBox="0 0 200 200"
+            className="w-full h-full drop-shadow-[0_0_20px_rgba(34,197,94,0.4)]"
           >
             <defs>
+              {/* Gradiente del sweep */}
               <linearGradient
-                id="liquidGradient"
+                id="sweepGradient"
                 x1="0%"
                 y1="0%"
-                x2="0%"
+                x2="100%"
                 y2="100%"
               >
-                <stop
-                  offset="0%"
-                  stopColor="var(--color-brand-accent)"
-                  stopOpacity="0.8"
-                />
-                <stop offset="100%" stopColor="var(--color-brand-primary)" />
+                <stop offset="0%" stopColor="#22c55e" stopOpacity="0.9" />
+                <stop offset="50%" stopColor="#22c55e" stopOpacity="0.4" />
+                <stop offset="100%" stopColor="#22c55e" stopOpacity="0" />
               </linearGradient>
 
-              <mask id="flaskMask">
-                <path
-                  d="M35,15 L35,40 C35,40 20,45 20,65 C20,85 35,95 50,95 C65,95 80,85 80,65 C80,45 65,40 65,40 L65,15 Z"
-                  fill="white"
-                />
+              {/* Máscara para el sweep */}
+              <mask id="sweepMask">
+                <rect width="200" height="200" fill="white" />
+                <circle cx="100" cy="100" r="90" fill="black" />
               </mask>
+
+              {/* Filtro de glow */}
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+                <feMerge>
+                  <feMergeNode in="coloredBlur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
             </defs>
 
-            <path
-              d="M35,15 L35,40 C35,40 20,45 20,65 C20,85 35,95 50,95 C65,95 80,85 80,65 C80,45 65,40 65,40 L65,15 Z"
-              fill="none"
-              stroke="white"
-              strokeWidth="1.5"
-              strokeOpacity="0.8"
-              strokeLinecap="round"
-            />
+            {/* Círculos concéntricos del radar */}
+            {[30, 50, 70, 90].map((radius, i) => (
+              <circle
+                key={radius}
+                cx="100"
+                cy="100"
+                r={radius}
+                fill="none"
+                stroke="#22c55e"
+                strokeWidth="0.5"
+                strokeOpacity={0.3 - i * 0.05}
+              />
+            ))}
 
-            <g mask="url(#flaskMask)">
-              <rect
-                x="0"
-                y="55"
-                width="100"
-                height="100"
-                fill="url(#liquidGradient)"
-                className="animate-[wave_3s_infinite_linear]"
+            {/* Líneas radiales */}
+            {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
+              <line
+                key={angle}
+                x1="100"
+                y1="100"
+                x2={100 + 90 * Math.cos((angle * Math.PI) / 180)}
+                y2={100 + 90 * Math.sin((angle * Math.PI) / 180)}
+                stroke="#22c55e"
+                strokeWidth="0.5"
+                strokeOpacity="0.2"
+              />
+            ))}
+
+            {/* Sweep animation - área de barrido */}
+            <g className="animate-[radarSweep_4s_infinite_linear]">
+              <path
+                d="M100,100 L100,10 A90,90 0 0,1 163.6,36.4 Z"
+                fill="url(#sweepGradient)"
+                opacity="0.6"
               />
             </g>
 
+            {/* Segundo sweep con delay */}
+            <g
+              className="animate-[radarSweep_4s_infinite_linear]"
+              style={{ animationDelay: '-2s' }}
+            >
+              <path
+                d="M100,100 L100,10 A90,90 0 0,1 163.6,36.4 Z"
+                fill="url(#sweepGradient)"
+                opacity="0.3"
+              />
+            </g>
+
+            {/* Punto central */}
+            <circle
+              cx="100"
+              cy="100"
+              r="4"
+              fill="#22c55e"
+              filter="url(#glow)"
+            />
+
+            {/* Cruceta central */}
+            <line
+              x1="96"
+              y1="100"
+              x2="104"
+              y2="100"
+              stroke="#22c55e"
+              strokeWidth="1"
+            />
+            <line
+              x1="100"
+              y1="96"
+              x2="100"
+              y2="104"
+              stroke="#22c55e"
+              strokeWidth="1"
+            />
+
+            {/* Puntos de contacto aleatorios (blips) */}
+            <circle
+              cx="130"
+              cy="60"
+              r="2"
+              fill="#22c55e"
+              className="animate-[blip_2s_infinite_ease-in-out]"
+            />
+            <circle
+              cx="70"
+              cy="140"
+              r="1.5"
+              fill="#22c55e"
+              className="animate-[blip_2.5s_infinite_ease-in-out]"
+              style={{ animationDelay: '-0.5s' }}
+            />
+            <circle
+              cx="160"
+              cy="120"
+              r="1"
+              fill="#22c55e"
+              className="animate-[blip_1.8s_infinite_ease-in-out]"
+              style={{ animationDelay: '-1s' }}
+            />
             <circle
               cx="45"
               cy="80"
               r="1.5"
-              fill="white"
-              className="animate-[float_2s_infinite_ease-in] opacity-0"
-              style={{ animationDelay: '0s' }}
+              fill="#22c55e"
+              className="animate-[blip_2.2s_infinite_ease-in-out]"
+              style={{ animationDelay: '-1.5s' }}
             />
+
+            {/* Anillo exterior */}
             <circle
-              cx="55"
-              cy="70"
-              r="1"
-              fill="white"
-              className="animate-[float_2.5s_infinite_ease-in] opacity-0"
-              style={{ animationDelay: '0.5s' }}
-            />
-            <circle
-              cx="50"
-              cy="85"
-              r="2"
-              fill="white"
-              className="animate-[float_3s_infinite_ease-in] opacity-0"
-              style={{ animationDelay: '1s' }}
+              cx="100"
+              cy="100"
+              r="90"
+              fill="none"
+              stroke="#22c55e"
+              strokeWidth="1"
+              strokeOpacity="0.6"
+              strokeDasharray="4 4"
+              className="animate-[rotate_10s_infinite_linear_reverse]"
             />
           </svg>
         </div>
@@ -106,7 +190,7 @@ export const Loading = ({
 
           <div className="mt-4 flex items-center justify-center gap-2">
             <span className="text-[9px] text-brand-accent/60 font-mono animate-pulse">
-              Procesando...
+              Monitoreando
             </span>
             <div className="w-1.5 h-1.5 bg-brand-accent rounded-full animate-ping" />
           </div>
