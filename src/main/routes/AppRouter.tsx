@@ -6,6 +6,7 @@ import { DashboardPage } from '../../modules/dashboard/presentation/pages/Dashbo
 import { OrganizationsPage } from '../../modules/organizations/presentation/pages/OrganizationsPage';
 import { OrganizationDetailPage } from '../../modules/organizations/presentation/pages/OrganizationDetailPage';
 import { ContactListPage } from '../../modules/contacts/presentation/pages/ContactListPage';
+import { TemporalContextListPage } from '../../modules/contexts/presentation/pages/TemporalContextListPage';
 
 export const AppRouter = () => {
   return (
@@ -24,6 +25,7 @@ export const AppRouter = () => {
               element={<OrganizationDetailPage />}
             />
             <Route path="/dashboard/contacts" element={<ContactListPage />} />
+            <Route path="/dashboard/temporal-contexts" element={<TemporalContextListPage />} />
           </Route>
         </Route>
 

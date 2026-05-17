@@ -7,7 +7,8 @@ export type ButtonVariant =
   | 'danger'
   | 'outline'
   | 'ghost'
-  | 'action';
+  | 'action'
+  | 'view';
 
 interface ButtonProperties extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -43,6 +44,8 @@ export const Button = ({
 
     action:
       'bg-brand-primary/10 text-brand-primary border border-brand-primary/20 hover:bg-brand-primary hover:text-white',
+
+    view: 'bg-white/5 text-white/70 border border-white/10 hover:bg-brand-primary hover:text-white hover:border-brand-primary/30',
   };
 
   const baseStyles = `

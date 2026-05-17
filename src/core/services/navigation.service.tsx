@@ -20,7 +20,7 @@ const knowledgeGroup: NavItem = {
       id: 'contexts',
       label: 'Contextos Temporales',
       icon: <BiNetworkChart className="text-xl" />,
-      path: '/dashboard/contexts',
+      path: '/dashboard/temporal-contexts',
     },
     {
       id: 'rules',

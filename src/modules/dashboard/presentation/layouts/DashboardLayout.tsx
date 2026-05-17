@@ -28,6 +28,27 @@ export const DashboardLayout = () => {
   const roleName = user?.role?.name as RoleName | undefined;
   const navItems = navigationService.getNavigationByRole(roleName);
 
+  // Sync activeNavId with current URL
+  useEffect(() => {
+    const path = location.pathname;
+    const findActiveId = (items: typeof navItems): string | undefined => {
+      for (const item of items) {
+        if (item.path && path.startsWith(item.path)) {
+          if (item.children) {
+            const childMatch = item.children.find(c => path.startsWith(c.path || ''));
+            return childMatch ? childMatch.id : item.id;
+          }
+          return item.id;
+        }
+      }
+      return undefined;
+    };
+    const newActiveId = findActiveId(navItems);
+    if (newActiveId && newActiveId !== activeNavId) {
+      setActiveNavId(newActiveId);
+    }
+  }, [location.pathname, navItems, activeNavId]);
+
   const isOrganizationsPage = location.pathname.startsWith(
     '/dashboard/organizations'
   );

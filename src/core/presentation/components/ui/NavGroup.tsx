@@ -7,8 +7,6 @@ export const NavGroup: React.FC<{
   activeId: string | undefined;
   onNavigate: (id: string, path: string) => void;
 }> = ({ item, isCollapsed, activeId, onNavigate }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
   const hasActiveChild = useMemo(() => {
     if (!item.children) return false;
     return item.children.some(
@@ -17,6 +15,8 @@ export const NavGroup: React.FC<{
         child.children?.some((c) => c.id === activeId),
     );
   }, [item.children, activeId]);
+
+  const [isOpen, setIsOpen] = useState(hasActiveChild);
 
   const isGroupActive = item.id === activeId || hasActiveChild;
 
@@ -97,21 +97,31 @@ export const NavGroup: React.FC<{
       {/* Subitems */}
       {!isCollapsed && item.children && (
         <div
-          className={`overflow-hidden transition-all duration-200 ${
+          className={`transition-all duration-200 ${
             isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
           }`}
+          style={{ 
+            overflow: isOpen ? 'visible' : 'hidden',
+            position: 'relative',
+            zIndex: 5
+          }}
         >
           {item.children.map((child) => {
             const isChildActive = child.id === activeId;
             return (
               <button
                 key={child.id}
-                onClick={() => handleChildClick(child)}
-                className={`w-full flex items-center gap-3 px-9 py-2 rounded-lg transition-all duration-200 text-left ${
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleChildClick(child);
+                }}
+                className={`w-full flex items-center gap-3 px-9 py-2 rounded-lg transition-all duration-200 text-left cursor-pointer hover:bg-white/5 ${
                   isChildActive
                     ? "bg-brand-primary/10 text-brand-accent font-medium"
-                    : "text-white/40 hover:text-white/70 hover:bg-white/5"
+                    : "text-white/40 hover:text-white/70"
                 }`}
+                style={{ position: 'relative', zIndex: 10 }}
               >
                 <div className="w-1.5 h-1.5 rounded-full shrink-0">
                   {isChildActive ? (
