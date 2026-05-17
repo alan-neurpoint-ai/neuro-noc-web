@@ -43,7 +43,7 @@ describe("Sidebar Component - Neuro NOC Premium", () => {
     const aside = container.querySelector("aside");
     const buttons = screen.getAllByRole("button");
     const toggleBtn = buttons[0];
-    expect(aside).toHaveClass("w-64");
+    expect(aside).toHaveClass("w-74");
     fireEvent.click(toggleBtn);
     expect(aside).toHaveClass("w-20");
   });

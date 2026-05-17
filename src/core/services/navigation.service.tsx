@@ -1,8 +1,6 @@
 import {
   BiHome,
   BiData,
-  BiUser,
-  BiShield,
   BiCog,
   BiBell,
   BiBook,
@@ -15,7 +13,7 @@ import type { NavItem, RoleName } from '../types/navigation/navigation.types';
 
 const knowledgeGroup: NavItem = {
   id: 'knowledge-group',
-  label: 'Gestión del Conocimiento',
+  label: 'Configuración del Agente',
   icon: <BiBook className="text-xl" />,
   children: [
     {
@@ -35,6 +33,12 @@ const knowledgeGroup: NavItem = {
       label: 'Documentación',
       icon: <BiBook className="text-xl" />,
       path: '/dashboard/documentation',
+    },
+    {
+      id: 'ai-config',
+      label: 'Personalidad IA',
+      icon: <BiBrain className="text-xl" />,
+      path: '/dashboard/ai-config',
     },
   ],
 };
@@ -61,37 +65,16 @@ const navigationConfig: Record<RoleName, NavItem[]> = {
       icon: <BiHome className="text-xl" />,
       path: '/dashboard',
     },
-    {
-      id: 'users',
-      label: 'Usuarios',
-      icon: <BiUser className="text-xl" />,
-      path: '/dashboard/users',
-    },
+
     {
       id: 'contacts',
       label: 'Contactos',
       icon: <BiSolidContact className="text-xl" />,
       path: '/dashboard/contacts',
     },
-    {
-      id: 'roles',
-      label: 'Roles',
-      icon: <BiShield className="text-xl" />,
-      path: '/dashboard/roles',
-    },
-    {
-      id: 'permissions',
-      label: 'Permisos',
-      icon: <BiData className="text-xl" />,
-      path: '/dashboard/permissions',
-    },
+
     knowledgeGroup,
-    {
-      id: 'ai-config',
-      label: 'Configuración IA',
-      icon: <BiBrain className="text-xl" />,
-      path: '/dashboard/ai-config',
-    },
+
     {
       id: 'settings',
       label: 'Configuración',

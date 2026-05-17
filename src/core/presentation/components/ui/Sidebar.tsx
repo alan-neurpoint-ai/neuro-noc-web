@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { BiLogOut } from "react-icons/bi";
-import { TbLayoutSidebarLeftCollapseFilled } from "react-icons/tb";
-import { NavGroup } from "./NavGroup";
-import type { NavItem } from "../../../types/navigation/navigation.types";
+import React, { useState } from 'react';
+import { BiLogOut } from 'react-icons/bi';
+import { TbLayoutSidebarLeftCollapseFilled } from 'react-icons/tb';
+import { NavGroup } from './NavGroup';
+import type { NavItem } from '../../../types/navigation/navigation.types';
 
 interface SidebarProps {
   navItems: NavItem[];
@@ -31,8 +31,8 @@ const Avatar = ({
       width: size,
       height: size,
       borderRadius: size / 4,
-      background: "linear-gradient(135deg, #672da9 0%, #8b5cf6 100%)",
-      boxShadow: "0 4px 12px rgba(103, 45, 169, 0.4)",
+      background: 'linear-gradient(135deg, #672da9 0%, #8b5cf6 100%)',
+      boxShadow: '0 4px 12px rgba(103, 45, 169, 0.4)',
     }}
   >
     {src ? (
@@ -52,12 +52,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
   navItems,
   userName,
   userRole,
-  userCompany = "NeuroNOC",
+  userCompany = 'NeuroNOC',
   userAvatar,
   activeId,
   onNavigate,
   onLogout,
-  className = "",
+  className = '',
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -69,10 +69,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <aside
       className={`relative h-screen flex flex-col z-50 transition-all duration-300 ${
-        isCollapsed ? "w-20" : "w-64"
+        isCollapsed ? 'w-20' : 'w-74'
       } ${className}`}
       style={{
-        background: "linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 100%)",
+        background: 'linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 100%)',
       }}
     >
       <div
@@ -82,7 +82,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
             linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)
           `,
-          backgroundSize: "40px 40px",
+          backgroundSize: '40px 40px',
         }}
       />
 
@@ -93,8 +93,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div
             className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
             style={{
-              background: "linear-gradient(135deg, #672da9 0%, #8b5cf6 100%)",
-              boxShadow: "0 0 20px rgba(103, 45, 169, 0.5)",
+              background: 'linear-gradient(135deg, #672da9 0%, #8b5cf6 100%)',
+              boxShadow: '0 0 20px rgba(103, 45, 169, 0.5)',
             }}
           >
             <svg
@@ -130,7 +130,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <TbLayoutSidebarLeftCollapseFilled
               size={17}
               className={`transition-transform duration-300 ${
-                isCollapsed ? "rotate-180" : ""
+                isCollapsed ? 'rotate-180' : ''
               }`}
             />
           </button>
@@ -164,18 +164,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
           return (
             <button
               key={item.id}
-              onClick={() => handleNavigate(item.id, item.path ?? "")}
+              onClick={() => handleNavigate(item.id, item.path ?? '')}
               className={`group relative w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${
                 isActive
-                  ? "bg-linear-to-r from-brand-primary/20 to-transparent border-l-2 border-brand-primary"
-                  : "hover:bg-white/5 text-white/50 hover:text-white/80"
-              } ${isCollapsed ? "justify-center" : ""}`}
+                  ? 'bg-linear-to-r from-brand-primary/20 to-transparent border-l-2 border-brand-primary'
+                  : 'hover:bg-white/5 text-white/50 hover:text-white/80'
+              } ${isCollapsed ? 'justify-center' : ''}`}
             >
               <div
                 className={`shrink-0 transition-colors ${
                   isActive
-                    ? "text-brand-accent"
-                    : "text-white/40 group-hover:text-brand-accent/80"
+                    ? 'text-brand-accent'
+                    : 'text-white/40 group-hover:text-brand-accent/80'
                 }`}
               >
                 {item.icon}
@@ -184,7 +184,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <div className="flex items-center justify-between flex-1 min-w-0">
                   <span
                     className={`text-sm font-headline truncate ${
-                      isActive ? "text-white font-semibold" : "font-medium"
+                      isActive ? 'text-white font-semibold' : 'font-medium'
                     }`}
                   >
                     {item.label}
@@ -212,10 +212,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div
             className="absolute bottom-full left-3 right-3 mb-3 p-4 rounded-xl overflow-hidden"
             style={{
-              background: "linear-gradient(160deg, #2d1b69 0%, #1a0f3e 100%)",
-              border: "1px solid rgba(178,154,244,0.15)",
+              background: 'linear-gradient(160deg, #2d1b69 0%, #1a0f3e 100%)',
+              border: '1px solid rgba(178,154,244,0.15)',
               boxShadow:
-                "0 0 40px rgba(103, 45, 169, 0.3), 0 20px 40px rgba(0,0,0,0.5)",
+                '0 0 40px rgba(103, 45, 169, 0.3), 0 20px 40px rgba(0,0,0,0.5)',
             }}
           >
             <div className="flex items-center gap-3 mb-4">
@@ -257,9 +257,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 }}
                 className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg transition-all text-xs font-headline font-semibold uppercase tracking-wider"
                 style={{
-                  background: "rgba(239, 68, 68, 0.1)",
-                  border: "1px solid rgba(239, 68, 68, 0.2)",
-                  color: "#ef4444",
+                  background: 'rgba(239, 68, 68, 0.1)',
+                  border: '1px solid rgba(239, 68, 68, 0.2)',
+                  color: '#ef4444',
                 }}
               >
                 <BiLogOut size={14} />
@@ -273,15 +273,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
           onClick={() => !isCollapsed && setProfileOpen(!profileOpen)}
           className={`w-full flex items-center gap-3 p-2.5 rounded-lg transition-all border ${
             profileOpen
-              ? "bg-brand-primary/10 border-brand-primary/30"
-              : "bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/10"
-          } ${isCollapsed ? "justify-center" : ""}`}
+              ? 'bg-brand-primary/10 border-brand-primary/30'
+              : 'bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/10'
+          } ${isCollapsed ? 'justify-center' : ''}`}
         >
           <div className="relative">
             <Avatar src={userAvatar} name={userName} size={32} />
             <div
               className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-[#0f0f1a]"
-              style={{ background: "#10b981" }}
+              style={{ background: '#10b981' }}
             />
           </div>
           {!isCollapsed && (
