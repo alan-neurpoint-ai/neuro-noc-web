@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { BiPlus, BiShow } from 'react-icons/bi';
+import { useNavigate } from 'react-router';
+import { BiPlus, BiShow, BiTrash, BiCheckCircle } from 'react-icons/bi';
 import { supabase } from '../../../../core/supabase';
 import { useAuthStore } from '../../../auth/presentation/stores/useAuthStore';
 import { DataTable } from '../../../../core/presentation/components/ui/DataTable';
@@ -7,11 +8,13 @@ import { Pagination } from '../../../../core/presentation/components/ui/Paginati
 import { Loading } from '../../../../core/presentation/components/ui/Loading';
 import { Search } from '../../../../core/presentation/components/ui/Search';
 import { Button } from '../../../../core/presentation/components/ui/Button';
+import { Modal } from '../../../../core/presentation/components/ui/Modal';
 import { TemporalContextRow } from '../../../../core/types/monitoring/temporal-contexts.sql';
 
 const PAGE_SIZE = 10;
 
 export const TemporalContextListPage = () => {
+  const navigate = useNavigate();
   const { user, selectedOrganization } = useAuthStore();
 
   const [loading, setLoading] = useState(true);
@@ -20,6 +23,8 @@ export const TemporalContextListPage = () => {
   const [totalItems, setTotalItems] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [selectedContext, setSelectedContext] = useState<TemporalContextRow | null>(null);
 
   const targetOrgId = selectedOrganization?.id || user?.organizationId;
 
@@ -49,8 +54,8 @@ export const TemporalContextListPage = () => {
         const from = (currentPage - 1) * PAGE_SIZE;
         const to = from + PAGE_SIZE - 1;
 
-        let query = supabase
-          .from('temporal_contexts')
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let query = (supabase.from('temporal_contexts') as any)
           .select('*', { count: 'exact' })
           .eq('organization_id', targetOrgId);
 
@@ -66,7 +71,11 @@ export const TemporalContextListPage = () => {
 
         if (error) throw error;
 
-        setContexts((data as TemporalContextRow[]) || []);
+        // Filter out inactive
+        const filteredContexts = (data as TemporalContextRow[])?.filter(
+          ctx => ctx.status !== 'inactive'
+        ) || [];
+        setContexts(filteredContexts);
         setTotalItems(count || 0);
       } catch (error) {
         console.error('Error loading temporal contexts:', error);
@@ -77,6 +86,38 @@ export const TemporalContextListPage = () => {
 
     fetchContexts();
   }, [targetOrgId, currentPage, debouncedSearch]);
+
+  const handleInactivate = async () => {
+    if (!selectedContext) return;
+
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (supabase.from('temporal_contexts') as any)
+        .update({ status: 'inactive' })
+        .eq('id', selectedContext.id);
+
+      // Refresh
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data } = await (supabase.from('temporal_contexts') as any)
+        .select('*', { count: 'exact' })
+        .eq('organization_id', targetOrgId!)
+        .order('start_date', { ascending: false });
+
+      const filteredContexts = (data as TemporalContextRow[])?.filter(
+        ctx => ctx.status !== 'inactive'
+      ) || [];
+      setContexts(filteredContexts);
+      setShowConfirmModal(false);
+      setSelectedContext(null);
+    } catch (error) {
+      console.error('Error inactivating context:', error);
+    }
+  };
+
+  const openConfirmModal = (ctx: TemporalContextRow) => {
+    setSelectedContext(ctx);
+    setShowConfirmModal(true);
+  };
 
   const formatDate = (dateStr: string | null) => {
     if (!dateStr) return '-';
@@ -160,18 +201,27 @@ export const TemporalContextListPage = () => {
     {
       header: 'Acciones',
       accessor: (item: TemporalContextRow) => (
-        <div className="flex justify-end">
+        <div className="flex justify-end gap-2">
           <Button
             variant="view"
             icon={<BiShow size={16} />}
             className="px-3 py-1.5"
             onClick={(e) => {
               e.stopPropagation();
-              console.log('Visualizando:', item.id);
+              navigate(`/dashboard/temporal-contexts/${item.id}`);
             }}
           >
             VER
           </Button>
+          <Button
+            variant="ghost"
+            icon={<BiTrash size={16} />}
+            className="px-3 py-1.5 text-red-400 hover:text-red-300"
+            onClick={(e) => {
+              e.stopPropagation();
+              openConfirmModal(item);
+            }}
+          />
         </div>
       ),
     },
@@ -200,7 +250,7 @@ export const TemporalContextListPage = () => {
             variant="action"
             icon={<BiPlus />}
             className="w-full sm:w-auto"
-            onClick={() => console.log('Crear contexto temporal')}
+            onClick={() => navigate('/dashboard/temporal-contexts/create')}
           >
             NUEVO CONTEXTO
           </Button>
@@ -223,7 +273,7 @@ export const TemporalContextListPage = () => {
           columns={columns}
           data={contexts}
           isLoading={false}
-          onRowClick={(context) => console.log('Row Clicked:', context.id)}
+          onRowClick={(context) => navigate(`/dashboard/temporal-contexts/${context.id}`)}
         />
 
         {!loading && totalItems > 0 && (
@@ -237,6 +287,48 @@ export const TemporalContextListPage = () => {
           </div>
         )}
       </div>
+
+      {/* Modal de confirmación de seguridad */}
+      <Modal
+        isOpen={showConfirmModal}
+        onClose={() => {
+          setShowConfirmModal(false);
+          setSelectedContext(null);
+        }}
+        title="Confirmar Inactivación"
+      >
+        <div className="text-center py-4">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/10 flex items-center justify-center">
+            <BiCheckCircle className="text-3xl text-red-400" />
+          </div>
+          <h3 className="text-lg font-bold text-white mb-2">
+            ¿Inactivar contexto?
+          </h3>
+          <p className="text-sm text-white/60 mb-2">
+            El contexto <strong className="text-white">{selectedContext?.name}</strong> será marcado como inactivo.
+          </p>
+          <p className="text-xs text-white/40 mb-6">
+            Esta acción no eliminará el contexto, solo lo ocultará de la vista.
+          </p>
+          <div className="flex justify-center gap-3">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowConfirmModal(false);
+                setSelectedContext(null);
+              }}
+            >
+              CANCELAR
+            </Button>
+            <Button
+              variant="danger"
+              onClick={handleInactivate}
+            >
+              INACTIVAR
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
