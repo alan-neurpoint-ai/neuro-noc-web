@@ -9,6 +9,7 @@ import { ContactListPage } from '../../modules/contacts/presentation/pages/Conta
 import { TemporalContextListPage } from '../../modules/contexts/presentation/pages/TemporalContextListPage';
 import { TemporalContextFormPage } from '../../modules/contexts/presentation/pages/TemporalContextFormPage';
 import { BusinessRuleListPage } from '../../modules/rules/presentation/pages/BusinessRuleListPage';
+import { BusinessRuleFormPage } from '../../modules/rules/presentation/pages/BusinessRuleFormPage';
 import { TechnicalDocumentationListPage } from '../../modules/documentation/presentation/pages/TechnicalDocumentationListPage';
 import { TechnicalDocumentationDetailPage } from '../../modules/documentation/presentation/pages/TechnicalDocumentationDetailPage';
 import { AIConfigurationListPage } from '../../modules/ai/presentation/pages/AIConfigurationListPage';
@@ -34,6 +35,8 @@ export const AppRouter = () => {
             <Route path="/dashboard/temporal-contexts/create" element={<TemporalContextFormPage />} />
             <Route path="/dashboard/temporal-contexts/:id" element={<TemporalContextFormPage />} />
             <Route path="/dashboard/rules" element={<BusinessRuleListPage />} />
+            <Route path="/dashboard/rules/create" element={<BusinessRuleFormPage />} />
+            <Route path="/dashboard/rules/:id" element={<BusinessRuleFormPage />} />
             <Route path="/dashboard/documentation" element={<TechnicalDocumentationListPage />} />
             <Route path="/dashboard/documentation/:id" element={<TechnicalDocumentationDetailPage />} />
             <Route path="/dashboard/ai-config" element={<AIConfigurationListPage />} />

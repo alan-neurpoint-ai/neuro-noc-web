@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { BiPlus, BiShow, BiTrash, BiEdit } from 'react-icons/bi';
+import { useNavigate } from 'react-router';
+import { BiPlus, BiShow, BiTrash, BiCheckCircle } from 'react-icons/bi';
 import { supabase } from '../../../../core/supabase';
 import { useAuthStore } from '../../../auth/presentation/stores/useAuthStore';
 import { DataTable } from '../../../../core/presentation/components/ui/DataTable';
@@ -7,11 +8,13 @@ import { Pagination } from '../../../../core/presentation/components/ui/Paginati
 import { Loading } from '../../../../core/presentation/components/ui/Loading';
 import { Search } from '../../../../core/presentation/components/ui/Search';
 import { Button } from '../../../../core/presentation/components/ui/Button';
+import { Modal } from '../../../../core/presentation/components/ui/Modal';
 import { BusinessRuleRow } from '../../../../core/types/knowledge/business-rules.sql';
 
 const PAGE_SIZE = 10;
 
 export const BusinessRuleListPage = () => {
+  const navigate = useNavigate();
   const { user, selectedOrganization } = useAuthStore();
 
   const [loading, setLoading] = useState(true);
@@ -20,6 +23,10 @@ export const BusinessRuleListPage = () => {
   const [totalItems, setTotalItems] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [selectedRule, setSelectedRule] = useState<BusinessRuleRow | null>(
+    null
+  );
 
   const targetOrgId = selectedOrganization?.id || user?.organizationId;
 
@@ -49,8 +56,8 @@ export const BusinessRuleListPage = () => {
         const from = (currentPage - 1) * PAGE_SIZE;
         const to = from + PAGE_SIZE - 1;
 
-        let query = supabase
-          .from('business_rules')
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let query = (supabase.from('business_rule') as any)
           .select('*', { count: 'exact' })
           .eq('organization_id', targetOrgId)
           .is('deleted_at', null);
@@ -67,7 +74,12 @@ export const BusinessRuleListPage = () => {
 
         if (error) throw error;
 
-        setRules((data as BusinessRuleRow[]) || []);
+        // Filter out inactive
+        const filteredRules =
+          (data as BusinessRuleRow[])?.filter(
+            (rule) => rule.status !== 'inactive'
+          ) || [];
+        setRules(filteredRules);
         setTotalItems(count || 0);
       } catch (error) {
         console.error('Error loading business rules:', error);
@@ -78,6 +90,40 @@ export const BusinessRuleListPage = () => {
 
     fetchRules();
   }, [targetOrgId, currentPage, debouncedSearch]);
+
+  const handleInactivate = async () => {
+    if (!selectedRule) return;
+
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (supabase.from('business_rules') as any)
+        .update({ status: 'inactive' })
+        .eq('id', selectedRule.id);
+
+      // Refresh
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data } = await (supabase.from('business_rule') as any)
+        .select('*', { count: 'exact' })
+        .eq('organization_id', targetOrgId!)
+        .is('deleted_at', null)
+        .order('created_at', { ascending: false });
+
+      const filteredRules =
+        (data as BusinessRuleRow[])?.filter(
+          (rule) => rule.status !== 'inactive'
+        ) || [];
+      setRules(filteredRules);
+      setShowConfirmModal(false);
+      setSelectedRule(null);
+    } catch (error) {
+      console.error('Error inactivating rule:', error);
+    }
+  };
+
+  const openConfirmModal = (rule: BusinessRuleRow) => {
+    setSelectedRule(rule);
+    setShowConfirmModal(true);
+  };
 
   const formatDate = (dateStr: string | null) => {
     if (!dateStr) return '-';
@@ -172,27 +218,18 @@ export const BusinessRuleListPage = () => {
             className="px-3 py-1.5"
             onClick={(e) => {
               e.stopPropagation();
-              console.log('Visualizando:', item.id);
+              navigate(`/dashboard/rules/${item.id}`);
             }}
           >
             VER
           </Button>
           <Button
             variant="ghost"
-            icon={<BiEdit size={16} />}
-            className="px-3 py-1.5"
-            onClick={(e) => {
-              e.stopPropagation();
-              console.log('Editando:', item.id);
-            }}
-          />
-          <Button
-            variant="ghost"
             icon={<BiTrash size={16} />}
             className="px-3 py-1.5 text-red-400 hover:text-red-300"
             onClick={(e) => {
               e.stopPropagation();
-              console.log('Eliminando:', item.id);
+              openConfirmModal(item);
             }}
           />
         </div>
@@ -223,7 +260,7 @@ export const BusinessRuleListPage = () => {
             variant="action"
             icon={<BiPlus />}
             className="w-full sm:w-auto"
-            onClick={() => console.log('Crear regla')}
+            onClick={() => navigate('/dashboard/rules/create')}
           >
             NUEVA REGLA
           </Button>
@@ -235,9 +272,7 @@ export const BusinessRuleListPage = () => {
           <Loading
             variant="overlay"
             message={
-              debouncedSearch
-                ? `Filtrando resultados...`
-                : 'Cargando reglas...'
+              debouncedSearch ? `Filtrando resultados...` : 'Cargando reglas...'
             }
           />
         )}
@@ -246,7 +281,7 @@ export const BusinessRuleListPage = () => {
           columns={columns}
           data={rules}
           isLoading={false}
-          onRowClick={(rule) => console.log('Row Clicked:', rule.id)}
+          onRowClick={(rule) => navigate(`/dashboard/rules/${rule.id}`)}
         />
 
         {!loading && totalItems > 0 && (
@@ -260,6 +295,47 @@ export const BusinessRuleListPage = () => {
           </div>
         )}
       </div>
+
+      {/* Modal de confirmación de seguridad */}
+      <Modal
+        isOpen={showConfirmModal}
+        onClose={() => {
+          setShowConfirmModal(false);
+          setSelectedRule(null);
+        }}
+        title="Confirmar Inactivación"
+      >
+        <div className="text-center py-4">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/10 flex items-center justify-center">
+            <BiCheckCircle className="text-3xl text-red-400" />
+          </div>
+          <h3 className="text-lg font-bold text-white mb-2">
+            ¿Inactivar regla?
+          </h3>
+          <p className="text-sm text-white/60 mb-2">
+            La regla{' '}
+            <strong className="text-white">{selectedRule?.name}</strong> será
+            marcada como inactiva.
+          </p>
+          <p className="text-xs text-white/40 mb-6">
+            Esta acción no eliminará la regla, solo la ocultará de la vista.
+          </p>
+          <div className="flex justify-center gap-3">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowConfirmModal(false);
+                setSelectedRule(null);
+              }}
+            >
+              CANCELAR
+            </Button>
+            <Button variant="danger" onClick={handleInactivate}>
+              INACTIVAR
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
