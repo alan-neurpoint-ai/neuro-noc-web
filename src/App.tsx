@@ -1,15 +1,16 @@
 import { useEffect } from "react";
-import Index from "./presentation/routers";
-import { useAuthStore } from "./presentation/store/AuthStore";
-export default function App() {
-  const { hydrate } = useAuthStore();
+import { AppRouter } from "./main/routes/AppRouter";
+import { useAuthStore } from "./modules/auth/presentation/stores/useAuthStore";
+import { authService } from "./modules/auth/infrastructure/services/auth.service";
 
+export default function App() {
+  const setAuth = useAuthStore((state) => state.setAuth);
   useEffect(() => {
-    hydrate();
-  }, []);
-  return (
-    <div>
-      <Index />
-    </div>
-  );
+    authService.getCurrentSession().then((data) => {
+      if (data?.profile) setAuth(data.profile);
+      else useAuthStore.getState().setAuth(null);
+    });
+  }, [setAuth]);
+
+  return <AppRouter />;
 }
