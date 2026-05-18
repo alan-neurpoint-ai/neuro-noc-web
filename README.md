@@ -13,28 +13,31 @@ La aplicación está diseñada para equipos de operaciones que necesitan supervi
 ## 🛠️ Tecnologías y Stack
 
 ### Frontend
-| Tecnología | Versión | Propósito |
-|------------|---------|-----------|
-| React | 19.2.5 | Biblioteca de interfaz de usuario |
-| TypeScript | ~6.0.2 | Tipado estático |
-| Vite | 8.0.10 | Build tool y servidor de desarrollo |
-| Tailwind CSS | 4.2.4 | Framework de estilos |
-| React Router | 7.14.2 | Enrutamiento de páginas |
-| Zustand | 5.0.12 | Gestión de estado global |
-| Recharts | 3.8.1 | Biblioteca de gráficos |
+
+| Tecnología   | Versión | Propósito                           |
+| ------------ | ------- | ----------------------------------- |
+| React        | 19.2.5  | Biblioteca de interfaz de usuario   |
+| TypeScript   | ~6.0.2  | Tipado estático                     |
+| Vite         | 8.0.10  | Build tool y servidor de desarrollo |
+| Tailwind CSS | 4.2.4   | Framework de estilos                |
+| React Router | 7.14.2  | Enrutamiento de páginas             |
+| Zustand      | 5.0.12  | Gestión de estado global            |
+| Recharts     | 3.8.1   | Biblioteca de gráficos              |
 
 ### Backend / Servicios
-| Servicio | Propósito |
-|----------|-----------|
+
+| Servicio | Propósito                                                |
+| -------- | -------------------------------------------------------- |
 | Supabase | Base de datos PostgreSQL, autenticación y almacenamiento |
-| VAPI | Integración de llamadas telephony |
+| VAPI     | Integración de llamadas telephony                        |
 
 ### Desarrollo
-| Herramienta | Propósito |
-|-------------|-----------|
-| ESLint | Linting y calidad de código |
-| Prettier | Formateo de código |
-| Vitest | Testing unitario |
+
+| Herramienta | Propósito                   |
+| ----------- | --------------------------- |
+| ESLint      | Linting y calidad de código |
+| Prettier    | Formateo de código          |
+| Vitest      | Testing unitario            |
 
 ---
 
@@ -113,28 +116,33 @@ neuro-noc-web/
 ## 🚀 Funcionalidades Principales
 
 ### 1. Autenticación
+
 - Inicio de sesión con Supabase Auth
 - Gestión de sesiones y permisos por organización
 - Almacenamiento de estado de autenticación con Zustand
 
 ### 2. Dashboard
+
 - Vista principal con métricas clave
 - Acceso rápido a módulos principales
 - Estadísticas operativas
 
 ### 3. Gestión de Organizaciones
+
 - Listado de organizaciones con jerarquía
 - Detalle de organización con información de contacto
 - Historial de pagos
 - CRUD de organizaciones
 
 ### 4. Contactos
+
 - Administración de contactos por organización
 - Vinculación de usuarios a contactos
 - Formularios de creación y edición
 - Detalle de contacto con información completa
 
 ### 5. Monitoreo de Alertas
+
 - Dashboard de alertas con gráficos
   - Gráfico de barras: Problemas más frecuentes
   - Gráfico circular: Contactos con más alertas
@@ -144,6 +152,7 @@ neuro-noc-web/
 - Gestión de acciones de alertas
 
 ### 6. Reglas de Negocio
+
 - Listado de reglas con paginación y búsqueda
 - Creación manual de reglas
 - Creación desde documentos
@@ -152,16 +161,19 @@ neuro-noc-web/
 - Definición de objetivos afectados
 
 ### 7. Documentación Técnica
+
 - Gestión de documentos técnicos
 - Listado y búsqueda de documentación
 - Detalle de documentos
 
 ### 8. Configuración de IA
+
 - Gestión de configuraciones de IA
 - Creación y edición de configuraciones
 - Tarjetas visuales de configuración
 
 ### 9. Contextos Temporales
+
 - Administración de contextos temporales
 - Creación y edición de contextos
 
@@ -170,7 +182,8 @@ neuro-noc-web/
 ## 📦 Instalación y Configuración
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - npm o yarn
 
 ### Instalación
@@ -211,21 +224,22 @@ npm run preview
 
 ## 🧪 Comandos Disponibles
 
-| Comando | Descripción |
-|---------|-------------|
-| `npm run dev` | Iniciar servidor de desarrollo |
-| `npm run build` | Compilar para producción |
-| `npm run preview` | Previsualizar build de producción |
-| `npm run lint` | Ejecutar ESLint |
-| `npm run test` | Ejecutar tests en modo watch |
-| `npm run test:ui` | Ejecutar tests con interfaz visual |
-| `npm run test:run` | Ejecutar tests una vez |
+| Comando            | Descripción                        |
+| ------------------ | ---------------------------------- |
+| `npm run dev`      | Iniciar servidor de desarrollo     |
+| `npm run build`    | Compilar para producción           |
+| `npm run preview`  | Previsualizar build de producción  |
+| `npm run lint`     | Ejecutar ESLint                    |
+| `npm run test`     | Ejecutar tests en modo watch       |
+| `npm run test:ui`  | Ejecutar tests con interfaz visual |
+| `npm run test:run` | Ejecutar tests una vez             |
 
 ---
 
 ## 🎨 Convenciones de Código
 
 ### Estructura de Componentes
+
 ```
 presentation/
 ├── pages/          # Componentes de página (alto nivel)
@@ -233,11 +247,13 @@ presentation/
 ```
 
 ### Nomenclatura
+
 - Componentes: PascalCase (`BusinessRuleListPage.tsx`)
 - Utilidades: camelCase (`useAuthStore.ts`)
 - Estilos Tailwind: clases utilitarias
 
 ### Patrones
+
 - Componentes funcionales con hooks
 - Prop interfaces explícitas
 - Estados locales con `useState`
@@ -249,18 +265,18 @@ presentation/
 
 ### Tablas Principales
 
-| Tabla | Descripción |
-|-------|-------------|
-| `organizations` | Organizaciones del sistema |
-| `users` | Usuarios de la aplicación |
-| `contacts` | Contactos por organización |
-| `alerts` | Alertas de monitoreo |
-| `alert_actions` | Acciones tomadas en alertas |
-| `business_rule` | Reglas de negocio |
-| `ai_configuration` | Configuraciones de IA |
-| `technical_documentation` | Documentación técnica |
-| `temporal_context` | Contextos temporales |
-| `payments` | Historial de pagos |
+| Tabla                     | Descripción                 |
+| ------------------------- | --------------------------- |
+| `organizations`           | Organizaciones del sistema  |
+| `users`                   | Usuarios de la aplicación   |
+| `contacts`                | Contactos por organización  |
+| `alerts`                  | Alertas de monitoreo        |
+| `alert_actions`           | Acciones tomadas en alertas |
+| `business_rule`           | Reglas de negocio           |
+| `ai_configuration`        | Configuraciones de IA       |
+| `technical_documentation` | Documentación técnica       |
+| `temporal_context`        | Contextos temporales        |
+| `payments`                | Historial de pagos          |
 
 ---
 
@@ -275,10 +291,12 @@ presentation/
 ## 🐛 Solución de Problemas
 
 ### Error 406 al obtener usuarios
+
 - Causa: Políticas RLS restrictivas
 - Solución: Configurar políticas de Supabase correctamente
 
 ### VAPI retorna 400
+
 - Causa: Retención de llamadas limitada a 14 días por plan
 - Solución: Verificar antigüedad de las llamadas
 
@@ -308,7 +326,7 @@ MIT License - Ver archivo `LICENSE` para más detalles.
 
 ## 🏢 Desarrollado por Neuropoint.ai
 
-<img src="https://neuropoint.ai/wp-content/uploads/2024/05/Logo.png" alt="Neuropoint.ai" width="200"/>
+<img src="https://neuropoint.ai/assets/logo-n-mini-filled.svg" alt="Neuropoint.ai" width="200"/>
 
 **Neuropoint.ai** es una empresa líder en soluciones tecnológicas especializadas en inteligencia artificial, infraestructura de red y automatización de operaciones NOC.
 
@@ -322,11 +340,11 @@ Este desarrollo representa el compromiso de Neuropoint.ai con la excelencia tecn
 
 ---
 
-**Neuropoint.ai** - *Innovación tecnológica al servicio de las operaciones*
+**Neuropoint.ai** - _Innovación tecnológica al servicio de las operaciones_
 
 📧 Contacto: info@neuropoint.ai  
 🌐 Web: https://neuropoint.ai
 
 ---
 
-*Última actualización: Mayo 2026*
+_Última actualización: Mayo 2026_
