@@ -302,12 +302,6 @@ presentation/
 
 ---
 
-## 📄 Licencia
-
-MIT License - Ver archivo `LICENSE` para más detalles.
-
----
-
 ## 👥 Autores
 
 - **Neuro-NOC Team** - Desarrollo inicial
