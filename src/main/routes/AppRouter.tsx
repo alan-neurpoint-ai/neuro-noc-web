@@ -6,6 +6,7 @@ import { DashboardPage } from '../../modules/dashboard/presentation/pages/Dashbo
 import { OrganizationsPage } from '../../modules/organizations/presentation/pages/OrganizationsPage';
 import { OrganizationDetailPage } from '../../modules/organizations/presentation/pages/OrganizationDetailPage';
 import { ContactListPage } from '../../modules/contacts/presentation/pages/ContactListPage';
+import { ContactDetailsPage } from '../../modules/contacts/presentation/pages/ContactDetailsPage';
 import { TemporalContextListPage } from '../../modules/contexts/presentation/pages/TemporalContextListPage';
 import { TemporalContextFormPage } from '../../modules/contexts/presentation/pages/TemporalContextFormPage';
 import { BusinessRuleListPage } from '../../modules/rules/presentation/pages/BusinessRuleListPage';
@@ -33,6 +34,7 @@ export const AppRouter = () => {
               element={<OrganizationDetailPage />}
             />
             <Route path="/dashboard/contacts" element={<ContactListPage />} />
+            <Route path="/dashboard/contacts/:id" element={<ContactDetailsPage />} />
             <Route
               path="/dashboard/temporal-contexts"
               element={<TemporalContextListPage />}

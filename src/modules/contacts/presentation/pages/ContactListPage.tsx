@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { BiPlus, BiShow } from 'react-icons/bi'; // Iconos para las acciones
+import { useNavigate } from 'react-router';
+import { BiPlus, BiShow } from 'react-icons/bi';
 import { supabase } from '../../../../core/supabase';
 import { useAuthStore } from '../../../auth/presentation/stores/useAuthStore';
 import { DataTable } from '../../../../core/presentation/components/ui/DataTable';
@@ -8,10 +9,12 @@ import { Loading } from '../../../../core/presentation/components/ui/Loading';
 import { Search } from '../../../../core/presentation/components/ui/Search';
 import { Button } from '../../../../core/presentation/components/ui/Button';
 import { ContactRow } from '../../../../core/types/tenant/contacts.sql';
+import { ContactForm } from '../components/ContactForm';
 
 const PAGE_SIZE = 10;
 
 export const ContactListPage = () => {
+  const navigate = useNavigate();
   const { user, selectedOrganization } = useAuthStore();
 
   const [loading, setLoading] = useState(true);
@@ -20,6 +23,7 @@ export const ContactListPage = () => {
   const [totalItems, setTotalItems] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const targetOrgId = selectedOrganization?.id || user?.organizationId;
   const isInternalView =
@@ -36,49 +40,53 @@ export const ContactListPage = () => {
     setCurrentPage(1);
   }, [targetOrgId, debouncedSearch]);
 
-  useEffect(() => {
+  // Función para cargar contactos
+  const loadContacts = async (page?: number, search?: string) => {
     if (!targetOrgId) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setContacts([]);
       setTotalItems(0);
-      setLoading(false);
       return;
     }
 
-    const fetchContacts = async () => {
-      setLoading(true);
-      try {
-        const from = (currentPage - 1) * PAGE_SIZE;
-        const to = from + PAGE_SIZE - 1;
+    setLoading(true);
+    const pageNum = page ?? currentPage;
+    const searchTerm = search ?? debouncedSearch;
 
-        let query = supabase
-          .from('contacts')
-          .select('*', { count: 'exact' })
-          .eq('organization_id', targetOrgId)
-          .eq('status', 'active');
+    try {
+      const from = (pageNum - 1) * PAGE_SIZE;
+      const to = from + PAGE_SIZE - 1;
 
-        if (debouncedSearch) {
-          query = query.or(
-            `full_name.ilike.%${debouncedSearch}%,email.ilike.%${debouncedSearch}%`
-          );
-        }
+      let query = supabase
+        .from('contacts')
+        .select('*', { count: 'exact' })
+        .eq('organization_id', targetOrgId)
+        .eq('status', 'active');
 
-        const { data, error, count } = await query
-          .order('full_name', { ascending: true })
-          .range(from, to);
-
-        if (error) throw error;
-
-        setContacts((data as ContactRow[]) || []);
-        setTotalItems(count || 0);
-      } catch (error) {
-        console.error('Error loading contacts:', error);
-      } finally {
-        setTimeout(() => setLoading(false), 300);
+      if (searchTerm) {
+        query = query.or(
+          `full_name.ilike.%${searchTerm}%,email.ilike.%${searchTerm}%`
+        );
       }
-    };
 
-    fetchContacts();
+      const { data, error, count } = await query
+        .order('full_name', { ascending: true })
+        .range(from, to);
+
+      if (error) throw error;
+
+      setContacts((data as ContactRow[]) || []);
+      setTotalItems(count || 0);
+    } catch (error) {
+      console.error('Error loading contacts:', error);
+    } finally {
+      setTimeout(() => setLoading(false), 300);
+    }
+  };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadContacts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [targetOrgId, currentPage, debouncedSearch]);
 
   const columns = [
@@ -161,7 +169,7 @@ export const ContactListPage = () => {
             variant="action"
             icon={<BiPlus />}
             className="w-full sm:w-auto"
-            onClick={() => console.log('Crear contacto')}
+            onClick={() => setShowCreateModal(true)}
           >
             NUEVO CONTACTO
           </Button>
@@ -184,7 +192,9 @@ export const ContactListPage = () => {
           columns={columns}
           data={contacts}
           isLoading={false}
-          onRowClick={(contact) => console.log('Row Clicked:', contact.id)}
+          onRowClick={(contact) =>
+            navigate(`/dashboard/contacts/${contact.id}`)
+          }
         />
 
         {!loading && totalItems > 0 && (
@@ -198,6 +208,17 @@ export const ContactListPage = () => {
           </div>
         )}
       </div>
+
+      {/* Modal para crear contacto */}
+      <ContactForm
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onSuccess={() => {
+          // Recargar la lista de contactos
+          setCurrentPage(1);
+          loadContacts(1, debouncedSearch);
+        }}
+      />
     </div>
   );
 };
