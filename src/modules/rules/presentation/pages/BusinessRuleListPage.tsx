@@ -1,36 +1,41 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { BiPlus, BiShow, BiTrash, BiCheckCircle } from 'react-icons/bi';
+import { BiShow, BiTrash } from 'react-icons/bi';
 import { supabase } from '../../../../core/supabase';
 import { useAuthStore } from '../../../auth/presentation/stores/useAuthStore';
 import { DataTable } from '../../../../core/presentation/components/ui/DataTable';
 import { Pagination } from '../../../../core/presentation/components/ui/Pagination';
 import { Loading } from '../../../../core/presentation/components/ui/Loading';
-import { Search } from '../../../../core/presentation/components/ui/Search';
 import { Button } from '../../../../core/presentation/components/ui/Button';
-import { Modal } from '../../../../core/presentation/components/ui/Modal';
-import { BusinessRuleRow } from '../../../../core/types/knowledge/business-rules.sql';
+import { RuleListHeader } from '../components/RuleListHeader';
+import { InactivateConfirmModal } from '../components/InactivateConfirmModal';
 
 const PAGE_SIZE = 10;
+
+interface BusinessRule {
+  id: string;
+  name: string;
+  description: string | null;
+  execution_schedule: string | null;
+  status: string | null;
+  created_at: string | null;
+}
 
 export const BusinessRuleListPage = () => {
   const navigate = useNavigate();
   const { user, selectedOrganization } = useAuthStore();
 
   const [loading, setLoading] = useState(true);
-  const [rules, setRules] = useState<BusinessRuleRow[]>([]);
+  const [rules, setRules] = useState<BusinessRule[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [selectedRule, setSelectedRule] = useState<BusinessRuleRow | null>(
-    null
-  );
+  const [selectedRule, setSelectedRule] = useState<BusinessRule | null>(null);
 
   const targetOrgId = selectedOrganization?.id || user?.organizationId;
 
-  // Debounce Nativo
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedSearch(searchTerm), 500);
     return () => clearTimeout(handler);
@@ -74,9 +79,8 @@ export const BusinessRuleListPage = () => {
 
         if (error) throw error;
 
-        // Filter out inactive
         const filteredRules =
-          (data as BusinessRuleRow[])?.filter(
+          (data as BusinessRule[])?.filter(
             (rule) => rule.status !== 'inactive'
           ) || [];
         setRules(filteredRules);
@@ -92,24 +96,23 @@ export const BusinessRuleListPage = () => {
   }, [targetOrgId, currentPage, debouncedSearch]);
 
   const handleInactivate = async () => {
-    if (!selectedRule) return;
+    if (!selectedRule || !targetOrgId) return;
 
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (supabase.from('business_rules') as any)
+      await (supabase.from('business_rule') as any)
         .update({ status: 'inactive' })
         .eq('id', selectedRule.id);
 
-      // Refresh
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { data } = await (supabase.from('business_rule') as any)
-        .select('*', { count: 'exact' })
-        .eq('organization_id', targetOrgId!)
+        .select('*')
+        .eq('organization_id', targetOrgId)
         .is('deleted_at', null)
         .order('created_at', { ascending: false });
 
       const filteredRules =
-        (data as BusinessRuleRow[])?.filter(
+        (data as BusinessRule[])?.filter(
           (rule) => rule.status !== 'inactive'
         ) || [];
       setRules(filteredRules);
@@ -120,7 +123,7 @@ export const BusinessRuleListPage = () => {
     }
   };
 
-  const openConfirmModal = (rule: BusinessRuleRow) => {
+  const openConfirmModal = (rule: BusinessRule) => {
     setSelectedRule(rule);
     setShowConfirmModal(true);
   };
@@ -135,38 +138,40 @@ export const BusinessRuleListPage = () => {
   };
 
   const getStatusBadge = (status: string | null) => {
-    switch (status) {
-      case 'active':
-        return (
-          <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase">
-            Activa
-          </span>
-        );
-      case 'inactive':
-        return (
-          <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-white/5 text-white/40 border border-white/10 uppercase">
-            Inactiva
-          </span>
-        );
-      case 'draft':
-        return (
-          <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase">
-            Borrador
-          </span>
-        );
-      default:
-        return (
-          <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-white/5 text-white/40 border border-white/10 uppercase">
-            Desconocido
-          </span>
-        );
-    }
+    const statusConfig: Record<
+      string,
+      { bg: string; text: string; label: string }
+    > = {
+      active: {
+        bg: 'bg-emerald-500/10',
+        text: 'text-emerald-400',
+        label: 'Activa',
+      },
+      inactive: { bg: 'bg-white/5', text: 'text-white/40', label: 'Inactiva' },
+      draft: {
+        bg: 'bg-amber-500/10',
+        text: 'text-amber-400',
+        label: 'Borrador',
+      },
+    };
+    const config = statusConfig[status || ''] || {
+      bg: 'bg-white/5',
+      text: 'text-white/40',
+      label: 'Desconocido',
+    };
+    return (
+      <span
+        className={`px-2 py-0.5 rounded-full text-[9px] font-black ${config.bg} ${config.text} border border-white/10 uppercase`}
+      >
+        {config.label}
+      </span>
+    );
   };
 
   const columns = [
     {
       header: 'Nombre',
-      accessor: (item: BusinessRuleRow) => (
+      accessor: (item: BusinessRule) => (
         <div className="flex items-center gap-3">
           <div
             className="w-8 h-8 rounded-lg flex items-center justify-center border border-white/10 text-[10px] font-bold text-brand-accent uppercase"
@@ -182,7 +187,7 @@ export const BusinessRuleListPage = () => {
     },
     {
       header: 'Descripción',
-      accessor: (item: BusinessRuleRow) => (
+      accessor: (item: BusinessRule) => (
         <span className="text-white/60 text-sm font-medium">
           {item.description || '-'}
         </span>
@@ -190,7 +195,7 @@ export const BusinessRuleListPage = () => {
     },
     {
       header: 'Programación',
-      accessor: (item: BusinessRuleRow) => (
+      accessor: (item: BusinessRule) => (
         <span className="font-mono text-xs text-white/50">
           {item.execution_schedule || '-'}
         </span>
@@ -198,11 +203,11 @@ export const BusinessRuleListPage = () => {
     },
     {
       header: 'Estado',
-      accessor: (item: BusinessRuleRow) => getStatusBadge(item.status),
+      accessor: (item: BusinessRule) => getStatusBadge(item.status),
     },
     {
       header: 'Fecha Creación',
-      accessor: (item: BusinessRuleRow) => (
+      accessor: (item: BusinessRule) => (
         <span className="font-mono text-xs text-white/50">
           {formatDate(item.created_at)}
         </span>
@@ -210,7 +215,7 @@ export const BusinessRuleListPage = () => {
     },
     {
       header: 'Acciones',
-      accessor: (item: BusinessRuleRow) => (
+      accessor: (item: BusinessRule) => (
         <div className="flex justify-end gap-2">
           <Button
             variant="view"
@@ -239,40 +244,20 @@ export const BusinessRuleListPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-2">
-        <div>
-          <h1 className="text-2xl font-black text-white tracking-tighter uppercase">
-            Reglas de Negocio
-          </h1>
-          <p className="text-sm text-white/40 font-headline">
-            Gestión de reglas automatizadas
-          </p>
-        </div>
-
-        <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
-          <Search
-            onSearch={(value) => setSearchTerm(value)}
-            placeholder="Buscar..."
-            className="w-full md:w-72"
-            isLoading={loading || searchTerm !== debouncedSearch}
-          />
-          <Button
-            variant="action"
-            icon={<BiPlus />}
-            className="w-full sm:w-auto"
-            onClick={() => navigate('/dashboard/rules/create')}
-          >
-            NUEVA REGLA
-          </Button>
-        </div>
-      </div>
+      <RuleListHeader
+        onSearch={setSearchTerm}
+        searchTerm={searchTerm}
+        debouncedSearch={debouncedSearch}
+        onCreate={() => navigate('/dashboard/rules/create')}
+        loading={loading}
+      />
 
       <div className="relative">
         {loading && (
           <Loading
             variant="overlay"
             message={
-              debouncedSearch ? `Filtrando resultados...` : 'Cargando reglas...'
+              debouncedSearch ? 'Filtrando resultados...' : 'Cargando reglas...'
             }
           />
         )}
@@ -289,53 +274,22 @@ export const BusinessRuleListPage = () => {
             <Pagination
               currentPage={currentPage}
               totalItems={totalItems}
-              onPageChange={(page) => setCurrentPage(page)}
+              onPageChange={setCurrentPage}
               isLoading={loading}
             />
           </div>
         )}
       </div>
 
-      {/* Modal de confirmación de seguridad */}
-      <Modal
+      <InactivateConfirmModal
         isOpen={showConfirmModal}
         onClose={() => {
           setShowConfirmModal(false);
           setSelectedRule(null);
         }}
-        title="Confirmar Inactivación"
-      >
-        <div className="text-center py-4">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/10 flex items-center justify-center">
-            <BiCheckCircle className="text-3xl text-red-400" />
-          </div>
-          <h3 className="text-lg font-bold text-white mb-2">
-            ¿Inactivar regla?
-          </h3>
-          <p className="text-sm text-white/60 mb-2">
-            La regla{' '}
-            <strong className="text-white">{selectedRule?.name}</strong> será
-            marcada como inactiva.
-          </p>
-          <p className="text-xs text-white/40 mb-6">
-            Esta acción no eliminará la regla, solo la ocultará de la vista.
-          </p>
-          <div className="flex justify-center gap-3">
-            <Button
-              variant="outline"
-              onClick={() => {
-                setShowConfirmModal(false);
-                setSelectedRule(null);
-              }}
-            >
-              CANCELAR
-            </Button>
-            <Button variant="danger" onClick={handleInactivate}>
-              INACTIVAR
-            </Button>
-          </div>
-        </div>
-      </Modal>
+        ruleName={selectedRule?.name ?? null}
+        onConfirm={handleInactivate}
+      />
     </div>
   );
 };

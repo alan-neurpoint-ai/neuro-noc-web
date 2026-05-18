@@ -24,7 +24,8 @@ export const TemporalContextListPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [selectedContext, setSelectedContext] = useState<TemporalContextRow | null>(null);
+  const [selectedContext, setSelectedContext] =
+    useState<TemporalContextRow | null>(null);
 
   const targetOrgId = selectedOrganization?.id || user?.organizationId;
 
@@ -72,9 +73,10 @@ export const TemporalContextListPage = () => {
         if (error) throw error;
 
         // Filter out inactive
-        const filteredContexts = (data as TemporalContextRow[])?.filter(
-          ctx => ctx.status !== 'inactive'
-        ) || [];
+        const filteredContexts =
+          (data as TemporalContextRow[])?.filter(
+            (ctx) => ctx.status !== 'inactive'
+          ) || [];
         setContexts(filteredContexts);
         setTotalItems(count || 0);
       } catch (error) {
@@ -103,9 +105,10 @@ export const TemporalContextListPage = () => {
         .eq('organization_id', targetOrgId!)
         .order('start_date', { ascending: false });
 
-      const filteredContexts = (data as TemporalContextRow[])?.filter(
-        ctx => ctx.status !== 'inactive'
-      ) || [];
+      const filteredContexts =
+        (data as TemporalContextRow[])?.filter(
+          (ctx) => ctx.status !== 'inactive'
+        ) || [];
       setContexts(filteredContexts);
       setShowConfirmModal(false);
       setSelectedContext(null);
@@ -273,7 +276,9 @@ export const TemporalContextListPage = () => {
           columns={columns}
           data={contexts}
           isLoading={false}
-          onRowClick={(context) => navigate(`/dashboard/temporal-contexts/${context.id}`)}
+          onRowClick={(context) =>
+            navigate(`/dashboard/temporal-contexts/${context.id}`)
+          }
         />
 
         {!loading && totalItems > 0 && (
@@ -305,7 +310,9 @@ export const TemporalContextListPage = () => {
             ¿Inactivar contexto?
           </h3>
           <p className="text-sm text-white/60 mb-2">
-            El contexto <strong className="text-white">{selectedContext?.name}</strong> será marcado como inactivo.
+            El contexto{' '}
+            <strong className="text-white">{selectedContext?.name}</strong> será
+            marcado como inactivo.
           </p>
           <p className="text-xs text-white/40 mb-6">
             Esta acción no eliminará el contexto, solo lo ocultará de la vista.
@@ -320,10 +327,7 @@ export const TemporalContextListPage = () => {
             >
               CANCELAR
             </Button>
-            <Button
-              variant="danger"
-              onClick={handleInactivate}
-            >
+            <Button variant="danger" onClick={handleInactivate}>
               INACTIVAR
             </Button>
           </div>

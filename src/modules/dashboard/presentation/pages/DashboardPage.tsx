@@ -1,4 +1,4 @@
-import { DashboardSummary } from "../components/DashboardSummary";
+import { DashboardSummary } from '../components/DashboardSummary';
 
 export const DashboardPage = () => {
   return (

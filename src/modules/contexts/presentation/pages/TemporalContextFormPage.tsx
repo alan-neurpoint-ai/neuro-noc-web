@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
-import { BiArrowBack, BiSave, BiTrash, BiCalendar, BiInfoCircle } from 'react-icons/bi';
+import {
+  BiArrowBack,
+  BiSave,
+  BiTrash,
+  BiCalendar,
+  BiInfoCircle,
+} from 'react-icons/bi';
 import { supabase } from '../../../../core/supabase';
 import { useAuthStore } from '../../../auth/presentation/stores/useAuthStore';
 import { Loading } from '../../../../core/presentation/components/ui/Loading';
@@ -41,11 +47,12 @@ export const TemporalContextFormPage = () => {
       const fetchContext = async () => {
         setLoading(true);
         try {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const { data, error } = await (supabase.from('temporal_contexts') as any)
-            .select('*')
-            .eq('id', id)
-            .single();
+          const { data, error } =
+            await // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (supabase.from('temporal_contexts') as any)
+              .select('*')
+              .eq('id', id)
+              .single();
 
           if (error) throw error;
           setContext(data as TemporalContextRow);
@@ -64,9 +71,10 @@ export const TemporalContextFormPage = () => {
       };
       fetchContext();
     } else {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLoading(false);
     }
-  }, [id, navigate, targetOrgId]);
+  }, [id, isEditing, navigate, targetOrgId]);
 
   const handleSave = async () => {
     if (!targetOrgId) return;
@@ -156,7 +164,9 @@ export const TemporalContextFormPage = () => {
               {isEditing ? 'Editar Contexto' : 'Nuevo Contexto'}
             </h1>
             <p className="text-sm text-white/40 font-headline">
-              {isEditing ? 'Modifica los datos del contexto temporal' : 'Crea un nuevo evento temporal'}
+              {isEditing
+                ? 'Modifica los datos del contexto temporal'
+                : 'Crea un nuevo evento temporal'}
             </p>
           </div>
         </div>
@@ -194,7 +204,9 @@ export const TemporalContextFormPage = () => {
               </label>
               <Input
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
                 placeholder="Ej: Mantenimiento programada, Actualización de red..."
                 className="mt-2"
               />
@@ -206,7 +218,9 @@ export const TemporalContextFormPage = () => {
               </label>
               <textarea
                 value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
                 placeholder="Describe los detalles de este contexto temporal..."
                 className="mt-2 w-full h-32 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/30 focus:border-brand-primary/50 focus:outline-none resize-none font-body text-sm"
               />
@@ -221,7 +235,9 @@ export const TemporalContextFormPage = () => {
                 <input
                   type="datetime-local"
                   value={formData.start_date}
-                  onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, start_date: e.target.value })
+                  }
                   className="mt-2 w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white focus:border-brand-primary/50 focus:outline-none"
                   style={{ colorScheme: 'dark' }}
                 />
@@ -235,7 +251,9 @@ export const TemporalContextFormPage = () => {
                 <input
                   type="datetime-local"
                   value={formData.end_date}
-                  onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, end_date: e.target.value })
+                  }
                   className="mt-2 w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white focus:border-brand-primary/50 focus:outline-none"
                   style={{ colorScheme: 'dark' }}
                 />
@@ -286,8 +304,8 @@ export const TemporalContextFormPage = () => {
                       Nodos Afectados
                     </label>
                     <p className="text-white/60 text-sm mt-1">
-                      {typeof context.affected_nodes === 'object' 
-                        ? JSON.stringify(context.affected_nodes) 
+                      {typeof context.affected_nodes === 'object'
+                        ? JSON.stringify(context.affected_nodes)
                         : context.affected_nodes?.toString() || '-'}
                     </p>
                   </div>
@@ -301,8 +319,8 @@ export const TemporalContextFormPage = () => {
               Información
             </h3>
             <p className="text-xs text-white/60">
-              Los contextos temporales definen ventanas de tiempo para eventos especiales,
-              mantenimientos o cambios planificados en la red.
+              Los contextos temporales definen ventanas de tiempo para eventos
+              especiales, mantenimientos o cambios planificados en la red.
             </p>
           </Card>
         </div>
@@ -322,22 +340,17 @@ export const TemporalContextFormPage = () => {
             ¿Inactivar contexto?
           </h3>
           <p className="text-sm text-white/60 mb-2">
-            El contexto <strong className="text-white">{context?.name}</strong> será marcado como inactivo.
+            El contexto <strong className="text-white">{context?.name}</strong>{' '}
+            será marcado como inactivo.
           </p>
           <p className="text-xs text-white/40 mb-6">
             Esta acción no eliminará el contexto, solo lo ocultará de la vista.
           </p>
           <div className="flex justify-center gap-3">
-            <Button
-              variant="outline"
-              onClick={() => setShowDeleteModal(false)}
-            >
+            <Button variant="outline" onClick={() => setShowDeleteModal(false)}>
               CANCELAR
             </Button>
-            <Button
-              variant="danger"
-              onClick={handleDelete}
-            >
+            <Button variant="danger" onClick={handleDelete}>
               INACTIVAR
             </Button>
           </div>

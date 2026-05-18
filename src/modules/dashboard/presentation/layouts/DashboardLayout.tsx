@@ -35,7 +35,9 @@ export const DashboardLayout = () => {
       for (const item of items) {
         if (item.path && path.startsWith(item.path)) {
           if (item.children) {
-            const childMatch = item.children.find(c => path.startsWith(c.path || ''));
+            const childMatch = item.children.find((c) =>
+              path.startsWith(c.path || '')
+            );
             return childMatch ? childMatch.id : item.id;
           }
           return item.id;
@@ -45,6 +47,7 @@ export const DashboardLayout = () => {
     };
     const newActiveId = findActiveId(navItems);
     if (newActiveId && newActiveId !== activeNavId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveNavId(newActiveId);
     }
   }, [location.pathname, navItems, activeNavId]);

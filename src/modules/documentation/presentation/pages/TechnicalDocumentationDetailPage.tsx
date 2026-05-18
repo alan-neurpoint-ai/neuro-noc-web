@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
-import { BiArrowBack, BiLink, BiFile, BiCalendar, BiUser } from 'react-icons/bi';
+import {
+  BiArrowBack,
+  BiLink,
+  BiFile,
+  BiCalendar,
+  BiUser,
+} from 'react-icons/bi';
 import { supabase } from '../../../../core/supabase';
 import { Loading } from '../../../../core/presentation/components/ui/Loading';
 import { Button } from '../../../../core/presentation/components/ui/Button';
@@ -138,7 +144,7 @@ export const TechnicalDocumentationDetailPage = () => {
               <BiFile className="text-brand-accent" />
               Información General
             </h3>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="text-xs font-bold text-white/40 uppercase tracking-wider">
@@ -180,9 +186,7 @@ export const TechnicalDocumentationDetailPage = () => {
         {/* Right Column - Content */}
         <div className="lg:col-span-2 space-y-6">
           <Card className="p-6">
-            <h3 className="text-lg font-bold text-white mb-4">
-              Descripción
-            </h3>
+            <h3 className="text-lg font-bold text-white mb-4">Descripción</h3>
             <div className="text-white/70 text-sm leading-relaxed whitespace-pre-wrap">
               {doc.description || 'Sin descripción disponible'}
             </div>
@@ -194,8 +198,8 @@ export const TechnicalDocumentationDetailPage = () => {
                 Contenido Extraído
               </h3>
               <div className="text-white/70 text-sm leading-relaxed whitespace-pre-wrap max-h-96 overflow-y-auto bg-white/5 p-4 rounded-lg">
-                {typeof doc.scraped_content === 'string' 
-                  ? doc.scraped_content 
+                {typeof doc.scraped_content === 'string'
+                  ? doc.scraped_content
                   : JSON.stringify(doc.scraped_content, null, 2)}
               </div>
             </Card>

@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router";
-import { supabase } from "../../../../core/supabase";
-import { Card } from "../../../../core/presentation/components/ui/Card";
-import { useAuthStore } from "../../../auth/presentation/stores/useAuthStore";
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router';
+import { supabase } from '../../../../core/supabase';
+import { Card } from '../../../../core/presentation/components/ui/Card';
+import { useAuthStore } from '../../../auth/presentation/stores/useAuthStore';
 
 interface Organization {
   id: string;
@@ -19,14 +19,14 @@ interface Organization {
 const childrenCache = new Map<string, Organization[]>();
 
 async function fetchChildOrganizations(
-  parentId: string,
+  parentId: string
 ): Promise<Organization[]> {
   const { data, error } = await supabase
-    .from("organizations")
-    .select("*")
-    .eq("parent_organization_id", parentId)
-    .eq("is_active", true)
-    .order("created_at", { ascending: false });
+    .from('organizations')
+    .select('*')
+    .eq('parent_organization_id', parentId)
+    .eq('is_active', true)
+    .order('created_at', { ascending: false });
 
   if (error) throw error;
   return (data as Organization[]) || [];
@@ -69,7 +69,7 @@ export const OrganizationsPage = () => {
         }
       })
       .catch((error) => {
-        console.error("Error loading organizations:", error);
+        console.error('Error loading organizations:', error);
         if (!cancelled) {
           setOrganizations([]);
           setLoading(false);
@@ -91,20 +91,20 @@ export const OrganizationsPage = () => {
 
   const getOrgTypeLabel = (type: string) => {
     switch (type) {
-      case "provider":
-        return "Proveedor";
-      case "client":
-        return "Cliente";
-      case "distributor":
-        return "Distribuidor";
+      case 'provider':
+        return 'Proveedor';
+      case 'client':
+        return 'Cliente';
+      case 'distributor':
+        return 'Distribuidor';
       default:
         return type;
     }
   };
 
   const viewLabel = isInternal
-    ? "Interno"
-    : selectedOrganization?.name || "Organización";
+    ? 'Interno'
+    : selectedOrganization?.name || 'Organización';
 
   return (
     <div className="space-y-4">
@@ -123,7 +123,8 @@ export const OrganizationsPage = () => {
           <p className="text-sm text-white/50">{viewLabel}</p>
         </div>
         <span className="text-xs text-white/40">
-          {organizations.length} organizacion{organizations.length !== 1 ? "es" : ""}
+          {organizations.length} organizacion
+          {organizations.length !== 1 ? 'es' : ''}
         </span>
       </div>
 
@@ -139,8 +140,8 @@ export const OrganizationsPage = () => {
                         className="w-10 h-10 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105"
                         style={{
                           background:
-                            "linear-gradient(135deg, #672da9 0%, #8b5cf6 100%)",
-                          boxShadow: "0 0 20px rgba(103, 45, 169, 0.5)",
+                            'linear-gradient(135deg, #672da9 0%, #8b5cf6 100%)',
+                          boxShadow: '0 0 20px rgba(103, 45, 169, 0.5)',
                         }}
                       >
                         <span className="text-white font-bold text-lg">
@@ -196,14 +197,14 @@ export const OrganizationsPage = () => {
                         <span className="text-xs text-white/60">
                           {org.created_at
                             ? new Date(org.created_at).toLocaleDateString(
-                                "es-ES",
+                                'es-ES',
                                 {
-                                  day: "2-digit",
-                                  month: "short",
-                                  year: "numeric",
+                                  day: '2-digit',
+                                  month: 'short',
+                                  year: 'numeric',
                                 }
                               )
-                            : "-"}
+                            : '-'}
                         </span>
                       </div>
                     </div>
@@ -232,8 +233,8 @@ export const OrganizationsPage = () => {
         <div className="flex items-center justify-center h-32">
           <p className="text-white/40">
             {isInternal
-              ? "No hay organizaciones hijas disponibles"
-              : "No hay organizaciones disponibles"}
+              ? 'No hay organizaciones hijas disponibles'
+              : 'No hay organizaciones disponibles'}
           </p>
         </div>
       )}

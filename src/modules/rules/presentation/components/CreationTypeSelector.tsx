@@ -5,7 +5,10 @@ interface CreationTypeSelectorProps {
   onChange: (type: 'manual' | 'document') => void;
 }
 
-export const CreationTypeSelector = ({ creationType, onChange }: CreationTypeSelectorProps) => {
+export const CreationTypeSelector = ({
+  creationType,
+  onChange,
+}: CreationTypeSelectorProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <button

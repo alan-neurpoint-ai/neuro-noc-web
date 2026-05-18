@@ -24,7 +24,8 @@ export const TechnicalDocumentationListPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [selectedDoc, setSelectedDoc] = useState<TechnicalDocumentationRow | null>(null);
+  const [selectedDoc, setSelectedDoc] =
+    useState<TechnicalDocumentationRow | null>(null);
 
   const targetOrgId = selectedOrganization?.id || user?.organizationId;
 
@@ -72,9 +73,10 @@ export const TechnicalDocumentationListPage = () => {
         if (error) throw error;
 
         // Filter out inactive documents
-        const filteredDocs = (data as TechnicalDocumentationRow[])?.filter(
-          doc => doc.status !== 'inactive'
-        ) || [];
+        const filteredDocs =
+          (data as TechnicalDocumentationRow[])?.filter(
+            (doc) => doc.status !== 'inactive'
+          ) || [];
         setDocs(filteredDocs);
         setTotalItems(count || 0);
       } catch (error) {
@@ -103,9 +105,10 @@ export const TechnicalDocumentationListPage = () => {
         .eq('organization_id', targetOrgId)
         .order('created_at', { ascending: false });
 
-      const filteredDocs = (data as TechnicalDocumentationRow[])?.filter(
-        doc => doc.status !== 'inactive'
-      ) || [];
+      const filteredDocs =
+        (data as TechnicalDocumentationRow[])?.filter(
+          (doc) => doc.status !== 'inactive'
+        ) || [];
       setDocs(filteredDocs);
       setShowConfirmModal(false);
       setSelectedDoc(null);
@@ -184,7 +187,8 @@ export const TechnicalDocumentationListPage = () => {
     },
     {
       header: 'Estado',
-      accessor: (item: TechnicalDocumentationRow) => getStatusBadge(item.status),
+      accessor: (item: TechnicalDocumentationRow) =>
+        getStatusBadge(item.status),
     },
     {
       header: 'Fecha Creación',
@@ -304,7 +308,9 @@ export const TechnicalDocumentationListPage = () => {
             ¿Inactivar documentación?
           </h3>
           <p className="text-sm text-white/60 mb-2">
-            El documento <strong className="text-white">{selectedDoc?.name}</strong> será marcado como inactivo.
+            El documento{' '}
+            <strong className="text-white">{selectedDoc?.name}</strong> será
+            marcado como inactivo.
           </p>
           <p className="text-xs text-white/40 mb-6">
             Esta acción no eliminará el documento, solo lo ocultará de la vista.
@@ -319,10 +325,7 @@ export const TechnicalDocumentationListPage = () => {
             >
               CANCELAR
             </Button>
-            <Button
-              variant="danger"
-              onClick={handleInactivate}
-            >
+            <Button variant="danger" onClick={handleInactivate}>
               INACTIVAR
             </Button>
           </div>
