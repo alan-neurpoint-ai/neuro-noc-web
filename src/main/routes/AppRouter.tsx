@@ -13,6 +13,7 @@ import { BusinessRuleFormPage } from '../../modules/rules/presentation/pages/Bus
 import { TechnicalDocumentationListPage } from '../../modules/documentation/presentation/pages/TechnicalDocumentationListPage';
 import { TechnicalDocumentationDetailPage } from '../../modules/documentation/presentation/pages/TechnicalDocumentationDetailPage';
 import { AIConfigurationListPage } from '../../modules/ai/presentation/pages/AIConfigurationListPage';
+import { MonitoringAlertsPage } from '../../modules/monitoring/presentation/pages/MonitoringAlertsPage';
 
 export const AppRouter = () => {
   return (
@@ -40,6 +41,7 @@ export const AppRouter = () => {
             <Route path="/dashboard/documentation" element={<TechnicalDocumentationListPage />} />
             <Route path="/dashboard/documentation/:id" element={<TechnicalDocumentationDetailPage />} />
             <Route path="/dashboard/ai-config" element={<AIConfigurationListPage />} />
+            <Route path="/dashboard/monitoring-alerts" element={<MonitoringAlertsPage />} />
           </Route>
         </Route>
 

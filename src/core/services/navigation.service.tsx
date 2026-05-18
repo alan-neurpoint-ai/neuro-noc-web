@@ -72,7 +72,12 @@ const navigationConfig: Record<RoleName, NavItem[]> = {
       icon: <BiSolidContact className="text-xl" />,
       path: '/dashboard/contacts',
     },
-
+    {
+      id: 'monitoring',
+      label: 'Monitoreo de Alertas',
+      icon: <BiBell className="text-xl" />,
+      path: '/dashboard/monitoring-alerts',
+    },
     knowledgeGroup,
 
     {
@@ -102,10 +107,10 @@ const navigationConfig: Record<RoleName, NavItem[]> = {
       path: '/dashboard/topology',
     },
     {
-      id: 'monitoring',
-      label: 'Monitoreo',
+      id: 'monitoring-alerts',
+      label: 'Monitoreo de Alertas',
       icon: <BiBell className="text-xl" />,
-      path: '/dashboard/monitoring',
+      path: '/dashboard/monitoring-alerts',
     },
   ],
   user: [
@@ -122,10 +127,10 @@ const navigationConfig: Record<RoleName, NavItem[]> = {
       path: '/dashboard/knowledge',
     },
     {
-      id: 'monitoring',
+      id: 'monitoring-alerts',
       label: 'Monitoreo de Alertas',
       icon: <BiBell className="text-xl" />,
-      path: '/dashboard/monitoring',
+      path: '/dashboard/monitoring-alerts',
     },
   ],
 };
