@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import {
   BiBarChart,
   BiPieChart,
@@ -39,11 +40,33 @@ const COLORS = [
 ];
 
 export const MonitoringAlertsPage = () => {
+  const navigate = useNavigate();
   const { user, selectedOrganization } = useAuthStore();
   const [loading, setLoading] = useState(true);
   const [alerts, setAlerts] = useState<AlertRow[]>([]);
 
   const targetOrgId = selectedOrganization?.id || user?.organizationId;
+
+  // Función para obtener todas las organizaciones (padre + hijos)
+  const getOrganizationIds = async (orgId: string): Promise<string[]> => {
+    const ids = [orgId];
+
+    // Obtener hijos directos
+    const { data: children } = await supabase
+      .from('organizations')
+      .select('id')
+      .eq('parent_organization_id', orgId)
+      .eq('is_active', true);
+
+    const childList = children as { id: string }[] | null;
+    if (childList && childList.length > 0) {
+      // Agregar los hijos
+      const childIds = childList.map((c) => c.id);
+      ids.push(...childIds);
+    }
+
+    return ids;
+  };
 
   useEffect(() => {
     if (!targetOrgId) {
@@ -56,11 +79,22 @@ export const MonitoringAlertsPage = () => {
     const fetchAlerts = async () => {
       setLoading(true);
       try {
-        const { data, error } = await supabase
+        // Obtener organizaciones (padre + hijos)
+        const allOrgIds = await getOrganizationIds(targetOrgId);
+
+        let query = supabase
           .from('alerts')
           .select('*')
-          .eq('organization_id', targetOrgId)
           .order('created_at', { ascending: false });
+
+        // Si tiene hijos, filtrar por todas las orgs, si no solo por la padre
+        if (allOrgIds.length > 1) {
+          query = query.in('organization_id', allOrgIds);
+        } else {
+          query = query.eq('organization_id', targetOrgId);
+        }
+
+        const { data, error } = await query;
 
         if (error) throw error;
         setAlerts((data as AlertRow[]) || []);
@@ -79,10 +113,24 @@ export const MonitoringAlertsPage = () => {
     if (!targetOrgId) return [];
 
     try {
-      // Obtener alert_actions con contact_id (cualquier status)
+      // Obtener organizaciones (mismo filtro que alertas)
+      const allOrgIds = await getOrganizationIds(targetOrgId);
+
+      // Obtener alerts de esas organizaciones
+      const { data: alertsInOrg } = await supabase
+        .from('alerts')
+        .select('id')
+        .in('organization_id', allOrgIds);
+
+      const alertList = alertsInOrg as { id: string }[] | null;
+      const alertIds = (alertList || []).map((a) => a.id);
+      if (alertIds.length === 0) return [];
+
+      // Obtener alert_actions de esas alertas con contact_id
       const { data: alertActions } = await supabase
         .from('alert_actions')
         .select('contact_id')
+        .in('alert_id', alertIds)
         .not('contact_id', 'is', null);
 
       const actions = alertActions as { contact_id: string }[] | null;
@@ -390,7 +438,9 @@ export const MonitoringAlertsPage = () => {
             columns={columns}
             data={alerts}
             isLoading={false}
-            onRowClick={(alert) => console.log('Ver detalle:', alert.id)}
+            onRowClick={(alert) =>
+              navigate(`/dashboard/monitoring-alerts/${alert.id}`)
+            }
           />
         ) : (
           <div className="text-center py-12">

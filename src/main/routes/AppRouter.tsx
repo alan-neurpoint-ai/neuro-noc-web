@@ -14,6 +14,7 @@ import { TechnicalDocumentationListPage } from '../../modules/documentation/pres
 import { TechnicalDocumentationDetailPage } from '../../modules/documentation/presentation/pages/TechnicalDocumentationDetailPage';
 import { AIConfigurationListPage } from '../../modules/ai/presentation/pages/AIConfigurationListPage';
 import { MonitoringAlertsPage } from '../../modules/monitoring/presentation/pages/MonitoringAlertsPage';
+import { AlertDetailsPage } from '../../modules/monitoring/presentation/pages/AlertDetailsPage';
 
 export const AppRouter = () => {
   return (
@@ -32,16 +33,47 @@ export const AppRouter = () => {
               element={<OrganizationDetailPage />}
             />
             <Route path="/dashboard/contacts" element={<ContactListPage />} />
-            <Route path="/dashboard/temporal-contexts" element={<TemporalContextListPage />} />
-            <Route path="/dashboard/temporal-contexts/create" element={<TemporalContextFormPage />} />
-            <Route path="/dashboard/temporal-contexts/:id" element={<TemporalContextFormPage />} />
+            <Route
+              path="/dashboard/temporal-contexts"
+              element={<TemporalContextListPage />}
+            />
+            <Route
+              path="/dashboard/temporal-contexts/create"
+              element={<TemporalContextFormPage />}
+            />
+            <Route
+              path="/dashboard/temporal-contexts/:id"
+              element={<TemporalContextFormPage />}
+            />
             <Route path="/dashboard/rules" element={<BusinessRuleListPage />} />
-            <Route path="/dashboard/rules/create" element={<BusinessRuleFormPage />} />
-            <Route path="/dashboard/rules/:id" element={<BusinessRuleFormPage />} />
-            <Route path="/dashboard/documentation" element={<TechnicalDocumentationListPage />} />
-            <Route path="/dashboard/documentation/:id" element={<TechnicalDocumentationDetailPage />} />
-            <Route path="/dashboard/ai-config" element={<AIConfigurationListPage />} />
-            <Route path="/dashboard/monitoring-alerts" element={<MonitoringAlertsPage />} />
+            <Route
+              path="/dashboard/rules/create"
+              element={<BusinessRuleFormPage />}
+            />
+            <Route
+              path="/dashboard/rules/:id"
+              element={<BusinessRuleFormPage />}
+            />
+            <Route
+              path="/dashboard/documentation"
+              element={<TechnicalDocumentationListPage />}
+            />
+            <Route
+              path="/dashboard/documentation/:id"
+              element={<TechnicalDocumentationDetailPage />}
+            />
+            <Route
+              path="/dashboard/ai-config"
+              element={<AIConfigurationListPage />}
+            />
+            <Route
+              path="/dashboard/monitoring-alerts"
+              element={<MonitoringAlertsPage />}
+            />
+            <Route
+              path="/dashboard/monitoring-alerts/:id"
+              element={<AlertDetailsPage />}
+            />
           </Route>
         </Route>
 
