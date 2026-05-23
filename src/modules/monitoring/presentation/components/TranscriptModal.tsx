@@ -58,7 +58,18 @@ export const TranscriptModal = ({
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : 'Error desconocido';
-      setError(`No se pudo obtener la transcripción: ${errorMessage}`);
+
+      // Si el JSON viene vacío o no hay datos, mostrar mensaje amigable
+      if (
+        errorMessage.includes('Unexpected end of JSON input') ||
+        errorMessage.includes('JSON') ||
+        errorMessage.includes('Failed to parse')
+      ) {
+        setError('No existe transcripción para esta llamada. Consulte con soporte técnico.');
+      } else {
+        setError(`No se pudo obtener la transcripción: ${errorMessage}`);
+      }
+
       console.error('fetch transcript error:', err);
     } finally {
       setLoading(false);
