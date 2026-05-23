@@ -166,4 +166,20 @@ export const authService = {
 
     return { session, profile: profile as unknown as UserEntity };
   },
+
+  async updateThemePreference(theme: 'dark' | 'light') {
+    const { error } = await supabase.auth.updateUser({
+      data: { theme_preference: theme },
+    });
+    if (error) throw error;
+  },
+
+  async getThemePreference(): Promise<'dark' | 'light' | null> {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    const pref = user?.user_metadata?.theme_preference;
+    if (pref === 'dark' || pref === 'light') return pref;
+    return null;
+  },
 };

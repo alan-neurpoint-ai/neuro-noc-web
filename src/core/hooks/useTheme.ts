@@ -2,11 +2,14 @@ import {
   useState,
   useEffect,
   useCallback,
+  useRef,
   createContext,
   useContext,
   createElement,
   type ReactNode,
 } from 'react';
+import { useAuthStore } from '../../modules/auth/presentation/stores/useAuthStore';
+import { authService } from '../../modules/auth/infrastructure/services/auth.service';
 
 type Theme = 'dark' | 'light';
 
@@ -22,6 +25,10 @@ interface ThemeContextValue {
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 function useThemeLogic(): ThemeContextValue {
+  const user = useAuthStore((state) => state.user);
+  const userRef = useRef(user);
+  userRef.current = user;
+
   const [theme, setThemeState] = useState<Theme>(() => {
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem(STORAGE_KEY);
@@ -39,6 +46,10 @@ function useThemeLogic(): ThemeContextValue {
       const next = prev === 'dark' ? 'light' : 'dark';
       localStorage.setItem(STORAGE_KEY, next);
       applyTheme(next);
+      // Sincronizar con el servidor si el usuario está autenticado
+      if (userRef.current) {
+        authService.updateThemePreference(next).catch(console.error);
+      }
       return next;
     });
   }, [applyTheme]);
@@ -46,6 +57,19 @@ function useThemeLogic(): ThemeContextValue {
   useEffect(() => {
     applyTheme(theme);
   }, [theme, applyTheme]);
+
+  // Sincronizar desde el servidor cuando el usuario carga (login desde otro navegador)
+  useEffect(() => {
+    if (!user) return;
+    authService.getThemePreference().then((serverTheme) => {
+      if (serverTheme && serverTheme !== theme) {
+        localStorage.setItem(STORAGE_KEY, serverTheme);
+        setThemeState(serverTheme);
+        applyTheme(serverTheme);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
 
   // Cleanup: al desmontar el provider, remueve data-theme del <html>
   // para que el LoginPage herede los valores oscuros por defecto (:root)
