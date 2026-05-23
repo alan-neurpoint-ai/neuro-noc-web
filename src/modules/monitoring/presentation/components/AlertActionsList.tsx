@@ -5,6 +5,7 @@ import {
   BiRun,
   BiUser,
   BiFile,
+  BiRefresh,
 } from 'react-icons/bi';
 import { AlertActionRow } from '../../../../core/types/monitoring/alert-actions.sql';
 import { ContactRow } from '../../../../core/types/tenant/contacts.sql';
@@ -17,6 +18,7 @@ interface AlertActionsListProps {
   actions: AlertActionWithContact[];
   onOpenTranscript: (vapiId: string | null) => void;
   onOpenAudio: (vapiId: string | null) => void;
+  loadingAudioVapiId?: string | null;
 }
 
 const formatDate = (dateStr: string | null) => {
@@ -67,6 +69,7 @@ export const AlertActionsList = ({
   actions,
   onOpenTranscript,
   onOpenAudio,
+  loadingAudioVapiId,
 }: AlertActionsListProps) => {
   return (
     <div className="p-6">
@@ -142,10 +145,21 @@ export const AlertActionsList = ({
                   {action.vapi_execution_id && (
                     <button
                       onClick={() => onOpenAudio(action.vapi_execution_id)}
-                      className="px-3 py-1.5 text-xs font-medium bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg hover:bg-emerald-500/30 transition flex items-center gap-1"
+                      disabled={loadingAudioVapiId === action.vapi_execution_id}
+                      className={`px-3 py-1.5 text-xs font-medium border rounded-lg transition flex items-center gap-1 ${
+                        loadingAudioVapiId === action.vapi_execution_id
+                          ? 'bg-emerald-500/10 text-emerald-400/60 border-emerald-500/20 cursor-not-allowed'
+                          : 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/30'
+                      }`}
                     >
-                      <BiPhone className="text-sm" />
-                      Escuchar llamada
+                      {loadingAudioVapiId === action.vapi_execution_id ? (
+                        <BiRefresh className="text-sm animate-spin" />
+                      ) : (
+                        <BiPhone className="text-sm" />
+                      )}
+                      {loadingAudioVapiId === action.vapi_execution_id
+                        ? 'Cargando...'
+                        : 'Escuchar llamada'}
                     </button>
                   )}
                 </div>

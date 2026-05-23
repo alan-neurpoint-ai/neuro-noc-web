@@ -10,7 +10,8 @@ import { AlertActionRow } from '../../../../core/types/monitoring/alert-actions.
 import { ContactRow } from '../../../../core/types/tenant/contacts.sql';
 import { AlertInfoCard } from '../components/AlertInfoCard';
 import { AlertActionsList } from '../components/AlertActionsList';
-import { VapiModal } from '../components/VapiModal';
+import { TranscriptModal } from '../components/TranscriptModal';
+import { useN8nAudio } from '../hooks/useN8nAudio';
 
 interface AlertActionWithContact extends AlertActionRow {
   contact?: ContactRow | null;
@@ -25,11 +26,9 @@ export const AlertDetailsPage = () => {
   const [actions, setActions] = useState<AlertActionWithContact[]>([]);
   const [updatingStatus, setUpdatingStatus] = useState(false);
 
-  const [vapiModalOpen, setVapiModalOpen] = useState(false);
-  const [vapiModalType, setVapiModalType] = useState<
-    'transcript' | 'audio' | null
-  >(null);
-  const [vapiCallId, setVapiCallId] = useState<string | null>(null);
+  const [transcriptVapiId, setTranscriptVapiId] = useState<string | null>(null);
+  const [loadingAudioVapiId, setLoadingAudioVapiId] = useState<string | null>(null);
+  const { fetchAudio } = useN8nAudio();
 
   const targetOrgId = selectedOrganization?.id || user?.organizationId;
 
@@ -140,24 +139,20 @@ export const AlertDetailsPage = () => {
 
   const openVapiTranscript = (vapiId: string | null) => {
     if (vapiId) {
-      setVapiCallId(vapiId);
-      setVapiModalType('transcript');
-      setVapiModalOpen(true);
+      setTranscriptVapiId(vapiId);
     }
   };
 
-  const openVapiAudio = (vapiId: string | null) => {
+  const openVapiAudio = async (vapiId: string | null) => {
     if (vapiId) {
-      setVapiCallId(vapiId);
-      setVapiModalType('audio');
-      setVapiModalOpen(true);
+      setLoadingAudioVapiId(vapiId);
+      await fetchAudio(vapiId);
+      setLoadingAudioVapiId(null);
     }
   };
 
   const closeVapiModal = () => {
-    setVapiModalOpen(false);
-    setVapiModalType(null);
-    setVapiCallId(null);
+    setTranscriptVapiId(null);
   };
 
   if (loading) {
@@ -211,13 +206,13 @@ export const AlertDetailsPage = () => {
           actions={actions}
           onOpenTranscript={openVapiTranscript}
           onOpenAudio={openVapiAudio}
+          loadingAudioVapiId={loadingAudioVapiId}
         />
       </Card>
 
-      <VapiModal
-        isOpen={vapiModalOpen}
-        type={vapiModalType}
-        vapiId={vapiCallId}
+      <TranscriptModal
+        isOpen={!!transcriptVapiId}
+        vapiId={transcriptVapiId}
         onClose={closeVapiModal}
       />
     </div>
