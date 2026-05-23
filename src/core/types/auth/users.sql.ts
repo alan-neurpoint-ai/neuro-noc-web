@@ -8,6 +8,7 @@ export interface UserRow {
   organization_id: string | null;
   role_id: string | null;
   is_active: boolean | null;
+  theme_preference: string | null;
   last_login: string | null;
   created_at: string | null;
   updated_at: string | null;

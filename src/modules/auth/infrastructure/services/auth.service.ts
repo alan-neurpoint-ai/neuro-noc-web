@@ -24,6 +24,7 @@ interface PublicUserRow {
   organization_id: string | null;
   role_id: string | null;
   is_active: boolean | null;
+  theme_preference: string | null;
 }
 
 interface RoleRow {
@@ -50,7 +51,7 @@ export const authService = {
 
     const { data: publicUser } = (await supabase
       .from("users")
-      .select("first_name, last_name, organization_id, role_id, is_active")
+      .select("first_name, last_name, organization_id, role_id, is_active, theme_preference")
       .eq("id", user.id)
       .single()) as { data: PublicUserRow | null };
 
@@ -68,6 +69,7 @@ export const authService = {
         null,
       roleId: publicUser?.role_id || user.user_metadata?.roleId || null,
       isActive: publicUser?.is_active ?? true,
+      themePreference: publicUser?.theme_preference ?? null,
       lastLogin: user.last_sign_in_at ? new Date(user.last_sign_in_at) : null,
       createdAt: new Date(user.created_at),
       updatedAt: new Date(user.updated_at || user.created_at),
@@ -116,7 +118,7 @@ export const authService = {
 
     const { data: publicUser } = (await supabase
       .from("users")
-      .select("first_name, last_name, organization_id, role_id, is_active")
+      .select("first_name, last_name, organization_id, role_id, is_active, theme_preference")
       .eq("id", user.id)
       .single()) as { data: PublicUserRow | null };
 
@@ -134,6 +136,7 @@ export const authService = {
         null,
       roleId: publicUser?.role_id || user.user_metadata?.roleId || null,
       isActive: publicUser?.is_active ?? true,
+      themePreference: publicUser?.theme_preference ?? null,
       lastLogin: user.last_sign_in_at ? new Date(user.last_sign_in_at) : null,
       createdAt: new Date(user.created_at),
       updatedAt: new Date(user.updated_at || user.created_at),
@@ -167,18 +170,21 @@ export const authService = {
     return { session, profile: profile as unknown as UserEntity };
   },
 
-  async updateThemePreference(theme: 'dark' | 'light') {
-    const { error } = await supabase.auth.updateUser({
-      data: { theme_preference: theme },
-    });
+  async updateThemePreference(userId: string, theme: 'dark' | 'light') {
+    const { error } = await supabase
+      .from('users')
+      .update({ theme_preference: theme })
+      .eq('id', userId);
     if (error) throw error;
   },
 
-  async getThemePreference(): Promise<'dark' | 'light' | null> {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    const pref = user?.user_metadata?.theme_preference;
+  async getThemePreference(userId: string): Promise<'dark' | 'light' | null> {
+    const { data } = await supabase
+      .from('users')
+      .select('theme_preference')
+      .eq('id', userId)
+      .single<{ theme_preference: string | null }>();
+    const pref = data?.theme_preference;
     if (pref === 'dark' || pref === 'light') return pref;
     return null;
   },

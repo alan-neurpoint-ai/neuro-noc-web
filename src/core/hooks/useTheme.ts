@@ -48,7 +48,7 @@ function useThemeLogic(): ThemeContextValue {
       applyTheme(next);
       // Sincronizar con el servidor si el usuario está autenticado
       if (userRef.current) {
-        authService.updateThemePreference(next).catch(console.error);
+        authService.updateThemePreference(userRef.current.id, next).catch(console.error);
       }
       return next;
     });
@@ -61,7 +61,7 @@ function useThemeLogic(): ThemeContextValue {
   // Sincronizar desde el servidor cuando el usuario carga (login desde otro navegador)
   useEffect(() => {
     if (!user) return;
-    authService.getThemePreference().then((serverTheme) => {
+    authService.getThemePreference(user.id).then((serverTheme) => {
       if (serverTheme && serverTheme !== theme) {
         localStorage.setItem(STORAGE_KEY, serverTheme);
         setThemeState(serverTheme);

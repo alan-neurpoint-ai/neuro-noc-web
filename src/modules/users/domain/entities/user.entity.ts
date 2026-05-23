@@ -8,6 +8,7 @@ export interface UserEntity {
   organizationId: string | null;
   roleId: string | null;
   isActive: boolean;
+  themePreference: string | null;
   lastLogin: Date | null;
   createdAt: Date;
   updatedAt: Date;
