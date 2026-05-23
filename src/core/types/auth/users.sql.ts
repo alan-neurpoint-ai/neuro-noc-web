@@ -9,6 +9,7 @@ export interface UserRow {
   role_id: string | null;
   is_active: boolean | null;
   theme_preference: string | null;
+  notifications_enabled: boolean | null;
   last_login: string | null;
   created_at: string | null;
   updated_at: string | null;
@@ -16,6 +17,6 @@ export interface UserRow {
 
 export type UserInsert = Omit<
   UserRow,
-  "id" | "created_at" | "updated_at" | "last_login"
+  'id' | 'created_at' | 'updated_at' | 'last_login'
 >;
 export type UserUpdate = Partial<UserRow>;

@@ -1,11 +1,71 @@
-import { BiCog, BiUser, BiBell, BiSun, BiMoon, BiShield } from 'react-icons/bi';
+import { useState, useEffect } from 'react';
+import { BiCog, BiUser, BiBell, BiSun, BiMoon, BiShield, BiX, BiCheck } from 'react-icons/bi';
 import { Card } from '../../../../core/presentation/components/ui/Card';
+import { Button } from '../../../../core/presentation/components/ui/Button';
 import { useAuthStore } from '../../../auth/presentation/stores/useAuthStore';
 import { useTheme } from '../../../../core/hooks/useTheme';
+import { useNotifications } from '../../../../core/hooks/useNotifications';
 
 export const SettingsPage = () => {
   const { user, selectedOrganization } = useAuthStore();
   const { toggleTheme, isDark } = useTheme();
+  const { getPermission, requestPermission, syncPreferenceToServer, isSupported } = useNotifications();
+
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [browserPermission, setBrowserPermission] = useState<NotificationPermission | 'unsupported'>(getPermission());
+  const [permissionLoading, setPermissionLoading] = useState(false);
+
+  // Cargar estado inicial desde el usuario
+  useEffect(() => {
+    if (user?.notificationsEnabled === true) {
+      setNotificationsEnabled(true);
+    }
+    setBrowserPermission(getPermission());
+  }, [user, getPermission]);
+
+  const handleToggleNotifications = async () => {
+    if (notificationsEnabled) {
+      // Apagar notificaciones
+      setNotificationsEnabled(false);
+      if (user?.id) {
+        await syncPreferenceToServer(user.id, false);
+      }
+    } else {
+      // Mostrar modal de confirmación
+      setShowConfirmModal(true);
+    }
+  };
+
+  const handleConfirmNotifications = async () => {
+    setShowConfirmModal(false);
+    setPermissionLoading(true);
+
+    const perm = await requestPermission();
+    setBrowserPermission(perm);
+    setPermissionLoading(false);
+
+    if (perm === 'granted') {
+      setNotificationsEnabled(true);
+      // Enviar notificación de prueba
+      if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+        new Notification('NeuroNOC', {
+          body: 'Notificaciones activadas correctamente. Recibirás alertas en tiempo real.',
+          icon: '/favicon.ico',
+        });
+      }
+      if (user?.id) {
+        await syncPreferenceToServer(user.id, true);
+      }
+    }
+  };
+
+  const permissionText = () => {
+    if (!isSupported) return 'No soportado por este navegador';
+    if (browserPermission === 'granted') return 'Permiso concedido';
+    if (browserPermission === 'denied') return 'Permiso denegado. Debes habilitarlo desde la configuración del navegador.';
+    return 'Se solicitará permiso al activar';
+  };
 
   return (
     <div className="space-y-6">
@@ -130,25 +190,96 @@ export const SettingsPage = () => {
             {/* Notificaciones */}
             <div className="flex items-center justify-between p-4 rounded-xl bg-bg-surface border border-border-default">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-hover-bg">
-                  <BiBell className="text-text-muted" size={18} />
+                <div className={`p-2 rounded-lg transition-colors ${
+                  notificationsEnabled
+                    ? 'bg-brand-primary/20 text-brand-primary'
+                    : 'bg-hover-bg text-text-muted'
+                }`}>
+                  <BiBell size={18} />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-text-main">
                     Notificaciones de Alertas
                   </p>
                   <p className="text-[10px] text-text-muted">
-                    Recibir alertas en tiempo real
+                    {notificationsEnabled
+                      ? 'Recibirás notificaciones de nuevas alertas'
+                      : 'Recibir alertas en tiempo real'}
+                  </p>
+                  <p className="text-[9px] text-text-muted/60 mt-0.5">
+                    {permissionText()}
                   </p>
                 </div>
               </div>
-              <div className="w-10 h-6 rounded-full bg-brand-primary/30 flex items-center px-1">
-                <div className="w-4 h-4 rounded-full bg-brand-primary shadow ml-auto" />
-              </div>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={notificationsEnabled}
+                aria-label="Activar notificaciones"
+                onClick={handleToggleNotifications}
+                disabled={permissionLoading || !isSupported}
+                className={`relative w-14 h-7 rounded-full transition-all duration-300 cursor-pointer ${
+                  notificationsEnabled
+                    ? 'bg-brand-primary/30'
+                    : 'bg-hover-bg border border-border-default'
+                } disabled:opacity-40 disabled:cursor-not-allowed`}
+              >
+                <div
+                  className={`absolute top-0.5 w-6 h-6 rounded-full shadow-md transition-all duration-300 flex items-center justify-center ${
+                    notificationsEnabled
+                      ? 'left-7 bg-brand-primary text-white'
+                      : 'left-0.5 bg-bg-card text-text-muted'
+                  }`}
+                >
+                  {notificationsEnabled ? (
+                    <BiCheck size={12} />
+                  ) : (
+                    <BiX size={12} />
+                  )}
+                </div>
+              </button>
             </div>
           </div>
         </div>
       </Card>
+
+      {/* Modal de Confirmación */}
+      {showConfirmModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="bg-bg-elevated border border-border-default w-full max-w-md rounded-2xl shadow-2xl overflow-hidden">
+            <div className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 rounded-lg bg-brand-primary/20 text-brand-primary">
+                  <BiBell size={22} />
+                </div>
+                <h3 className="text-lg font-bold text-text-on-elevated">
+                  Activar Notificaciones
+                </h3>
+              </div>
+
+              <p className="text-sm text-text-on-elevated-muted mb-6 leading-relaxed">
+                ¿Estás seguro de que deseas recibir notificaciones de alertas en este navegador?
+                Recibirás una notificación cada vez que ocurra una alerta en tu organización.
+              </p>
+
+              <div className="flex items-center gap-3 justify-end">
+                <Button
+                  variant="ghost"
+                  onClick={() => setShowConfirmModal(false)}
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={handleConfirmNotifications}
+                >
+                  Sí, Activar
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Seguridad */}
       <Card>

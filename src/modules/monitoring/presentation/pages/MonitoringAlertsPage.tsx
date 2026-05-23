@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import { supabase } from '../../../../core/supabase';
 import { useAuthStore } from '../../../auth/presentation/stores/useAuthStore';
@@ -8,12 +8,18 @@ import { AlertRow } from '../../../../core/types/monitoring/alerts.sql';
 import { IssueFrequencyChart } from '../components/IssueFrequencyChart';
 import { ContactFrequencyChart } from '../components/ContactFrequencyChart';
 import { AlertsTable } from '../components/AlertsTable';
+import { useNotifications } from '../../../../core/hooks/useNotifications';
+
+const POLL_INTERVAL_MS = 30000; // 30 segundos
 
 export const MonitoringAlertsPage = () => {
   const navigate = useNavigate();
   const { user, selectedOrganization } = useAuthStore();
+  const { sendNotification } = useNotifications();
   const [loading, setLoading] = useState(true);
   const [alerts, setAlerts] = useState<AlertRow[]>([]);
+  const knownAlertIds = useRef<Set<string>>(new Set());
+  const notificationsEnabled = user?.notificationsEnabled === true;
   const [contactFrequencyData, setContactFrequencyData] = useState<
     { name: string; value: number }[]
   >([]);
@@ -139,6 +145,72 @@ export const MonitoringAlertsPage = () => {
     fetchContactData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [targetOrgId]);
+
+  // Notificaciones de nuevas alertas (polling)
+  useEffect(() => {
+    if (!notificationsEnabled) return;
+
+    // Sembrar knownAlertIds con las alertas ya cargadas
+    if (alerts.length > 0 && knownAlertIds.current.size === 0) {
+      knownAlertIds.current = new Set(alerts.map((a) => a.id));
+    }
+
+    const checkForNewAlerts = async () => {
+      if (!targetOrgId) return;
+
+      try {
+        const allOrgIds = await getOrganizationIds(targetOrgId);
+        let query = supabase
+          .from('alerts')
+          .select('id, title, description, severity')
+          .order('created_at', { ascending: false })
+          .limit(10);
+
+        if (allOrgIds.length > 1) {
+          query = query.in('organization_id', allOrgIds);
+        } else {
+          query = query.eq('organization_id', targetOrgId);
+        }
+
+        const { data, error } = await query;
+        if (error) throw error;
+
+        const latestAlerts = (data as Pick<AlertRow, 'id' | 'title' | 'description' | 'severity'>[]) || [];
+        const previousKnown = knownAlertIds.current;
+
+        for (const alert of latestAlerts) {
+          if (!previousKnown.has(alert.id)) {
+            const severityLabel =
+              alert.severity === 'critical'
+                ? '🔴 Crítica'
+                : alert.severity === 'high'
+                  ? '🟠 Alta'
+                  : alert.severity === 'medium'
+                    ? '🟡 Media'
+                    : '🟢 Baja';
+
+            sendNotification(
+              `[${severityLabel}] ${alert.title}`,
+              {
+                body: alert.description?.slice(0, 120) ?? 'Nueva alerta registrada',
+                tag: `alert-${alert.id}`,
+              },
+            );
+          }
+        }
+
+        // Actualizar el conjunto de IDs conocidos
+        const newIds = new Set(latestAlerts.map((a) => a.id));
+        knownAlertIds.current = newIds;
+      } catch (error) {
+        console.error('[Notifications] Error polling new alerts:', error);
+      }
+    };
+
+    const intervalId = setInterval(checkForNewAlerts, POLL_INTERVAL_MS);
+    return () => clearInterval(intervalId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [notificationsEnabled, targetOrgId]);
 
   if (loading) {
     return <Loading message="Cargando alertas..." />;

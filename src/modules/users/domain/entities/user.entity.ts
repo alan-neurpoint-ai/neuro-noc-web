@@ -9,6 +9,7 @@ export interface UserEntity {
   roleId: string | null;
   isActive: boolean;
   themePreference: string | null;
+  notificationsEnabled: boolean | null;
   lastLogin: Date | null;
   createdAt: Date;
   updatedAt: Date;

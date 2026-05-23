@@ -11,6 +11,8 @@ interface AuthUserProfile {
   organizationId: string | null;
   roleId: string | null;
   isActive: boolean;
+  themePreference: string | null;
+  notificationsEnabled: boolean | null;
   lastLogin: Date | null;
   createdAt: Date;
   updatedAt: Date;
@@ -25,6 +27,7 @@ interface PublicUserRow {
   role_id: string | null;
   is_active: boolean | null;
   theme_preference: string | null;
+  notifications_enabled: boolean | null;
 }
 
 interface RoleRow {
@@ -51,7 +54,7 @@ export const authService = {
 
     const { data: publicUser } = (await supabase
       .from("users")
-      .select("first_name, last_name, organization_id, role_id, is_active, theme_preference")
+      .select("first_name, last_name, organization_id, role_id, is_active, theme_preference, notifications_enabled")
       .eq("id", user.id)
       .single()) as { data: PublicUserRow | null };
 
@@ -70,6 +73,7 @@ export const authService = {
       roleId: publicUser?.role_id || user.user_metadata?.roleId || null,
       isActive: publicUser?.is_active ?? true,
       themePreference: publicUser?.theme_preference ?? null,
+      notificationsEnabled: publicUser?.notifications_enabled ?? null,
       lastLogin: user.last_sign_in_at ? new Date(user.last_sign_in_at) : null,
       createdAt: new Date(user.created_at),
       updatedAt: new Date(user.updated_at || user.created_at),
@@ -118,7 +122,7 @@ export const authService = {
 
     const { data: publicUser } = (await supabase
       .from("users")
-      .select("first_name, last_name, organization_id, role_id, is_active, theme_preference")
+      .select("first_name, last_name, organization_id, role_id, is_active, theme_preference, notifications_enabled")
       .eq("id", user.id)
       .single()) as { data: PublicUserRow | null };
 
@@ -137,6 +141,7 @@ export const authService = {
       roleId: publicUser?.role_id || user.user_metadata?.roleId || null,
       isActive: publicUser?.is_active ?? true,
       themePreference: publicUser?.theme_preference ?? null,
+      notificationsEnabled: publicUser?.notifications_enabled ?? null,
       lastLogin: user.last_sign_in_at ? new Date(user.last_sign_in_at) : null,
       createdAt: new Date(user.created_at),
       updatedAt: new Date(user.updated_at || user.created_at),
@@ -168,6 +173,23 @@ export const authService = {
     }
 
     return { session, profile: profile as unknown as UserEntity };
+  },
+
+  async updateNotificationPreference(userId: string, enabled: boolean) {
+    const { error } = await supabase
+      .from('users')
+      .update({ notifications_enabled: enabled })
+      .eq('id', userId);
+    if (error) throw error;
+  },
+
+  async getNotificationPreference(userId: string): Promise<boolean | null> {
+    const { data } = await supabase
+      .from('users')
+      .select('notifications_enabled')
+      .eq('id', userId)
+      .single<{ notifications_enabled: boolean | null }>();
+    return data?.notifications_enabled ?? null;
   },
 
   async updateThemePreference(userId: string, theme: 'dark' | 'light') {
