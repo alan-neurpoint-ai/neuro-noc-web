@@ -46,7 +46,7 @@ const getCriticalityBadge = (criticality: string) => {
       );
     default:
       return (
-        <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-white/5 text-white/40 border border-white/10 uppercase">
+        <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-hover-bg text-text-muted border border-border-default uppercase">
           {criticality || '-'}
         </span>
       );
@@ -68,7 +68,7 @@ const getStatusBadge = (status: string) => {
         </span>
       );
     default:
-      return <span className="text-white/40 text-xs">{status || '-'}</span>;
+      return <span className="text-text-muted text-xs">{status || '-'}</span>;
   }
 };
 
@@ -79,14 +79,14 @@ export const AlertsTable = ({ alerts, onRowClick }: AlertsTableProps) => {
       accessor: (item: AlertRow) => (
         <div className="flex items-center gap-2">
           <BiError className="text-amber-400" />
-          <span className="text-white font-medium">{item.issue}</span>
+          <span className="text-text-main font-medium">{item.issue}</span>
         </div>
       ),
     },
     {
       header: 'Host',
       accessor: 'host_name' as keyof AlertRow,
-      className: 'text-white/60 font-mono text-xs',
+      className: 'text-text-muted font-mono text-xs',
     },
     {
       header: 'Criticidad',
@@ -99,7 +99,7 @@ export const AlertsTable = ({ alerts, onRowClick }: AlertsTableProps) => {
     {
       header: 'Fecha',
       accessor: (item: AlertRow) => (
-        <span className="text-white/50 text-xs font-mono">
+        <span className="text-text-muted text-xs font-mono">
           {formatDate(item.created_at)}
         </span>
       ),
@@ -108,10 +108,10 @@ export const AlertsTable = ({ alerts, onRowClick }: AlertsTableProps) => {
 
   return (
     <div className="p-6">
-      <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+      <h3 className="text-lg font-bold text-text-main mb-4 flex items-center gap-2">
         <BiTable className="text-brand-accent" />
         Todas las Alertas
-        <span className="text-xs font-normal text-white/40 ml-2">
+        <span className="text-xs font-normal text-text-muted ml-2">
           ({alerts.length} registros)
         </span>
       </h3>
@@ -125,8 +125,8 @@ export const AlertsTable = ({ alerts, onRowClick }: AlertsTableProps) => {
         />
       ) : (
         <div className="text-center py-12">
-          <BiXCircle className="text-6xl text-white/10 mx-auto mb-4" />
-          <p className="text-white/40">No hay alertas registradas</p>
+          <BiXCircle className="text-6xl text-text-muted mx-auto mb-4" />
+          <p className="text-text-muted">No hay alertas registradas</p>
         </div>
       )}
     </div>

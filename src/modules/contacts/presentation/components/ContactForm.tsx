@@ -133,15 +133,15 @@ export const ContactForm = ({
 
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
-      <div className="bg-[#1a1a2e] border border-white/10 rounded-xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col">
-        <div className="flex items-center justify-between p-4 border-b border-white/10">
-          <h3 className="text-lg font-bold text-white flex items-center gap-2">
+      <div className="bg-bg-elevated border border-border-default rounded-xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col">
+        <div className="flex items-center justify-between p-4 border-b border-border-default">
+          <h3 className="text-lg font-bold text-text-on-elevated flex items-center gap-2">
             <BiUser className="text-brand-accent" />
             Nuevo Contacto
           </h3>
           <button
             onClick={onClose}
-            className="p-1 text-white/40 hover:text-white transition"
+            className="p-1 text-text-muted hover:text-text-on-elevated transition"
           >
             <BiX className="text-xl" />
           </button>
@@ -158,7 +158,7 @@ export const ContactForm = ({
           )}
 
           <div>
-            <label className="block text-xs font-bold text-white/40 uppercase mb-1">
+            <label className="block text-xs font-bold text-text-muted uppercase mb-1">
               Nombre completo *
             </label>
             <input
@@ -167,14 +167,14 @@ export const ContactForm = ({
               onChange={(e) =>
                 setFormData({ ...formData, full_name: e.target.value })
               }
-              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-brand-accent"
+              className="w-full px-3 py-2 bg-hover-bg border border-border-default rounded-lg text-text-on-elevated focus:outline-none focus:border-brand-accent"
               placeholder="Juan Pérez"
               required
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-white/40 uppercase mb-1">
+            <label className="block text-xs font-bold text-text-muted uppercase mb-1">
               Email *
             </label>
             <input
@@ -183,14 +183,14 @@ export const ContactForm = ({
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
-              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-brand-accent"
+              className="w-full px-3 py-2 bg-hover-bg border border-border-default rounded-lg text-text-on-elevated focus:outline-none focus:border-brand-accent"
               placeholder="juan@ejemplo.com"
               required
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-white/40 uppercase mb-1">
+            <label className="block text-xs font-bold text-text-muted uppercase mb-1">
               Teléfono *
             </label>
             <input
@@ -199,14 +199,14 @@ export const ContactForm = ({
               onChange={(e) =>
                 setFormData({ ...formData, phone_number: e.target.value })
               }
-              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-brand-accent"
+              className="w-full px-3 py-2 bg-hover-bg border border-border-default rounded-lg text-text-on-elevated focus:outline-none focus:border-brand-accent"
               placeholder="+52 555 123 4567"
               required
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-white/40 uppercase mb-1">
+            <label className="block text-xs font-bold text-text-muted uppercase mb-1">
               Cargo
             </label>
             <input
@@ -215,21 +215,21 @@ export const ContactForm = ({
               onChange={(e) =>
                 setFormData({ ...formData, job_title: e.target.value })
               }
-              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-brand-accent"
+              className="w-full px-3 py-2 bg-hover-bg border border-border-default rounded-lg text-text-on-elevated focus:outline-none focus:border-brand-accent"
               placeholder="Gerente de TI"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-white/40 uppercase mb-1">
+            <label className="block text-xs font-bold text-text-muted uppercase mb-1">
               Organización
             </label>
-            <div className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white/80">
+            <div className="px-3 py-2 bg-hover-bg border border-border-default rounded-lg text-text-main">
               {orgName || 'Cargando...'}
             </div>
-            <p className="text-xs text-white/40 mt-1">
+            <p className="text-xs text-text-muted mt-1">
               Este contacto queda registrado de la empresa:{' '}
-              <span className="text-white">{orgName || '...'}</span>
+              <span className="text-text-on-elevated">{orgName || '...'}</span>
             </p>
           </div>
 
@@ -241,15 +241,15 @@ export const ContactForm = ({
               onChange={(e) =>
                 setFormData({ ...formData, is_internal: e.target.checked })
               }
-              className="w-4 h-4 rounded border-white/20 bg-white/5 text-brand-accent focus:ring-brand-accent"
+              className="w-4 h-4 rounded border-border-default bg-hover-bg text-brand-accent focus:ring-brand-accent"
             />
-            <label htmlFor="is_internal" className="text-sm text-white/60">
+            <label htmlFor="is_internal" className="text-sm text-text-muted">
               Contacto interno (de la organización)
             </label>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-white/40 uppercase mb-1">
+            <label className="block text-xs font-bold text-text-muted uppercase mb-1">
               Notas
             </label>
             <textarea
@@ -257,7 +257,7 @@ export const ContactForm = ({
               onChange={(e) =>
                 setFormData({ ...formData, notes: e.target.value })
               }
-              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-brand-accent resize-none"
+              className="w-full px-3 py-2 bg-hover-bg border border-border-default rounded-lg text-text-on-elevated focus:outline-none focus:border-brand-accent resize-none"
               rows={3}
               placeholder="Notas adicionales sobre el contacto..."
             />
@@ -267,7 +267,7 @@ export const ContactForm = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm text-white/60 hover:text-white transition"
+              className="px-4 py-2 text-sm text-text-muted hover:text-text-on-elevated transition"
             >
               Cancelar
             </button>

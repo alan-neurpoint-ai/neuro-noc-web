@@ -34,7 +34,7 @@ export const IssueFrequencyChart = ({ alerts }: AlertChartsProps) => {
 
   return (
     <div className="p-6">
-      <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+      <h3 className="text-lg font-bold text-text-main mb-4 flex items-center gap-2">
         <BiBarChart className="text-brand-accent" />
         Problemas Más Frecuentes
       </h3>
@@ -44,11 +44,11 @@ export const IssueFrequencyChart = ({ alerts }: AlertChartsProps) => {
             <BarChart data={data}>
               <CartesianGrid
                 strokeDasharray="3 3"
-                stroke="rgba(255,255,255,0.1)"
+                stroke="var(--border-subtle)"
               />
               <XAxis
                 dataKey="name"
-                stroke="rgba(255,255,255,0.4)"
+                stroke="var(--text-muted)"
                 fontSize={10}
                 tickLine={false}
                 angle={-45}
@@ -56,16 +56,16 @@ export const IssueFrequencyChart = ({ alerts }: AlertChartsProps) => {
                 height={80}
               />
               <YAxis
-                stroke="rgba(255,255,255,0.4)"
+                stroke="var(--text-muted)"
                 fontSize={10}
                 tickLine={false}
               />
               <Tooltip
                 contentStyle={{
-                  background: '#1a1a2e',
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  background: 'var(--bg-elevated)',
+                  border: '1px solid var(--border-subtle)',
                   borderRadius: '8px',
-                  color: '#fff',
+                  color: 'var(--text-main)',
                 }}
               />
               <Bar dataKey="value" fill="#6366f1" radius={[4, 4, 0, 0]} />
@@ -73,7 +73,7 @@ export const IssueFrequencyChart = ({ alerts }: AlertChartsProps) => {
           </ResponsiveContainer>
         </div>
       ) : (
-        <div className="h-64 flex items-center justify-center text-white/40">
+        <div className="h-64 flex items-center justify-center text-text-muted">
           No hay datos para mostrar
         </div>
       )}

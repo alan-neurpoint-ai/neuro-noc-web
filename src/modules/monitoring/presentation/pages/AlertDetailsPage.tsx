@@ -162,11 +162,11 @@ export const AlertDetailsPage = () => {
   if (!alert) {
     return (
       <div className="flex flex-col items-center justify-center h-96">
-        <BiError className="text-6xl text-white/20 mb-4" />
-        <p className="text-white/40 text-lg">Alerta no encontrada</p>
+        <BiError className="text-6xl text-text-muted mb-4" />
+        <p className="text-text-muted text-lg">Alerta no encontrada</p>
         <button
           onClick={() => navigate('/dashboard/monitoring-alerts')}
-          className="mt-4 px-4 py-2 bg-brand-accent text-white rounded-lg hover:bg-brand-accent/80 transition"
+          className="mt-4 px-4 py-2 bg-brand-accent text-text-main rounded-lg hover:bg-brand-accent/80 transition"
         >
           Volver a alertas
         </button>
@@ -179,15 +179,15 @@ export const AlertDetailsPage = () => {
       <div className="flex items-center gap-4">
         <button
           onClick={() => navigate('/dashboard/monitoring-alerts')}
-          className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition text-white/60 hover:text-white"
+          className="p-2 rounded-lg bg-hover-bg hover:bg-hover-bg transition text-text-muted hover:text-text-main"
         >
           <BiArrowBack className="text-xl" />
         </button>
         <div>
-          <h1 className="text-2xl font-black text-white tracking-tighter uppercase">
+          <h1 className="text-2xl font-black text-text-main tracking-tighter uppercase">
             Detalles de Alerta
           </h1>
-          <p className="text-sm text-white/40 font-headline">
+          <p className="text-sm text-text-muted font-headline">
             Información completa y acciones
           </p>
         </div>

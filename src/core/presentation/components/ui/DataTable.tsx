@@ -28,40 +28,24 @@ export function DataTable<T>({
 }: DataTableProps<T>) {
   return (
     <div
-      className="w-full rounded-2xl h-170 overflow-hidden flex flex-col"
-      style={{
-        background:
-          'linear-gradient(160deg, #2d1b69 0%, #1a0f3e 60%, #0d0820 100%)',
-        boxShadow:
-          '0 0 0 1px rgba(178,154,244,0.08), 0 32px 64px rgba(0,0,0,0.6), 0 0 80px rgba(103,45,169,0.12)',
-      }}
+      className="w-full rounded-2xl h-170 overflow-hidden flex flex-col bg-bg-elevated border border-[var(--border-subtle)] shadow-lg"
     >
       {/* Línea de acento superior */}
-      <div
-        className="h-0.75 w-full shrink-0"
-        style={{
-          background:
-            'linear-gradient(90deg, transparent, #b29af4 30%, #672da9 70%, transparent)',
-        }}
-      />
+      <div className="h-0.75 w-full shrink-0 bg-linear-to-r from-transparent via-brand-accent/50 to-transparent" />
 
       {/* Header del DataTable */}
       {(title || subtitle) && (
-        <div
-          className="px-8 pt-6 pb-4 flex items-end justify-between border-b shrink-0"
-          style={{ borderColor: 'rgba(178,154,244,0.08)' }}
-        >
+        <div className="px-8 pt-6 pb-4 flex items-end justify-between border-b border-[var(--border-subtle)] shrink-0">
           <div>
             {title && (
-              <h2
-                className="text-lg font-bold tracking-tight text-white uppercase"
+              <h2 className="text-lg font-bold tracking-tight text-text-on-elevated uppercase"
                 style={{ fontFamily: "'Stack Sans Headline', sans-serif" }}
               >
                 {title}
               </h2>
             )}
             {subtitle && (
-              <p className="text-xs mt-0.5 text-gray-400">{subtitle}</p>
+              <p className="text-xs mt-0.5 text-text-muted">{subtitle}</p>
             )}
           </div>
           {!isLoading && (
@@ -73,7 +57,7 @@ export function DataTable<T>({
       )}
 
       {/* Contenedor con ALTURA FIJA h-140 */}
-      <div className="relative flex-1 h-[560px] overflow-hidden flex flex-col">
+      <div className="relative flex-1 h-140 overflow-hidden flex flex-col">
         {isLoading && <Loading variant="overlay" message={loadingMessage} />}
 
         {/* Scrollbox con altura fija h-140 */}
@@ -82,15 +66,15 @@ export function DataTable<T>({
             className="w-full text-left border-separate"
             style={{ borderSpacing: '0 3px' }}
           >
-            <thead className="sticky top-0 z-20 bg-[#1a0f3e]/80 backdrop-blur-md">
+            <thead className="sticky top-0 z-20 bg-bg-elevated/80 backdrop-blur-md">
               <tr>
                 {columns.map((col, idx) => (
                   <th
                     key={idx}
                     className={`px-5 py-3 text-[10px] font-black uppercase tracking-[0.25em] ${col.className || ''}`}
                     style={{
-                      color: 'rgba(178,154,244,0.55)',
-                      borderBottom: '1px solid rgba(178,154,244,0.12)',
+                      color: 'var(--text-on-elevated-muted)',
+                      borderBottom: '1px solid var(--border-subtle)',
                     }}
                   >
                     {col.header}
@@ -106,17 +90,14 @@ export function DataTable<T>({
                     {columns.map((_, colIdx) => (
                       <td
                         key={colIdx}
-                        className="px-5 py-4 bg-white/5 border-y border-brand-accent/5"
+                        className="px-5 py-4 bg-hover-bg border-y border-brand-accent/5"
                       />
                     ))}
                   </tr>
                 ))
               ) : data.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan={columns.length}
-                    className="h-[400px] text-center"
-                  >
+                  <td colSpan={columns.length} className="h-100 text-center">
                     <div className="flex flex-col items-center gap-4 opacity-40">
                       <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-brand-primary/20 border border-brand-accent/20">
                         <svg
@@ -134,10 +115,10 @@ export function DataTable<T>({
                         </svg>
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-white/50">
+                        <p className="text-sm font-semibold text-text-muted">
                           Sin datos disponibles
                         </p>
-                        <p className="text-xs text-white/30">
+                        <p className="text-xs text-text-muted/60">
                           No hay registros para mostrar
                         </p>
                       </div>
@@ -157,17 +138,17 @@ export function DataTable<T>({
                       return (
                         <td
                           key={colIdx}
-                          className={`px-5 py-4 text-sm font-medium relative group-hover:bg-brand-primary/20 group-hover:text-white ${col.className || ''}`}
+                          className={`px-5 py-4 text-sm font-medium relative group-hover:bg-brand-primary/20 group-hover:text-text-on-elevated ${col.className || ''}`}
                           style={{
-                            color: 'rgba(255,255,255,0.75)',
-                            background: 'rgba(255,255,255,0.025)',
-                            borderTop: '1px solid rgba(178,154,244,0.05)',
-                            borderBottom: '1px solid rgba(178,154,244,0.05)',
+                            color: 'var(--text-on-elevated)',
+                            background: 'color-mix(in srgb, var(--text-on-elevated) 3%, transparent)',
+                            borderTop: '1px solid var(--border-subtle)',
+                            borderBottom: '1px solid var(--border-subtle)',
                             borderLeft: isFirst
-                              ? '1px solid rgba(178,154,244,0.05)'
+                              ? '1px solid var(--border-subtle)'
                               : 'none',
                             borderRight: isLast
-                              ? '1px solid rgba(178,154,244,0.05)'
+                              ? '1px solid var(--border-subtle)'
                               : 'none',
                             borderRadius: isFirst
                               ? '12px 0 0 12px'
@@ -195,8 +176,8 @@ export function DataTable<T>({
 
       {/* Footer del DataTable */}
       {!isLoading && (
-        <div className="px-8 py-3 flex items-center justify-between border-t border-brand-accent/10 shrink-0 bg-black/10">
-          <span className="text-[10px] uppercase tracking-[0.2em] text-white/20">
+        <div className="px-8 py-3 flex items-center justify-between border-t border-[var(--border-subtle)] shrink-0 bg-bg-surface">
+          <span className="text-[10px] uppercase tracking-[0.2em] text-text-muted">
             {data.length > 0
               ? `Mostrando ${data.length} registros`
               : 'Esperando datos'}

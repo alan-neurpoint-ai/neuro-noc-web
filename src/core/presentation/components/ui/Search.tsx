@@ -47,7 +47,7 @@ export const Search = ({
         placeholder={placeholder}
         className={`
           w-full bg-bg-surface text-text-main text-sm pl-12 pr-12 py-3.5
-          rounded-[15px] border-2 border-white/5 outline-none
+          rounded-[15px] border-2 border-border-subtle outline-none
           transition-all duration-300
           placeholder:text-text-muted/30
           focus:border-brand-accent focus:shadow-[0_0_20px_rgba(178,154,244,0.15)]
@@ -58,7 +58,7 @@ export const Search = ({
 
       <button
         onClick={handleClear}
-        className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-white/10 text-text-muted hover:text-white transition-all duration-200 opacity-0 group-focus-within:opacity-100"
+        className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-hover-bg text-text-muted hover:text-text-main transition-all duration-200 opacity-0 group-focus-within:opacity-100"
         title="Limpiar búsqueda"
       >
         <BiX size={18} />

@@ -8,11 +8,19 @@
   --color-brand-primary: #6366f1;
   --color-brand-secondary: #818cf8;
   --color-brand-tertiary: #c7d2fe;
-  --color-bg-main: #05040e;
-  --color-bg-surface: #1b1b24;
-  --color-bg-card: #24242f;
-  --color-text-main: #ffffff;
-  --color-text-muted: #94a3b8;
+  --color-bg-main: var(--bg-main);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-card: var(--bg-card);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-text-main: var(--text-main);
+  --color-text-muted: var(--text-muted);
+  --color-text-on-elevated: var(--text-on-elevated);
+  --color-text-on-elevated-muted: var(--text-on-elevated-muted);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-default: var(--border-default);
+  --color-hover-bg: var(--hover-bg);
+  --color-sidebar: var(--sidebar-bg);
+  --color-topbar: var(--topbar-bg);
   --color-status-error: #f87171;
   --image-gradient-noc: linear-gradient(135deg, #6366f1 0%, #1b1b24 100%);
   @keyframes wave {
@@ -83,6 +91,41 @@
   }
 }
 
+/* ===== TEMA OSCURO (por defecto) ===== */
+:root,
+[data-theme='dark'] {
+  --bg-main: #05040e;
+  --bg-surface: #1b1b24;
+  --bg-card: #24242f;
+  --bg-elevated: #1a1a2e;
+  --text-main: #ffffff;
+  --text-muted: #94a3b8;
+  --text-on-elevated: #ffffff;
+  --text-on-elevated-muted: rgba(255, 255, 255, 0.5);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-default: rgba(255, 255, 255, 0.12);
+  --hover-bg: rgba(255, 255, 255, 0.05);
+  --sidebar-bg: #0d0d1a;
+  --topbar-bg: rgba(13, 13, 26, 0.95);
+}
+
+/* ===== TEMA CLARO ===== */
+[data-theme='light'] {
+  --bg-main: #f1f5f9;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-elevated: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-on-elevated: #0f172a;
+  --text-on-elevated-muted: rgba(15, 23, 42, 0.5);
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-default: rgba(0, 0, 0, 0.12);
+  --hover-bg: rgba(0, 0, 0, 0.04);
+  --sidebar-bg: #ffffff;
+  --topbar-bg: rgba(255, 255, 255, 0.95);
+}
+
 @layer base {
   * {
     box-sizing: border-box;
@@ -122,5 +165,5 @@
 }
 
 @utility glass-panel {
-  @apply bg-bg-surface/80 backdrop-blur-xl border border-white/5;
+  @apply bg-bg-surface/80 backdrop-blur-xl border border-border-subtle;
 }

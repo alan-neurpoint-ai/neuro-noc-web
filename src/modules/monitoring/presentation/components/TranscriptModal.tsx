@@ -92,22 +92,22 @@ export const TranscriptModal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
-      <div className="bg-[#1a1a2e] border border-white/10 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden">
-        <div className="flex items-center justify-between p-4 border-b border-white/10 bg-white/5">
+      <div className="bg-bg-elevated border border-border-default w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden">
+        <div className="flex items-center justify-between p-4 border-b border-border-default bg-hover-bg">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-brand-accent/20 text-brand-accent">
               <BiFile size={20} />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-white uppercase tracking-tight">
+              <h3 className="text-sm font-bold text-text-on-elevated uppercase tracking-tight">
                 Transcripción de Llamada
               </h3>
-              <p className="text-[10px] text-white/40 font-mono">{vapiId}</p>
+              <p className="text-[10px] text-text-on-elevated-muted font-mono">{vapiId}</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-white/40 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full"
+            className="text-text-on-elevated-muted hover:text-text-on-elevated transition-colors p-2 hover:bg-hover-bg rounded-full"
           >
             <BiX size={20} />
           </button>
@@ -134,14 +134,14 @@ export const TranscriptModal = ({
               </Button>
             </div>
           ) : (
-            <div className="bg-black/40 rounded-xl p-5 h-96 overflow-y-auto border border-white/10">
-              <div className="flex items-center gap-2 mb-4 border-b border-white/10 pb-2">
+            <div className="bg-bg-surface/80 rounded-xl p-5 h-96 overflow-y-auto border border-border-default">
+              <div className="flex items-center gap-2 mb-4 border-b border-border-default pb-2">
                 <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-[10px] text-emerald-500 font-bold uppercase">
                   Log de Conversación
                 </span>
               </div>
-              <p className="text-sm text-white/80 leading-relaxed font-mono whitespace-pre-wrap">
+              <p className="text-sm text-text-main leading-relaxed font-mono whitespace-pre-wrap">
                 {transcript}
               </p>
             </div>
@@ -149,7 +149,7 @@ export const TranscriptModal = ({
         </div>
 
         {/* Footer */}
-        <div className="p-4 bg-white/5 border-t border-white/10 flex justify-end items-center">
+        <div className="p-4 bg-hover-bg border-t border-border-default flex justify-end items-center">
           <Button
             variant="primary"
             onClick={onClose}

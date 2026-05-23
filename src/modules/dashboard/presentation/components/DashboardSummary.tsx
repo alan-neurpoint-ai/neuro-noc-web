@@ -172,7 +172,7 @@ export const DashboardSummary = () => {
       case 'Low':
         return 'text-blue-400 bg-blue-400/10';
       default:
-        return 'text-gray-400 bg-gray-400/10';
+        return 'text-text-muted bg-gray-400/10';
     }
   };
 
@@ -185,7 +185,7 @@ export const DashboardSummary = () => {
       case 'ACKNOWLEDGED':
         return 'text-amber-400';
       default:
-        return 'text-gray-400';
+        return 'text-text-muted';
     }
   };
 
@@ -207,30 +207,30 @@ export const DashboardSummary = () => {
     <div className="space-y-4">
       <div className="flex items-center justify-between mb-10">
         <div>
-          <h2 className="text-base font-headline font-bold text-white">
+          <h2 className="text-base font-headline font-bold text-text-main">
             Alertas - Últimas 4 semanas
           </h2>
-          <p className="text-xs text-white/50">{viewLabel}</p>
+          <p className="text-xs text-text-muted">{viewLabel}</p>
         </div>
       </div>
 
       <div className="space-y-2 mb-10">
-        <h3 className="text-xs font-headline text-white/40 uppercase">
+        <h3 className="text-xs font-headline text-text-muted uppercase">
           Métricas
         </h3>
         {!loadingMetrics && (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
             <Card variant="glass" className="p-3">
-              <p className="text-[10px] font-headline text-white/40 uppercase">
+              <p className="text-[10px] font-headline text-text-muted uppercase">
                 Total Alerts
               </p>
-              <p className="text-xl font-bold text-white mt-1">
+              <p className="text-xl font-bold text-text-main mt-1">
                 {metrics.totalAlerts}
               </p>
             </Card>
 
             <Card variant="glass" className="p-3">
-              <p className="text-[10px] font-headline text-white/40 uppercase">
+              <p className="text-[10px] font-headline text-text-muted uppercase">
                 Tasa Crítica
               </p>
               <p className="text-xl font-bold text-red-400 mt-1">
@@ -239,7 +239,7 @@ export const DashboardSummary = () => {
             </Card>
 
             <Card variant="glass" className="p-3">
-              <p className="text-[10px] font-headline text-white/40 uppercase">
+              <p className="text-[10px] font-headline text-text-muted uppercase">
                 Resueltas
               </p>
               <p className="text-xl font-bold text-emerald-400 mt-1">
@@ -248,7 +248,7 @@ export const DashboardSummary = () => {
             </Card>
 
             <Card variant="glass" className="p-3">
-              <p className="text-[10px] font-headline text-white/40 uppercase">
+              <p className="text-[10px] font-headline text-text-muted uppercase">
                 Pendientes
               </p>
               <p className="text-xl font-bold text-amber-400 mt-1">
@@ -257,7 +257,7 @@ export const DashboardSummary = () => {
             </Card>
 
             <Card variant="glass" className="p-3">
-              <p className="text-[10px] font-headline text-white/40 uppercase">
+              <p className="text-[10px] font-headline text-text-muted uppercase">
                 Correos
               </p>
               <p className="text-xl font-bold text-blue-400 mt-1">
@@ -266,7 +266,7 @@ export const DashboardSummary = () => {
             </Card>
 
             <Card variant="glass" className="p-3">
-              <p className="text-[10px] font-headline text-white/40 uppercase">
+              <p className="text-[10px] font-headline text-text-muted uppercase">
                 Llamadas
               </p>
               <p className="text-xl font-bold text-purple-400 mt-1">
@@ -290,8 +290,8 @@ export const DashboardSummary = () => {
             />
           </div>
         ) : (
-          <div className="h-30 flex items-center justify-center rounded-2xl bg-white/5 border border-white/10">
-            <p className="text-white/40 text-sm">
+          <div className="h-30 flex items-center justify-center rounded-2xl bg-hover-bg border border-border-default">
+            <p className="text-text-muted text-sm">
               Sin alertas en las últimas 4 semanas
             </p>
           </div>
@@ -307,10 +307,10 @@ export const DashboardSummary = () => {
               header: 'Dispositivo',
               accessor: (alert: RecentAlert) => (
                 <div>
-                  <div className="text-white font-medium">
+                  <div className="text-text-main font-medium">
                     {alert.host_name}
                   </div>
-                  <div className="text-white/40 text-[10px] truncate max-w-50">
+                  <div className="text-text-muted text-[10px] truncate max-w-50">
                     {alert.issue}
                   </div>
                 </div>
@@ -329,7 +329,7 @@ export const DashboardSummary = () => {
             {
               header: 'Fecha',
               accessor: (alert: RecentAlert) => (
-                <span className="text-white/60">
+                <span className="text-text-muted">
                   {new Date(alert.created_at).toLocaleDateString('es-ES', {
                     day: '2-digit',
                     month: 'short',
@@ -344,7 +344,7 @@ export const DashboardSummary = () => {
                   {
                     header: 'Organización',
                     accessor: (alert: RecentAlert) => (
-                      <span className="text-white/60">
+                      <span className="text-text-muted">
                         {alert.organization_name || '-'}
                       </span>
                     ),

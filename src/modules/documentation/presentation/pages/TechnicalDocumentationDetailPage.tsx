@@ -81,13 +81,13 @@ export const TechnicalDocumentationDetailPage = () => {
         );
       case 'inactive':
         return (
-          <span className="px-3 py-1 rounded-full text-xs font-black bg-white/5 text-white/40 border border-white/10 uppercase">
+          <span className="px-3 py-1 rounded-full text-xs font-black bg-hover-bg text-text-muted border border-border-default uppercase">
             Inactivo
           </span>
         );
       default:
         return (
-          <span className="px-3 py-1 rounded-full text-xs font-black bg-white/5 text-white/40 border border-white/10 uppercase">
+          <span className="px-3 py-1 rounded-full text-xs font-black bg-hover-bg text-text-muted border border-border-default uppercase">
             Desconocido
           </span>
         );
@@ -114,10 +114,10 @@ export const TechnicalDocumentationDetailPage = () => {
             className="p-2"
           />
           <div>
-            <h1 className="text-2xl font-black text-white tracking-tighter uppercase">
+            <h1 className="text-2xl font-black text-text-main tracking-tighter uppercase">
               Detalles del Documento
             </h1>
-            <p className="text-sm text-white/40 font-headline">
+            <p className="text-sm text-text-muted font-headline">
               Información técnica completa
             </p>
           </div>
@@ -140,43 +140,43 @@ export const TechnicalDocumentationDetailPage = () => {
         {/* Left Column - Info */}
         <div className="lg:col-span-1 space-y-6">
           <Card className="p-6">
-            <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+            <h3 className="text-lg font-bold text-text-main mb-4 flex items-center gap-2">
               <BiFile className="text-brand-accent" />
               Información General
             </h3>
 
             <div className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-white/40 uppercase tracking-wider">
+                <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
                   Nombre
                 </label>
-                <p className="text-white font-medium mt-1">{doc.name}</p>
+                <p className="text-text-main font-medium mt-1">{doc.name}</p>
               </div>
 
               <div>
-                <label className="text-xs font-bold text-white/40 uppercase tracking-wider">
+                <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
                   Estado
                 </label>
                 <div className="mt-2">{getStatusBadge(doc.status)}</div>
               </div>
 
               <div>
-                <label className="text-xs font-bold text-white/40 uppercase tracking-wider flex items-center gap-2">
-                  <BiCalendar className="text-white/40" />
+                <label className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-2">
+                  <BiCalendar className="text-text-muted" />
                   Fecha de Creación
                 </label>
-                <p className="text-white/60 text-sm mt-1">
+                <p className="text-text-muted text-sm mt-1">
                   {formatDate(doc.created_at)}
                 </p>
               </div>
 
               {doc.created_by && (
                 <div>
-                  <label className="text-xs font-bold text-white/40 uppercase tracking-wider flex items-center gap-2">
-                    <BiUser className="text-white/40" />
+                  <label className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-2">
+                    <BiUser className="text-text-muted" />
                     Creado por
                   </label>
-                  <p className="text-white/60 text-sm mt-1">{doc.created_by}</p>
+                  <p className="text-text-muted text-sm mt-1">{doc.created_by}</p>
                 </div>
               )}
             </div>
@@ -186,18 +186,18 @@ export const TechnicalDocumentationDetailPage = () => {
         {/* Right Column - Content */}
         <div className="lg:col-span-2 space-y-6">
           <Card className="p-6">
-            <h3 className="text-lg font-bold text-white mb-4">Descripción</h3>
-            <div className="text-white/70 text-sm leading-relaxed whitespace-pre-wrap">
+            <h3 className="text-lg font-bold text-text-main mb-4">Descripción</h3>
+            <div className="text-text-main text-sm leading-relaxed whitespace-pre-wrap">
               {doc.description || 'Sin descripción disponible'}
             </div>
           </Card>
 
           {doc.scraped_content && (
             <Card className="p-6">
-              <h3 className="text-lg font-bold text-white mb-4">
+              <h3 className="text-lg font-bold text-text-main mb-4">
                 Contenido Extraído
               </h3>
-              <div className="text-white/70 text-sm leading-relaxed whitespace-pre-wrap max-h-96 overflow-y-auto bg-white/5 p-4 rounded-lg">
+              <div className="text-text-main text-sm leading-relaxed whitespace-pre-wrap max-h-96 overflow-y-auto bg-hover-bg p-4 rounded-lg">
                 {typeof doc.scraped_content === 'string'
                   ? doc.scraped_content
                   : JSON.stringify(doc.scraped_content, null, 2)}
@@ -207,7 +207,7 @@ export const TechnicalDocumentationDetailPage = () => {
 
           {doc.file_url && (
             <Card className="p-6">
-              <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+              <h3 className="text-lg font-bold text-text-main mb-4 flex items-center gap-2">
                 <BiLink className="text-brand-accent" />
                 Enlace del Documento
               </h3>

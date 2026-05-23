@@ -210,7 +210,7 @@ export const BusinessRuleFormPage = () => {
             <h3 className="text-sm font-bold text-brand-accent mb-2">
               Información
             </h3>
-            <p className="text-xs text-white/60">
+            <p className="text-xs text-text-muted">
               Las reglas de negocio definen automatizaciones que se ejecutan en
               tu sistema. Puedes crearlas manualmente o procesarlas desde
               documentos técnicos.

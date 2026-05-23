@@ -36,7 +36,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex bg-white font-body antialiased">
+    <div data-theme="dark" className="min-h-screen flex bg-white font-body antialiased">
       <div className="hidden lg:flex lg:w-[58%] relative bg-bg-main overflow-hidden border-r border-white/5">
         <div
           className="absolute inset-0 opacity-20"
@@ -66,7 +66,7 @@ export default function LoginPage() {
                 Sistema de Gestión de Operaciones
               </span>
             </div>
-            <h1 className="text-6xl font-headline font-extrabold text-white leading-tight">
+              <h1 className="text-6xl font-headline font-extrabold text-white leading-tight">
               Inteligencia en el <br />
               <span className="text-brand-secondary">borde</span>
             </h1>

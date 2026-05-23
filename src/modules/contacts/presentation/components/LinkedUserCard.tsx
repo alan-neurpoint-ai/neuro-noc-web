@@ -39,20 +39,20 @@ const formatDate = (dateStr: string | null) => {
 export const LinkedUserCard = ({ user, onCreateUser }: LinkedUserCardProps) => {
   return (
     <div className="p-6">
-      <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+      <h3 className="text-lg font-bold text-text-main mb-4 flex items-center gap-2">
         <BiUserCircle className="text-brand-accent" />
         Usuario Vinculado
       </h3>
 
       {user ? (
-        <div className="p-4 rounded-lg bg-white/5 border border-white/10">
+        <div className="p-4 rounded-lg bg-hover-bg border border-border-default">
           <div className="flex items-start gap-4">
             <div className="w-16 h-16 rounded-full bg-brand-accent/20 flex items-center justify-center">
               <BiUser className="text-3xl text-brand-accent" />
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
-                <h4 className="text-lg font-bold text-white">
+                <h4 className="text-lg font-bold text-text-main">
                   {user.first_name || user.email.split('@')[0]}{' '}
                   {user.last_name || ''}
                 </h4>
@@ -68,22 +68,22 @@ export const LinkedUserCard = ({ user, onCreateUser }: LinkedUserCardProps) => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                <div className="flex items-center gap-2 text-white/60">
-                  <BiAt className="text-white/40" />
+                <div className="flex items-center gap-2 text-text-muted">
+                  <BiAt className="text-text-muted" />
                   <span>{user.email}</span>
                 </div>
                 {user.phone_number && (
-                  <div className="flex items-center gap-2 text-white/60">
-                    <BiPhone className="text-white/40" />
+                  <div className="flex items-center gap-2 text-text-muted">
+                    <BiPhone className="text-text-muted" />
                     <span>{user.phone_number}</span>
                   </div>
                 )}
-                <div className="flex items-center gap-2 text-white/60">
-                  <BiCalendar className="text-white/40" />
+                <div className="flex items-center gap-2 text-text-muted">
+                  <BiCalendar className="text-text-muted" />
                   <span>Último login: {formatDate(user.last_login)}</span>
                 </div>
-                <div className="flex items-center gap-2 text-white/60">
-                  <BiLockAlt className="text-white/40" />
+                <div className="flex items-center gap-2 text-text-muted">
+                  <BiLockAlt className="text-text-muted" />
                   <span>Creado: {formatDate(user.created_at)}</span>
                 </div>
               </div>
@@ -92,8 +92,8 @@ export const LinkedUserCard = ({ user, onCreateUser }: LinkedUserCardProps) => {
         </div>
       ) : (
         <div className="text-center py-8">
-          <BiUserCircle className="text-4xl text-white/10 mx-auto mb-2" />
-          <p className="text-white/40 mb-4">
+          <BiUserCircle className="text-4xl text-text-muted mx-auto mb-2" />
+          <p className="text-text-muted mb-4">
             Este contacto no está vinculado a ningún usuario
           </p>
           <button

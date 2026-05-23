@@ -70,13 +70,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <aside
       className={`relative h-screen flex flex-col z-50 transition-all duration-300 ${
         isCollapsed ? 'w-20' : 'w-74'
-      } ${className}`}
-      style={{
-        background: 'linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 100%)',
-      }}
+      } ${className} bg-sidebar`}
     >
       <div
-        className="absolute inset-0 opacity-30"
+        className="absolute inset-0 opacity-[0.03] dark:opacity-30"
         style={{
           backgroundImage: `
             linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
@@ -88,7 +85,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       <div className="absolute top-0 left-0 w-full h-32 bg-linear-to-b from-brand-primary/10 to-transparent pointer-events-none" />
 
-      <div className="relative flex items-center justify-between px-5 py-5 border-b border-white/5">
+      <div className="relative flex items-center justify-between px-5 py-5 border-b border-border-subtle">
         <div className="flex items-center gap-3">
           <div
             className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
@@ -113,10 +110,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
           {!isCollapsed && (
             <div>
-              <span className="text-lg font-headline font-bold text-white tracking-wide">
+              <span className="text-lg font-headline font-bold text-text-on-elevated tracking-wide">
                 NeuroNOC
               </span>
-              <p className="text-[9px] text-white/30 font-headline tracking-wider">
+              <p className="text-[9px] text-text-on-elevated-muted font-headline tracking-wider">
                 NETWORK INTELLIGENCE
               </p>
             </div>
@@ -141,7 +138,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {!isCollapsed && (
           <div className="flex items-center gap-2 px-3 pb-3">
             <div className="h-px flex-1 bg-linear-to-r from-brand-primary/50 to-transparent" />
-            <span className="text-[10px] font-headline font-bold uppercase tracking-[0.25em] text-white/30">
+            <span className="text-[10px] font-headline font-bold uppercase tracking-[0.25em] text-text-on-elevated-muted">
               Menú
             </span>
             <div className="h-px flex-1 bg-linear-to-l from-brand-primary/50 to-transparent" />
@@ -168,14 +165,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
               className={`group relative w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${
                 isActive
                   ? 'bg-linear-to-r from-brand-primary/20 to-transparent border-l-2 border-brand-primary'
-                  : 'hover:bg-white/5 text-white/50 hover:text-white/80'
+                  : 'hover:bg-hover-bg text-text-on-elevated-muted hover:text-text-on-elevated'
               } ${isCollapsed ? 'justify-center' : ''}`}
             >
               <div
                 className={`shrink-0 transition-colors ${
                   isActive
                     ? 'text-brand-accent'
-                    : 'text-white/40 group-hover:text-brand-accent/80'
+                    : 'text-text-on-elevated-muted group-hover:text-brand-accent/80'
                 }`}
               >
                 {item.icon}
@@ -184,7 +181,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <div className="flex items-center justify-between flex-1 min-w-0">
                   <span
                     className={`text-sm font-headline truncate ${
-                      isActive ? 'text-white font-semibold' : 'font-medium'
+                      isActive ? 'text-text-on-elevated font-semibold' : 'font-medium'
                     }`}
                   >
                     {item.label}
@@ -198,7 +195,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               )}
 
               {isCollapsed && (
-                <div className="absolute left-full ml-3 px-3 py-2 bg-[#1a1a2e] border border-white/10 rounded-lg text-xs font-headline text-white opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 whitespace-nowrap shadow-xl">
+                <div className="absolute left-full ml-3 px-3 py-2 bg-bg-elevated border border-border-default rounded-lg text-xs font-headline text-text-on-elevated opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 whitespace-nowrap shadow-xl">
                   {item.label}
                 </div>
               )}
@@ -207,21 +204,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
         })}
       </nav>
 
-      <div className="p-3 mt-auto border-t border-white/5 relative">
+      <div className="p-3 mt-auto border-t border-border-subtle relative">
         {profileOpen && !isCollapsed && (
           <div
-            className="absolute bottom-full left-3 right-3 mb-3 p-4 rounded-xl overflow-hidden"
-            style={{
-              background: 'linear-gradient(160deg, #2d1b69 0%, #1a0f3e 100%)',
-              border: '1px solid rgba(178,154,244,0.15)',
-              boxShadow:
-                '0 0 40px rgba(103, 45, 169, 0.3), 0 20px 40px rgba(0,0,0,0.5)',
-            }}
+            className="absolute bottom-full left-3 right-3 mb-3 p-4 rounded-xl overflow-hidden bg-bg-elevated border border-brand-primary/20 shadow-xl"
           >
             <div className="flex items-center gap-3 mb-4">
               <Avatar src={userAvatar} name={userName} size={42} />
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-headline font-bold text-white truncate">
+                <p className="text-sm font-headline font-bold text-text-on-elevated truncate">
                   {userName}
                 </p>
                 <p className="text-[10px] font-headline text-brand-accent truncate uppercase tracking-wider">
@@ -230,17 +221,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </div>
             </div>
 
-            <div className="space-y-2 pb-3 border-b border-white/5">
+            <div className="space-y-2 pb-3 border-b border-border-subtle">
               <div className="flex justify-between items-center">
-                <span className="text-[10px] font-headline text-white/40 uppercase">
+                <span className="text-[10px] font-headline text-text-on-elevated-muted uppercase">
                   Organización
                 </span>
-                <span className="text-xs font-headline text-white/70">
+                <span className="text-xs font-headline text-text-on-elevated/70">
                   {userCompany}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-[10px] font-headline text-white/40 uppercase">
+                <span className="text-[10px] font-headline text-text-on-elevated-muted uppercase">
                   Status
                 </span>
                 <span className="text-xs font-headline text-emerald-400 flex items-center gap-1">
@@ -274,22 +265,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
           className={`w-full flex items-center gap-3 p-2.5 rounded-lg transition-all border ${
             profileOpen
               ? 'bg-brand-primary/10 border-brand-primary/30'
-              : 'bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/10'
+              : 'bg-hover-bg border-border-subtle hover:bg-hover-bg/80 hover:border-border-default'
           } ${isCollapsed ? 'justify-center' : ''}`}
         >
           <div className="relative">
             <Avatar src={userAvatar} name={userName} size={32} />
             <div
-              className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-[#0f0f1a]"
+              className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-sidebar"
               style={{ background: '#10b981' }}
             />
           </div>
           {!isCollapsed && (
             <div className="flex-1 min-w-0 text-left">
-              <p className="text-sm font-headline font-semibold text-white truncate">
+              <p className="text-sm font-headline font-semibold text-text-on-elevated truncate">
                 {userName}
               </p>
-              <p className="text-[10px] font-headline text-white/40 truncate uppercase">
+              <p className="text-[10px] font-headline text-text-on-elevated-muted truncate uppercase">
                 {userRole}
               </p>
             </div>

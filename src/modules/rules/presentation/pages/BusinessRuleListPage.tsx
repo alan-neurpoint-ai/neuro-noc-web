@@ -147,7 +147,7 @@ export const BusinessRuleListPage = () => {
         text: 'text-emerald-400',
         label: 'Activa',
       },
-      inactive: { bg: 'bg-white/5', text: 'text-white/40', label: 'Inactiva' },
+      inactive: { bg: 'bg-hover-bg', text: 'text-text-muted', label: 'Inactiva' },
       draft: {
         bg: 'bg-amber-500/10',
         text: 'text-amber-400',
@@ -155,13 +155,13 @@ export const BusinessRuleListPage = () => {
       },
     };
     const config = statusConfig[status || ''] || {
-      bg: 'bg-white/5',
-      text: 'text-white/40',
+      bg: 'bg-hover-bg',
+      text: 'text-text-muted',
       label: 'Desconocido',
     };
     return (
       <span
-        className={`px-2 py-0.5 rounded-full text-[9px] font-black ${config.bg} ${config.text} border border-white/10 uppercase`}
+        className={`px-2 py-0.5 rounded-full text-[9px] font-black ${config.bg} ${config.text} border border-border-default uppercase`}
       >
         {config.label}
       </span>
@@ -174,12 +174,12 @@ export const BusinessRuleListPage = () => {
       accessor: (item: BusinessRule) => (
         <div className="flex items-center gap-3">
           <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center border border-white/10 text-[10px] font-bold text-brand-accent uppercase"
+            className="w-8 h-8 rounded-lg flex items-center justify-center border border-border-default text-[10px] font-bold text-brand-accent uppercase"
             style={{ background: 'rgba(103,45,169,0.2)' }}
           >
             {item.name.charAt(0)}
           </div>
-          <span className="text-white font-bold tracking-tight">
+          <span className="text-text-main font-bold tracking-tight">
             {item.name}
           </span>
         </div>
@@ -188,7 +188,7 @@ export const BusinessRuleListPage = () => {
     {
       header: 'Descripción',
       accessor: (item: BusinessRule) => (
-        <span className="text-white/60 text-sm font-medium">
+        <span className="text-text-muted text-sm font-medium">
           {item.description || '-'}
         </span>
       ),
@@ -196,7 +196,7 @@ export const BusinessRuleListPage = () => {
     {
       header: 'Programación',
       accessor: (item: BusinessRule) => (
-        <span className="font-mono text-xs text-white/50">
+        <span className="font-mono text-xs text-text-muted">
           {item.execution_schedule || '-'}
         </span>
       ),
@@ -208,7 +208,7 @@ export const BusinessRuleListPage = () => {
     {
       header: 'Fecha Creación',
       accessor: (item: BusinessRule) => (
-        <span className="font-mono text-xs text-white/50">
+        <span className="font-mono text-xs text-text-muted">
           {formatDate(item.created_at)}
         </span>
       ),

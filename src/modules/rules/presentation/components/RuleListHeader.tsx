@@ -20,10 +20,10 @@ export const RuleListHeader = ({
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-2">
       <div>
-        <h1 className="text-2xl font-black text-white tracking-tighter uppercase">
+        <h1 className="text-2xl font-black text-text-main tracking-tighter uppercase">
           Reglas de Negocio
         </h1>
-        <p className="text-sm text-white/40 font-headline">
+        <p className="text-sm text-text-muted font-headline">
           Gestión de reglas automatizadas
         </p>
       </div>

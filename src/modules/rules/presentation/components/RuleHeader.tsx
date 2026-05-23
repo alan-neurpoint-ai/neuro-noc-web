@@ -31,10 +31,10 @@ export const RuleHeader = ({
             className="p-2"
           />
           <div>
-            <h1 className="text-2xl font-black text-white tracking-tighter uppercase">
+            <h1 className="text-2xl font-black text-text-main tracking-tighter uppercase">
               {isEditing ? 'Editar Regla' : 'Nueva Regla de Negocio'}
             </h1>
-            <p className="text-sm text-white/40 font-headline">
+            <p className="text-sm text-text-muted font-headline">
               {isEditing
                 ? 'Modifica los datos de la regla'
                 : 'Crea una nueva regla de negocio'}
@@ -57,7 +57,7 @@ export const RuleHeader = ({
 
       {!isEditing && (
         <Card className="p-6">
-          <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+          <h3 className="text-lg font-bold text-text-main mb-4 flex items-center gap-2">
             <BiBrain className="text-brand-accent" />
             Tipo de Creación
           </h3>

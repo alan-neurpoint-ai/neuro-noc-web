@@ -23,12 +23,12 @@ export const Card = ({
 }: CardProperties) => {
   const variantStyles = useMemo(
     () => ({
-      surface: 'bg-white border-2 border-brand-primary/20',
-      stat: 'bg-white border border-gray-100 hover:border-brand-primary/40 shadow-sm transition-all duration-300',
+      surface: 'bg-bg-card border-2 border-brand-primary/20',
+      stat: 'bg-bg-card border border-[var(--border-default)] hover:border-brand-primary/40 shadow-sm transition-all duration-300',
       glass:
-        'bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.05)]',
+        'bg-bg-card/50 backdrop-blur-xl border border-[var(--border-subtle)] shadow-[0_8px_32px_0_rgba(0,0,0,0.05)]',
       profile:
-        'bg-white border-2 border-brand-primary shadow-xl shadow-brand-primary/10',
+        'bg-bg-card border-2 border-brand-primary shadow-xl shadow-brand-primary/10',
     }),
     []
   );
@@ -59,7 +59,7 @@ export const Card = ({
       )}
     >
       {variant === 'glass' && (
-        <div className="absolute inset-0 bg-linear-to-br from-white/10 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-linear-to-br from-[var(--text-on-elevated)]/5 to-transparent pointer-events-none" />
       )}
 
       <div className="relative z-10">{children}</div>

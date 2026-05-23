@@ -34,12 +34,6 @@ const knowledgeGroup: NavItem = {
       icon: <BiBook className="text-xl" />,
       path: '/dashboard/documentation',
     },
-    {
-      id: 'ai-config',
-      label: 'Personalidad IA',
-      icon: <BiBrain className="text-xl" />,
-      path: '/dashboard/ai-config',
-    },
   ],
 };
 
@@ -56,6 +50,13 @@ const navigationConfig: Record<RoleName, NavItem[]> = {
       label: 'Organizaciones',
       icon: <BiBuilding className="text-xl" />,
       path: '/dashboard/organizations',
+    },
+
+    {
+      id: 'settings',
+      label: 'Configuración',
+      icon: <BiCog className="text-xl" />,
+      path: '/dashboard/settings',
     },
   ],
   admin: [

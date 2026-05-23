@@ -46,8 +46,8 @@ export const AIConfigCard = ({
   onDelete,
 }: AIConfigCardProps) => {
   return (
-    <div className="bg-bg-surface border border-white/5 rounded-2xl p-6">
-      <div className="flex items-center gap-4 mb-8 pb-6 border-b border-white/5">
+    <div className="bg-bg-surface border border-border-subtle rounded-2xl p-6">
+      <div className="flex items-center gap-4 mb-8 pb-6 border-b border-border-subtle">
         <div
           className="w-20 h-20 rounded-2xl flex items-center justify-center"
           style={{
@@ -58,10 +58,10 @@ export const AIConfigCard = ({
           <BiBrain className="text-4xl text-brand-accent" />
         </div>
         <div>
-          <h2 className="text-xl font-black text-white">
+          <h2 className="text-xl font-black text-text-main">
             {formData.ai_name || 'Nuevo Agente IA'}
           </h2>
-          <p className="text-sm text-white/40">
+          <p className="text-sm text-text-muted">
             {formData.id ? 'Configuración activa' : 'Sin configurar'}
           </p>
         </div>
@@ -112,7 +112,7 @@ export const AIConfigCard = ({
 
       {/* Metadata */}
       {hasConfig && (
-        <div className="mt-8 pt-6 border-t border-white/5 flex justify-between text-xs text-white/30">
+        <div className="mt-8 pt-6 border-t border-border-subtle flex justify-between text-xs text-text-muted">
           <span>
             Creado:{' '}
             {configs[0]?.created_at ? formatDate(configs[0].created_at) : '-'}

@@ -77,7 +77,7 @@ export const Input = ({
             w-full bg-bg-surface font-body text-sm text-text-main transition-all duration-300
             ${icon ? 'pl-12 pr-4' : 'px-5'} py-3.5
             rounded-[12px]
-            border border-white/5
+            border border-border-subtle
             ${
               error
                 ? 'border-status-error ring-4 ring-status-error/10'

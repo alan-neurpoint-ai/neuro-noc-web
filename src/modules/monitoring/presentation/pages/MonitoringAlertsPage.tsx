@@ -147,10 +147,10 @@ export const MonitoringAlertsPage = () => {
   return (
     <div className="space-y-6">
       <div className="px-2">
-        <h1 className="text-2xl font-black text-white tracking-tighter uppercase">
+        <h1 className="text-2xl font-black text-text-main tracking-tighter uppercase">
           Monitoreo de Alertas
         </h1>
-        <p className="text-sm text-white/40 font-headline">
+        <p className="text-sm text-text-muted font-headline">
           Análisis de incidentes y contactos
         </p>
       </div>

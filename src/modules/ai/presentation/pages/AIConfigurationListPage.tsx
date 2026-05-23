@@ -162,10 +162,10 @@ export const AIConfigurationListPage = () => {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-2">
         <div>
-          <h1 className="text-2xl font-black text-white tracking-tighter uppercase">
+          <h1 className="text-2xl font-black text-text-main tracking-tighter uppercase">
             Personalidad IA
           </h1>
-          <p className="text-sm text-white/40 font-headline">
+          <p className="text-sm text-text-muted font-headline">
             Configura el comportamiento de tu agente inteligente
           </p>
         </div>
@@ -198,10 +198,10 @@ export const AIConfigurationListPage = () => {
           <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-amber-500/10 flex items-center justify-center">
             <BiCheckCircle className="text-3xl text-amber-400" />
           </div>
-          <h3 className="text-lg font-bold text-white mb-2">
+          <h3 className="text-lg font-bold text-text-main mb-2">
             ¿Estás seguro de guardar?
           </h3>
-          <p className="text-sm text-white/60 mb-6">
+          <p className="text-sm text-text-muted mb-6">
             Esta acción modificará la configuración del agente IA. Asegúrate de
             que los datos sean correctos.
           </p>

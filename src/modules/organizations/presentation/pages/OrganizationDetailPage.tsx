@@ -80,7 +80,7 @@ export const OrganizationDetailPage = () => {
   if (!org) {
     return (
       <div className="flex items-center justify-center h-64">
-        <p className="text-white/40">Selecciona una organización</p>
+        <p className="text-text-muted">Selecciona una organización</p>
       </div>
     );
   }
@@ -90,7 +90,7 @@ export const OrganizationDetailPage = () => {
       <div className="flex items-center gap-3">
         <Link
           to="/dashboard/organizations"
-          className="flex items-center gap-1.5 text-sm text-white/50 hover:text-brand-accent transition-colors"
+          className="flex items-center gap-1.5 text-sm text-text-muted hover:text-brand-accent transition-colors"
         >
           <BiArrowBack size={16} />
           Regresar

@@ -146,7 +146,7 @@ export const DashboardLayout = () => {
   };
 
   return (
-    <div className="flex h-screen bg-[#0a0f1e] text-white overflow-hidden">
+    <div className="flex h-screen bg-bg-main text-text-main overflow-hidden">
       <Sidebar
         navItems={navItems}
         userName={userName}
@@ -165,7 +165,7 @@ export const DashboardLayout = () => {
             onEnvChange={handleOrgChange}
           />
         )}
-        <main className="flex-1 overflow-y-auto p-6 bg-[#0d1224]">
+        <main className="flex-1 overflow-y-auto p-6 bg-bg-surface">
           <div className="max-w-7xl mx-auto">
             <Outlet />
           </div>

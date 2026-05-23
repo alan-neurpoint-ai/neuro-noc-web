@@ -23,12 +23,7 @@ export const Topbar: React.FC<TopbarProps> = ({
 
   return (
     <header
-      className="sticky top-0 z-40 w-full h-16 flex items-center justify-between px-6 border-b backdrop-blur-xl transition-all duration-300 p-10"
-      style={{
-        background: " linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 100%)",
-        borderColor: "rgba(178, 154, 244, 0.1)",
-        boxShadow: "0 4px 24px rgba(0, 0, 0, 0.3)",
-      }}
+      className="sticky top-0 z-40 w-full h-16 flex items-center justify-between px-6 border-b border-border-subtle transition-all duration-300 p-10 bg-sidebar"
     >
       <div className="flex items-center gap-4"></div>
 
@@ -40,13 +35,7 @@ export const Topbar: React.FC<TopbarProps> = ({
           }}
         >
           <div
-            className="absolute inset-0 rounded-xl pointer-events-none"
-            style={{
-              background:
-                "linear-gradient(135deg, rgba(103, 45, 169, 0.15) 0%, rgba(54, 31, 119, 0.1) 100%)",
-              border: "1px solid rgba(178, 154, 244, 0.15)",
-              boxShadow: "0 0 20px rgba(103, 45, 169, 0.15)",
-            }}
+            className="absolute inset-0 rounded-xl pointer-events-none bg-brand-primary/10 border border-brand-primary/20"
           />
           <div className="relative">
             <CustomSelect

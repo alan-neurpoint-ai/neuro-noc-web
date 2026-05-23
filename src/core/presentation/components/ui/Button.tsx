@@ -38,14 +38,14 @@ export const Button = ({
     danger: 'bg-status-error text-white hover:brightness-110',
 
     outline:
-      'bg-transparent border border-white/10 text-text-main hover:bg-white/5 hover:border-white/20',
+      'bg-transparent border border-border-default text-text-main hover:bg-hover-bg hover:border-[var(--border-default)]',
 
-    ghost: 'bg-transparent text-text-muted hover:text-white hover:bg-white/5',
+    ghost: 'bg-transparent text-text-muted hover:text-text-main hover:bg-hover-bg',
 
     action:
       'bg-brand-primary/10 text-brand-primary border border-brand-primary/20 hover:bg-brand-primary hover:text-white',
 
-    view: 'bg-white/5 text-white/70 border border-white/10 hover:bg-brand-primary hover:text-white hover:border-brand-primary/30',
+    view: 'bg-hover-bg text-text-muted border border-border-default hover:bg-brand-primary hover:text-white hover:border-brand-primary/30',
   };
 
   const baseStyles = `

@@ -34,7 +34,7 @@ export const AIConfigForm = ({
       {/* Columna izquierda - Info básica */}
       <div className="lg:col-span-1 space-y-6">
         <div>
-          <label className="text-xs font-bold text-white/60 uppercase tracking-wider flex items-center gap-2">
+          <label className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-2">
             <BiUser className="text-brand-accent" />
             Nombre del Agente
           </label>
@@ -49,7 +49,7 @@ export const AIConfigForm = ({
         </div>
 
         <div>
-          <label className="text-xs font-bold text-white/60 uppercase tracking-wider">
+          <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
             Idiomas Soportados
           </label>
           <div className="flex gap-2 mt-2">
@@ -75,14 +75,14 @@ export const AIConfigForm = ({
                 {lang}
                 <button
                   onClick={() => onRemoveLanguage(index)}
-                  className="hover:text-white/70"
+                  className="hover:text-text-main"
                 >
                   <BiX className="text-[10px]" />
                 </button>
               </span>
             ))}
             {formData.languages.length === 0 && (
-              <span className="text-xs text-white/30">
+              <span className="text-xs text-text-muted">
                 Sin idiomas configurados
               </span>
             )}
@@ -92,7 +92,7 @@ export const AIConfigForm = ({
 
       {/* Columna derecha - Personalidad */}
       <div className="lg:col-span-2">
-        <label className="text-xs font-bold text-white/60 uppercase tracking-wider">
+        <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
           Personalidad del Agente
         </label>
         <textarea
@@ -103,9 +103,9 @@ export const AIConfigForm = ({
           placeholder={`Define cómo debe comportarse el agente, su tono, nivel de detalle, etc...
 
 Ej: Eres un asistente técnico especializado en redes de telecomunicaciones. Debes ser detallado pero claro, usar un lenguaje profesional pero accesible. Cuando expliques conceptos técnicos incluye ejemplos prácticos...`}
-          className="mt-2 w-full h-64 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/30 focus:border-brand-primary/50 focus:outline-none resize-none font-body text-sm leading-relaxed"
+          className="mt-2 w-full h-64 px-4 py-3 bg-hover-bg border border-border-default rounded-xl text-text-main placeholder:text-text-muted focus:border-brand-primary/50 focus:outline-none resize-none font-body text-sm leading-relaxed"
         />
-        <p className="text-[10px] text-white/30 mt-2">
+        <p className="text-[10px] text-text-muted mt-2">
           Escribe las instrucciones que definirán la personalidad y
           comportamiento de tu agente IA
         </p>

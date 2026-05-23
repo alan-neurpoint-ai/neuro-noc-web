@@ -43,28 +43,28 @@ export const OrganizationInfo = ({ org }: OrganizationInfoProps) => {
         <Card variant="glass" className="p-5">
           <div className="flex items-center gap-2 mb-4">
             <BiCheckbox className="text-brand-accent text-lg" />
-            <h3 className="text-sm font-headline font-bold text-white uppercase">
+            <h3 className="text-sm font-headline font-bold text-text-main uppercase">
               Información General
             </h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <p className="text-[10px] text-white/40 uppercase mb-1">Nombre</p>
-              <p className="text-white font-medium">{org.name}</p>
+              <p className="text-[10px] text-text-muted uppercase mb-1">Nombre</p>
+              <p className="text-text-main font-medium">{org.name}</p>
             </div>
             <div>
-              <p className="text-[10px] text-white/40 uppercase mb-1">Slug</p>
-              <p className="text-white/80">{org.slug}</p>
+              <p className="text-[10px] text-text-muted uppercase mb-1">Slug</p>
+              <p className="text-text-main">{org.slug}</p>
             </div>
             <div>
-              <p className="text-[10px] text-white/40 uppercase mb-1">
+              <p className="text-[10px] text-text-muted uppercase mb-1">
                 Tipo de Organización
               </p>
-              <p className="text-white">{getOrgTypeLabel(org.org_type)}</p>
+              <p className="text-text-main">{getOrgTypeLabel(org.org_type)}</p>
             </div>
             <div>
-              <p className="text-[10px] text-white/40 uppercase mb-1">Estado</p>
-              <p className="text-white">
+              <p className="text-[10px] text-text-muted uppercase mb-1">Estado</p>
+              <p className="text-text-main">
                 {org.is_active ? 'Activa' : 'Inactiva'}
               </p>
             </div>
@@ -74,22 +74,22 @@ export const OrganizationInfo = ({ org }: OrganizationInfoProps) => {
         <Card variant="glass" className="p-5">
           <div className="flex items-center gap-2 mb-4">
             <BiCalendar className="text-brand-accent text-lg" />
-            <h3 className="text-sm font-headline font-bold text-white uppercase">
+            <h3 className="text-sm font-headline font-bold text-text-main uppercase">
               Fechas
             </h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <p className="text-[10px] text-white/40 uppercase mb-1">
+              <p className="text-[10px] text-text-muted uppercase mb-1">
                 Fecha de Creación
               </p>
-              <p className="text-white">{formatDate(org.created_at)}</p>
+              <p className="text-text-main">{formatDate(org.created_at)}</p>
             </div>
             <div>
-              <p className="text-[10px] text-white/40 uppercase mb-1">
+              <p className="text-[10px] text-text-muted uppercase mb-1">
                 Última Actualización
               </p>
-              <p className="text-white">{formatDate(org.updated_at)}</p>
+              <p className="text-text-main">{formatDate(org.updated_at)}</p>
             </div>
           </div>
         </Card>

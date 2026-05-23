@@ -47,7 +47,7 @@ const getStatusBadge = (status: string | null) => {
         </span>
       );
     default:
-      return <span className="text-white/40 text-xs">{status || '-'}</span>;
+      return <span className="text-text-muted text-xs">{status || '-'}</span>;
   }
 };
 
@@ -73,10 +73,10 @@ export const AlertActionsList = ({
 }: AlertActionsListProps) => {
   return (
     <div className="p-6">
-      <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+      <h3 className="text-lg font-bold text-text-main mb-4 flex items-center gap-2">
         <BiListUl className="text-brand-accent" />
         Acciones Realizadas
-        <span className="text-xs font-normal text-white/40 ml-2">
+        <span className="text-xs font-normal text-text-muted ml-2">
           ({actions.length} registros)
         </span>
       </h3>
@@ -86,47 +86,47 @@ export const AlertActionsList = ({
           {actions.map((action) => (
             <div
               key={action.id}
-              className="p-4 rounded-lg bg-white/5 border border-white/10 hover:border-white/20 transition"
+              className="p-4 rounded-lg bg-hover-bg border border-border-default hover:border-border-default transition"
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-white/5">
+                  <div className="p-2 rounded-lg bg-hover-bg">
                     {getActionIcon(action.action_performed)}
                   </div>
                   <div>
-                    <p className="text-white font-medium">
+                    <p className="text-text-main font-medium">
                       {action.action_performed}
                     </p>
                     <div className="flex items-center gap-2 mt-1">
                       {getStatusBadge(action.status)}
                       {action.n8n_execution_id && (
-                        <span className="text-xs text-white/40 font-mono">
+                        <span className="text-xs text-text-muted font-mono">
                           n8n: {action.n8n_execution_id}
                         </span>
                       )}
                     </div>
                   </div>
                 </div>
-                <span className="text-xs text-white/40 font-mono">
+                <span className="text-xs text-text-muted font-mono">
                   {formatDate(action.created_at)}
                 </span>
               </div>
 
               {action.contact && (
                 <div className="mt-3 pl-11 flex items-center gap-4 text-sm">
-                  <div className="flex items-center gap-2 text-white/60">
-                    <BiUser className="text-white/40" />
+                  <div className="flex items-center gap-2 text-text-muted">
+                    <BiUser className="text-text-muted" />
                     <span>{action.contact.full_name}</span>
                   </div>
                   {action.contact.email && (
-                    <div className="flex items-center gap-2 text-white/60">
-                      <BiEnvelope className="text-white/40" />
+                    <div className="flex items-center gap-2 text-text-muted">
+                      <BiEnvelope className="text-text-muted" />
                       <span>{action.contact.email}</span>
                     </div>
                   )}
                   {action.contact.phone_number && (
-                    <div className="flex items-center gap-2 text-white/60">
-                      <BiPhone className="text-white/40" />
+                    <div className="flex items-center gap-2 text-text-muted">
+                      <BiPhone className="text-text-muted" />
                       <span>{action.contact.phone_number}</span>
                     </div>
                   )}
@@ -169,8 +169,8 @@ export const AlertActionsList = ({
         </div>
       ) : (
         <div className="text-center py-8">
-          <BiListUl className="text-4xl text-white/10 mx-auto mb-2" />
-          <p className="text-white/40">No hay acciones registradas</p>
+          <BiListUl className="text-4xl text-text-muted mx-auto mb-2" />
+          <p className="text-text-muted">No hay acciones registradas</p>
         </div>
       )}
     </div>

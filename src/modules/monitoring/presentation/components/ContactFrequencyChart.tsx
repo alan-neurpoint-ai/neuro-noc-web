@@ -30,12 +30,12 @@ export const ContactFrequencyChart = ({
 }: ContactFrequencyChartProps) => {
   return (
     <div className="p-6">
-      <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+      <h3 className="text-lg font-bold text-text-main mb-4 flex items-center gap-2">
         <BiPieChart className="text-brand-accent" />
         Contactos Más Contactados
       </h3>
       {loading ? (
-        <div className="h-64 flex items-center justify-center text-white/40">
+        <div className="h-64 flex items-center justify-center text-text-muted">
           Cargando...
         </div>
       ) : data.length > 0 ? (
@@ -64,18 +64,18 @@ export const ContactFrequencyChart = ({
               </Pie>
               <Tooltip
                 contentStyle={{
-                  background: '#1a1a2e',
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  background: 'var(--bg-elevated)',
+                  border: '1px solid var(--border-subtle)',
                   borderRadius: '8px',
-                  color: '#fff',
+                  color: 'var(--text-main)',
                 }}
               />
-              <Legend wrapperStyle={{ color: '#fff', fontSize: '12px' }} />
+              <Legend wrapperStyle={{ color: 'var(--text-main)', fontSize: '12px' }} />
             </PieChart>
           </ResponsiveContainer>
         </div>
       ) : (
-        <div className="h-64 flex items-center justify-center text-white/40">
+        <div className="h-64 flex items-center justify-center text-text-muted">
           No hay datos para mostrar
         </div>
       )}

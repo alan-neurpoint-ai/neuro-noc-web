@@ -144,7 +144,7 @@ export const ContactDetailsPage = () => {
         );
       default:
         return (
-          <span className="px-2 py-1 rounded-full text-xs font-bold bg-white/10 text-white/50 border border-white/20">
+          <span className="px-2 py-1 rounded-full text-xs font-bold bg-hover-bg text-text-muted border border-border-default">
             {status || '-'}
           </span>
         );
@@ -174,8 +174,8 @@ export const ContactDetailsPage = () => {
   if (!contact) {
     return (
       <div className="flex flex-col items-center justify-center h-96">
-        <BiUser className="text-6xl text-white/20 mb-4" />
-        <p className="text-white/40 text-lg">Contacto no encontrado</p>
+        <BiUser className="text-6xl text-text-muted mb-4" />
+        <p className="text-text-muted text-lg">Contacto no encontrado</p>
         <button
           onClick={() => navigate('/dashboard/contacts')}
           className="mt-4 px-4 py-2 bg-brand-accent text-white rounded-lg hover:bg-brand-accent/80 transition"
@@ -192,15 +192,15 @@ export const ContactDetailsPage = () => {
       <div className="flex items-center gap-4">
         <button
           onClick={() => navigate('/dashboard/contacts')}
-          className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition text-white/60 hover:text-white"
+          className="p-2 rounded-lg bg-hover-bg hover:bg-hover-bg transition text-text-muted hover:text-text-main"
         >
           <BiArrowBack className="text-xl" />
         </button>
         <div className="flex-1">
-          <h1 className="text-2xl font-black text-white tracking-tighter uppercase">
+          <h1 className="text-2xl font-black text-text-main tracking-tighter uppercase">
             Detalles del Contacto
           </h1>
-          <p className="text-sm text-white/40 font-headline">
+          <p className="text-sm text-text-muted font-headline">
             Información completa del contacto
           </p>
         </div>
@@ -220,11 +220,11 @@ export const ContactDetailsPage = () => {
               <BiUser className="text-3xl text-brand-accent" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-white">
+              <h2 className="text-xl font-bold text-text-main">
                 {contact.full_name}
               </h2>
               {contact.job_title && (
-                <p className="text-sm text-white/40">{contact.job_title}</p>
+                <p className="text-sm text-text-muted">{contact.job_title}</p>
               )}
             </div>
           </div>
@@ -236,17 +236,17 @@ export const ContactDetailsPage = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
-            <div className="flex items-center gap-3 text-white/60">
-              <BiPhone className="text-white/40" />
+            <div className="flex items-center gap-3 text-text-muted">
+              <BiPhone className="text-text-muted" />
               <span>{contact.phone_number}</span>
             </div>
-            <div className="flex items-center gap-3 text-white/60">
-              <BiEnvelope className="text-white/40" />
+            <div className="flex items-center gap-3 text-text-muted">
+              <BiEnvelope className="text-text-muted" />
               <span>{contact.email}</span>
             </div>
             {organization && (
-              <div className="flex items-center gap-3 text-white/60">
-                <BiBuilding className="text-white/40" />
+              <div className="flex items-center gap-3 text-text-muted">
+                <BiBuilding className="text-text-muted" />
                 <span>{organization.name}</span>
               </div>
             )}
@@ -254,21 +254,21 @@ export const ContactDetailsPage = () => {
 
           <div className="space-y-4">
             <div>
-              <label className="text-xs font-bold text-white/40 uppercase tracking-wider flex items-center gap-2">
-                <BiCalendar className="text-white/40" />
+              <label className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-2">
+                <BiCalendar className="text-text-muted" />
                 Fecha de creación
               </label>
-              <p className="text-white/80 mt-1">
+              <p className="text-text-main mt-1">
                 {formatDate(contact.created_at)}
               </p>
             </div>
             {contact.updated_at && (
               <div>
-                <label className="text-xs font-bold text-white/40 uppercase tracking-wider flex items-center gap-2">
-                  <BiCalendar className="text-white/40" />
+                <label className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-2">
+                  <BiCalendar className="text-text-muted" />
                   Última actualización
                 </label>
-                <p className="text-white/80 mt-1">
+                <p className="text-text-main mt-1">
                   {formatDate(contact.updated_at)}
                 </p>
               </div>
@@ -277,12 +277,12 @@ export const ContactDetailsPage = () => {
         </div>
 
         {contact.notes && (
-          <div className="mt-6 pt-4 border-t border-white/10">
-            <label className="text-xs font-bold text-white/40 uppercase tracking-wider flex items-center gap-2 mb-2">
-              <BiNote className="text-white/40" />
+          <div className="mt-6 pt-4 border-t border-border-default">
+            <label className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-2 mb-2">
+              <BiNote className="text-text-muted" />
               Notas
             </label>
-            <p className="text-white/80">{contact.notes}</p>
+            <p className="text-text-main">{contact.notes}</p>
           </div>
         )}
       </Card>

@@ -151,7 +151,7 @@ export const PaymentHistory = () => {
     <Card variant="glass" className="p-5">
       <div className="flex items-center gap-2 mb-4">
         <BiCheckbox className="text-brand-accent text-lg" />
-        <h3 className="text-sm font-headline font-bold text-white uppercase">
+        <h3 className="text-sm font-headline font-bold text-text-main uppercase">
           Historial de Pagos
         </h3>
       </div>

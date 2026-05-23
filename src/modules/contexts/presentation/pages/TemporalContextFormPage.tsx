@@ -160,10 +160,10 @@ export const TemporalContextFormPage = () => {
             className="p-2"
           />
           <div>
-            <h1 className="text-2xl font-black text-white tracking-tighter uppercase">
+            <h1 className="text-2xl font-black text-text-main tracking-tighter uppercase">
               {isEditing ? 'Editar Contexto' : 'Nuevo Contexto'}
             </h1>
-            <p className="text-sm text-white/40 font-headline">
+            <p className="text-sm text-text-muted font-headline">
               {isEditing
                 ? 'Modifica los datos del contexto temporal'
                 : 'Crea un nuevo evento temporal'}
@@ -198,7 +198,7 @@ export const TemporalContextFormPage = () => {
         <div className="lg:col-span-2">
           <Card className="p-6 space-y-6">
             <div>
-              <label className="text-xs font-bold text-white/60 uppercase tracking-wider flex items-center gap-2">
+              <label className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-2">
                 <BiInfoCircle className="text-brand-accent" />
                 Nombre del Contexto *
               </label>
@@ -213,7 +213,7 @@ export const TemporalContextFormPage = () => {
             </div>
 
             <div>
-              <label className="text-xs font-bold text-white/60 uppercase tracking-wider">
+              <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
                 Descripción
               </label>
               <textarea
@@ -222,13 +222,13 @@ export const TemporalContextFormPage = () => {
                   setFormData({ ...formData, description: e.target.value })
                 }
                 placeholder="Describe los detalles de este contexto temporal..."
-                className="mt-2 w-full h-32 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/30 focus:border-brand-primary/50 focus:outline-none resize-none font-body text-sm"
+                className="mt-2 w-full h-32 px-4 py-3 bg-hover-bg border border-border-default rounded-xl text-text-main placeholder:text-text-muted focus:border-brand-primary/50 focus:outline-none resize-none font-body text-sm"
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="text-xs font-bold text-white/60 uppercase tracking-wider flex items-center gap-2">
+                <label className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-2">
                   <BiCalendar className="text-brand-accent" />
                   Fecha de Inicio *
                 </label>
@@ -238,13 +238,13 @@ export const TemporalContextFormPage = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, start_date: e.target.value })
                   }
-                  className="mt-2 w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white focus:border-brand-primary/50 focus:outline-none"
+                  className="mt-2 w-full px-4 py-2.5 bg-hover-bg border border-border-default rounded-xl text-text-main focus:border-brand-primary/50 focus:outline-none"
                   style={{ colorScheme: 'dark' }}
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-white/60 uppercase tracking-wider flex items-center gap-2">
+                <label className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-2">
                   <BiCalendar className="text-brand-accent" />
                   Fecha de Fin *
                 </label>
@@ -254,7 +254,7 @@ export const TemporalContextFormPage = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, end_date: e.target.value })
                   }
-                  className="mt-2 w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white focus:border-brand-primary/50 focus:outline-none"
+                  className="mt-2 w-full px-4 py-2.5 bg-hover-bg border border-border-default rounded-xl text-text-main focus:border-brand-primary/50 focus:outline-none"
                   style={{ colorScheme: 'dark' }}
                 />
               </div>
@@ -266,12 +266,12 @@ export const TemporalContextFormPage = () => {
         <div className="space-y-6">
           {isEditing && context && (
             <Card className="p-6">
-              <h3 className="text-lg font-bold text-white mb-4">
+              <h3 className="text-lg font-bold text-text-main mb-4">
                 Información Actual
               </h3>
               <div className="space-y-4">
                 <div>
-                  <label className="text-xs font-bold text-white/40 uppercase tracking-wider">
+                  <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
                     Estado
                   </label>
                   <div className="mt-2">
@@ -284,26 +284,26 @@ export const TemporalContextFormPage = () => {
                         Expirado
                       </span>
                     ) : (
-                      <span className="px-3 py-1 rounded-full text-xs font-black bg-white/5 text-white/40 border border-white/10 uppercase">
+                      <span className="px-3 py-1 rounded-full text-xs font-black bg-hover-bg text-text-muted border border-border-default uppercase">
                         Inactivo
                       </span>
                     )}
                   </div>
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-white/40 uppercase tracking-wider">
+                  <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
                     Creado
                   </label>
-                  <p className="text-white/60 text-sm mt-1">
+                  <p className="text-text-muted text-sm mt-1">
                     {formatDateForDisplay(context.created_at || null)}
                   </p>
                 </div>
                 {context.affected_nodes && (
                   <div>
-                    <label className="text-xs font-bold text-white/40 uppercase tracking-wider">
+                    <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
                       Nodos Afectados
                     </label>
-                    <p className="text-white/60 text-sm mt-1">
+                    <p className="text-text-muted text-sm mt-1">
                       {typeof context.affected_nodes === 'object'
                         ? JSON.stringify(context.affected_nodes)
                         : context.affected_nodes?.toString() || '-'}
@@ -318,7 +318,7 @@ export const TemporalContextFormPage = () => {
             <h3 className="text-sm font-bold text-brand-accent mb-2">
               Información
             </h3>
-            <p className="text-xs text-white/60">
+            <p className="text-xs text-text-muted">
               Los contextos temporales definen ventanas de tiempo para eventos
               especiales, mantenimientos o cambios planificados en la red.
             </p>
@@ -336,14 +336,14 @@ export const TemporalContextFormPage = () => {
           <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/10 flex items-center justify-center">
             <BiTrash className="text-3xl text-red-400" />
           </div>
-          <h3 className="text-lg font-bold text-white mb-2">
+          <h3 className="text-lg font-bold text-text-on-elevated mb-2">
             ¿Inactivar contexto?
           </h3>
-          <p className="text-sm text-white/60 mb-2">
-            El contexto <strong className="text-white">{context?.name}</strong>{' '}
+          <p className="text-sm text-text-muted mb-2">
+            El contexto <strong className="text-text-on-elevated">{context?.name}</strong>{' '}
             será marcado como inactivo.
           </p>
-          <p className="text-xs text-white/40 mb-6">
+          <p className="text-xs text-text-muted mb-6">
             Esta acción no eliminará el contexto, solo lo ocultará de la vista.
           </p>
           <div className="flex justify-center gap-3">

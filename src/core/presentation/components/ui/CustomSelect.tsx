@@ -104,7 +104,7 @@ export const CustomSelect = ({
       ref={containerReference}
     >
       {label && (
-        <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 ml-1">
+        <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted ml-1">
           {label}
         </label>
       )}
@@ -117,8 +117,8 @@ export const CustomSelect = ({
           className={combineClasses(
             'w-full flex items-center justify-between gap-4 px-5 py-3 rounded-lg border transition-all duration-200 outline-none',
             isDropdownOpen
-              ? 'bg-[#1a1b26] border-[#7aa2f7]/50 shadow-[0_0_15px_rgba(122,162,247,0.15)]'
-              : 'bg-[#1a1b26] border-white/10 hover:border-white/20',
+              ? 'bg-bg-surface border-brand-primary/50 shadow-[0_0_15px_rgba(99,102,241,0.15)]'
+              : 'bg-bg-surface border-border-default hover:border-[var(--border-default)]',
             disabled ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'
           )}
         >
@@ -126,7 +126,7 @@ export const CustomSelect = ({
             <span
               className={combineClasses(
                 'text-[13px] font-medium tracking-wide',
-                selectedOption ? 'text-white' : 'text-white/40'
+                selectedOption ? 'text-text-main' : 'text-text-muted'
               )}
             >
               {selectedOption ? selectedOption.label : placeholder}
@@ -144,7 +144,7 @@ export const CustomSelect = ({
           >
             <path
               d="M2.5 4.5L6 8L9.5 4.5"
-              stroke={isDropdownOpen ? '#7aa2f7' : 'white'}
+              stroke={isDropdownOpen ? '#6366f1' : 'var(--text-on-elevated)'}
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -155,7 +155,7 @@ export const CustomSelect = ({
         {isDropdownOpen && (
           <div
             role="listbox"
-            className="absolute z-50 w-full mt-2 rounded-lg bg-[#1a1b26] border border-white/10 shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
+            className="absolute z-50 w-full mt-2 rounded-lg bg-bg-surface border border-border-default shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
           >
             <div className="max-h-64 overflow-y-auto py-1">
               {options.map((option) => {
@@ -175,9 +175,9 @@ export const CustomSelect = ({
                     className={combineClasses(
                       'w-full flex flex-col items-start px-5 py-3 transition-colors text-left',
                       isSelected
-                        ? 'bg-[#7aa2f7]/10'
+                        ? 'bg-brand-primary/10'
                         : isFocused
-                          ? 'bg-white/5'
+                          ? 'bg-hover-bg'
                           : 'bg-transparent'
                     )}
                   >
@@ -185,14 +185,14 @@ export const CustomSelect = ({
                       <span
                         className={combineClasses(
                           'text-sm font-medium tracking-tight',
-                          isSelected ? 'text-[#7aa2f7]' : 'text-white/80'
+                          isSelected ? 'text-brand-primary' : 'text-text-main'
                         )}
                       >
                         {option.label}
                       </span>
                     </div>
                     {option.description && (
-                      <span className="text-[10px] text-white/30 mt-0.5">
+                      <span className="text-[10px] text-text-muted mt-0.5">
                         {option.description}
                       </span>
                     )}

@@ -69,7 +69,7 @@ export const ManualForm = ({
   return (
     <>
       <div>
-        <label className="text-xs font-bold text-white/60 uppercase tracking-wider">
+        <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
           Nombre de la Regla *
         </label>
         <Input
@@ -81,7 +81,7 @@ export const ManualForm = ({
       </div>
 
       <div>
-        <label className="text-xs font-bold text-white/60 uppercase tracking-wider">
+        <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
           Descripción
         </label>
         <textarea
@@ -90,12 +90,12 @@ export const ManualForm = ({
             setFormData({ ...formData, description: e.target.value })
           }
           placeholder="Describe los detalles de esta regla de negocio..."
-          className="mt-2 w-full h-32 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/30 focus:border-brand-primary/50 focus:outline-none resize-none font-body text-sm"
+          className="mt-2 w-full h-32 px-4 py-3 bg-hover-bg border border-border-default rounded-xl text-text-main placeholder:text-text-muted focus:border-brand-primary/50 focus:outline-none resize-none font-body text-sm"
         />
       </div>
 
       <div>
-        <label className="text-xs font-bold text-white/60 uppercase tracking-wider">
+        <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
           Programación de Ejecución
         </label>
         <input
@@ -104,16 +104,16 @@ export const ManualForm = ({
           onChange={(e) =>
             setFormData({ ...formData, execution_schedule: e.target.value })
           }
-          className="mt-2 w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white focus:border-brand-primary/50 focus:outline-none"
+          className="mt-2 w-full px-4 py-2.5 bg-hover-bg border border-border-default rounded-xl text-text-main focus:border-brand-primary/50 focus:outline-none"
           style={{ colorScheme: 'dark' }}
         />
-        <p className="text-[10px] text-white/30 mt-1">
+        <p className="text-[10px] text-text-muted mt-1">
           Define cuándo se ejecuta esta regla automáticamente
         </p>
       </div>
 
       <div>
-        <label className="text-xs font-bold text-white/60 uppercase tracking-wider">
+        <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
           Objetivos Afectados
         </label>
         <textarea
@@ -122,9 +122,9 @@ export const ManualForm = ({
             setFormData({ ...formData, affected_targets: e.target.value })
           }
           placeholder="Ej: nodes: server1, server2, server3 o services: api, database, cache"
-          className="mt-2 w-full h-24 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/30 focus:border-brand-primary/50 focus:outline-none resize-none font-mono text-sm"
+          className="mt-2 w-full h-24 px-4 py-3 bg-hover-bg border border-border-default rounded-xl text-text-main placeholder:text-text-muted focus:border-brand-primary/50 focus:outline-none resize-none font-mono text-sm"
         />
-        <p className="text-[10px] text-white/30 mt-1">
+        <p className="text-[10px] text-text-muted mt-1">
           Escribe los objetivos de forma natural. Se convertirán a JSON
           automáticamente.
         </p>
@@ -152,28 +152,28 @@ export const ManualForm = ({
             <BiCheckCircle className="text-3xl text-brand-accent" />
           </div>
 
-          <h3 className="text-lg font-bold text-white mb-2">
+          <h3 className="text-lg font-bold text-text-on-elevated mb-2">
             ¿Crear esta regla de negocio?
           </h3>
 
-          <div className="text-left bg-white/5 rounded-lg p-4 mb-4 text-sm space-y-2">
-            <p className="text-white/60">
-              <span className="text-white/40">Nombre:</span>{' '}
-              <span className="text-white font-medium">
-                {formData.name || 'Sin nombre'}
+          <div className="text-left bg-hover-bg rounded-lg p-4 mb-4 text-sm space-y-2">
+            <p className="text-text-muted">
+              <span className="text-text-muted">Nombre:</span>{' '}
+               <span className="text-text-on-elevated font-medium">
+                  {formData.name || 'Sin nombre'}
               </span>
             </p>
             {formData.description && (
-              <p className="text-white/60">
-                <span className="text-white/40">Descripción:</span>{' '}
-                <span className="text-white">
+              <p className="text-text-muted">
+                <span className="text-text-muted">Descripción:</span>{' '}
+                 <span className="text-text-on-elevated">
                   {formData.description.substring(0, 50)}...
                 </span>
               </p>
             )}
             {formData.affected_targets && (
-              <p className="text-white/60">
-                <span className="text-white/40">Objetivos:</span>{' '}
+              <p className="text-text-muted">
+                <span className="text-text-muted">Objetivos:</span>{' '}
                 <span className="text-brand-accent font-mono text-xs">
                   {convertToJson(formData.affected_targets).substring(0, 50)}...
                 </span>
@@ -181,7 +181,7 @@ export const ManualForm = ({
             )}
           </div>
 
-          <p className="text-xs text-white/40 mb-6">
+          <p className="text-xs text-text-muted mb-6">
             Esta acción creará la regla en la base de datos.
           </p>
 

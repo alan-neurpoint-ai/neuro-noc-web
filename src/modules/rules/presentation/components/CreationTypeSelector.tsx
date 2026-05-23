@@ -16,14 +16,14 @@ export const CreationTypeSelector = ({
         className={`p-4 rounded-xl border-2 transition-all text-left ${
           creationType === 'manual'
             ? 'border-brand-primary bg-brand-primary/10'
-            : 'border-white/10 hover:border-white/20'
+            : 'border-border-default hover:border-border-default'
         }`}
       >
         <div className="flex items-center gap-3 mb-2">
           <BiFile className="text-xl text-brand-accent" />
-          <span className="font-bold text-white">Creación Manual</span>
+          <span className="font-bold text-text-main">Creación Manual</span>
         </div>
-        <p className="text-xs text-white/50">
+        <p className="text-xs text-text-muted">
           Completa el formulario directamente y guarda en la base de datos
         </p>
       </button>
@@ -33,14 +33,14 @@ export const CreationTypeSelector = ({
         className={`p-4 rounded-xl border-2 transition-all text-left ${
           creationType === 'document'
             ? 'border-brand-primary bg-brand-primary/10'
-            : 'border-white/10 hover:border-white/20'
+            : 'border-border-default hover:border-border-default'
         }`}
       >
         <div className="flex items-center gap-3 mb-2">
           <BiLink className="text-xl text-brand-accent" />
-          <span className="font-bold text-white">Desde Documento</span>
+          <span className="font-bold text-text-main">Desde Documento</span>
         </div>
-        <p className="text-xs text-white/50">
+        <p className="text-xs text-text-muted">
           Sube un documento PDF y el sistema procesará la información
         </p>
       </button>

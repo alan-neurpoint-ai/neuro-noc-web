@@ -94,15 +94,15 @@ export const LineChart: React.FC<LineChartProps> = ({
   if (data.length === 0) return null;
 
   return (
-    <div className={`w-full flex flex-col rounded-3xl overflow-hidden bg-[#130d2e] border border-white/5 shadow-2xl ${className}`}>
+    <div className={`w-full flex flex-col rounded-3xl overflow-hidden bg-bg-card border border-border-subtle shadow-2xl ${className}`}>
       {/* Header Info */}
       <div className="px-6 py-5 flex justify-between items-start">
         <div className="flex flex-col gap-0.5">
           {title && <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#b29af4]">{title}</span>}
-          {subtitle && <span className="text-xs text-gray-400 font-medium opacity-60">{subtitle}</span>}
+          {subtitle && <span className="text-xs text-text-muted font-medium opacity-60">{subtitle}</span>}
         </div>
         <div className="text-right">
-          <div className="text-2xl font-black text-white font-mono tracking-tight">
+          <div className="text-2xl font-black text-text-main font-mono tracking-tight">
             {fmt(hov !== null ? data[hov.idx].value : last, unit)}
           </div>
           {showDelta && (
@@ -167,7 +167,7 @@ export const LineChart: React.FC<LineChartProps> = ({
         {/* Tooltip HTML para mejor resolución */}
         {hov && data[hov.idx] && (
           <div
-            className="absolute z-10 pointer-events-none backdrop-blur-xl bg-black/60 px-3 py-2 rounded-xl border border-white/10 shadow-2xl transition-all duration-200"
+            className="absolute z-10 pointer-events-none backdrop-blur-xl bg-black/60 px-3 py-2 rounded-xl border border-border-default shadow-2xl transition-all duration-200"
             style={{
               left: hov.x > 80 ? "auto" : `${hov.x}%`,
               right: hov.x > 80 ? `${100 - hov.x}%` : "auto",
@@ -175,7 +175,7 @@ export const LineChart: React.FC<LineChartProps> = ({
               transform: hov.x > 80 ? "translateX(0)" : "translateX(10px)",
             }}
           >
-            <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-0.5">{data[hov.idx].label}</p>
+            <p className="text-[9px] font-bold text-text-muted uppercase tracking-widest mb-0.5">{data[hov.idx].label}</p>
             <p className="text-sm font-black font-mono" style={{ color: stroke }}>{fmt(data[hov.idx].value, unit)}</p>
           </div>
         )}
@@ -184,7 +184,7 @@ export const LineChart: React.FC<LineChartProps> = ({
       {/* Etiquetas de Eje X */}
       <div className="px-6 py-4 flex justify-between">
         {data.filter((_, i) => i % Math.ceil(data.length / 5) === 0 || i === data.length - 1).map((d, i) => (
-          <span key={i} className="text-[9px] font-bold font-mono text-gray-500 uppercase tracking-tighter opacity-40">
+          <span key={i} className="text-[9px] font-bold font-mono text-text-muted uppercase tracking-tighter opacity-40">
             {d.label}
           </span>
         ))}

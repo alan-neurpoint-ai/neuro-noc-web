@@ -76,12 +76,12 @@ export const DonutChart: React.FC<DonutChartProps> = ({
 
   return (
     <div
-      className={`flex flex-col p-5 rounded-2xl border border-white/5 shadow-2xl ${className}`}
+      className={`flex flex-col p-5 rounded-2xl border border-border-subtle shadow-2xl ${className}`}
       style={{
-        background: "linear-gradient(160deg, #2d1b69 0%, #1a0f3e 100%)",
+        background: "linear-gradient(160deg, #2d1b69 0%, var(--bg-elevated) 100%)",
       }}
     >
-      <div className="mb-4 border-b border-white/5 pb-2">
+      <div className="mb-4 border-b border-border-subtle pb-2">
         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-accent">
           {title}
         </span>
@@ -118,10 +118,10 @@ export const DonutChart: React.FC<DonutChartProps> = ({
           </svg>
 
           <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-            <span className="text-[10px] uppercase font-bold text-gray-500 tracking-tighter">
+            <span className="text-[10px] uppercase font-bold text-text-muted tracking-tighter">
               {activeIdx !== null ? segments[activeIdx].label : "Total"}
             </span>
-            <span className="text-xl font-black font-mono text-white">
+            <span className="text-xl font-black font-mono text-text-main">
               {activeIdx !== null
                 ? `${segments[activeIdx].percent}%`
                 : total.toLocaleString()}
@@ -142,11 +142,11 @@ export const DonutChart: React.FC<DonutChartProps> = ({
                   className="w-2 h-2 rounded-full shrink-0"
                   style={{ backgroundColor: seg.color }}
                 />
-                <span className="text-[11px] font-bold text-gray-300 truncate uppercase tracking-tight">
+                <span className="text-[11px] font-bold text-text-muted truncate uppercase tracking-tight">
                   {seg.label}
                 </span>
               </div>
-              <span className="text-[11px] font-mono text-white/80">
+              <span className="text-[11px] font-mono text-text-main">
                 {seg.value}
                 {unit}
               </span>

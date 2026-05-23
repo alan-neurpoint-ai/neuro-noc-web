@@ -41,14 +41,14 @@ export const NavGroup: React.FC<{
         className={`group relative w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${
           isGroupActive
             ? "bg-linear-to-r from-brand-primary/20 to-transparent border-l-2 border-brand-primary"
-            : "hover:bg-white/5 text-white/50 hover:text-white/80"
+            : "hover:bg-hover-bg text-text-on-elevated-muted hover:text-text-on-elevated"
         } ${isCollapsed ? "justify-center" : ""}`}
       >
         <div
           className={`shrink-0 transition-colors ${
             isGroupActive
               ? "text-brand-accent"
-              : "text-white/40 group-hover:text-brand-accent/80"
+              : "text-text-on-elevated-muted group-hover:text-brand-accent/80"
           }`}
         >
           {item.icon}
@@ -57,7 +57,7 @@ export const NavGroup: React.FC<{
           <div className="flex items-center justify-between flex-1 min-w-0">
             <span
               className={`text-sm font-headline truncate ${
-                isGroupActive ? "text-white font-semibold" : "font-medium"
+                isGroupActive ? "text-text-on-elevated font-semibold" : "font-medium"
               }`}
             >
               {item.label}
@@ -69,7 +69,7 @@ export const NavGroup: React.FC<{
             )}
             {item.children && (
               <svg
-                className={`w-3.5 h-3.5 text-white/40 transition-transform duration-200 ${
+                className={`w-3.5 h-3.5 text-text-on-elevated-muted transition-transform duration-200 ${
                   isOpen ? "rotate-180" : ""
                 }`}
                 viewBox="0 0 24 24"
@@ -88,7 +88,7 @@ export const NavGroup: React.FC<{
         )}
 
         {isCollapsed && (
-          <div className="absolute left-full ml-3 px-3 py-2 bg-[#1a1a2e] border border-white/10 rounded-lg text-xs font-headline text-white opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 whitespace-nowrap shadow-xl">
+          <div className="absolute left-full ml-3 px-3 py-2 bg-bg-elevated border border-border-default rounded-lg text-xs font-headline text-text-on-elevated opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 whitespace-nowrap shadow-xl">
             {item.label}
           </div>
         )}
@@ -116,10 +116,10 @@ export const NavGroup: React.FC<{
                   e.stopPropagation();
                   handleChildClick(child);
                 }}
-                className={`w-full flex items-center gap-3 px-9 py-2 rounded-lg transition-all duration-200 text-left cursor-pointer hover:bg-white/5 ${
+                className={`w-full flex items-center gap-3 px-9 py-2 rounded-lg transition-all duration-200 text-left cursor-pointer hover:bg-hover-bg ${
                   isChildActive
                     ? "bg-brand-primary/10 text-brand-accent font-medium"
-                    : "text-white/40 hover:text-white/70"
+                    : "text-text-on-elevated-muted hover:text-text-on-elevated/70"
                 }`}
                 style={{ position: 'relative', zIndex: 10 }}
               >
@@ -127,7 +127,7 @@ export const NavGroup: React.FC<{
                   {isChildActive ? (
                     <div className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
                   ) : (
-                    <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-text-on-elevated-muted/30" />
                   )}
                 </div>
                 <span className="text-xs font-headline truncate">

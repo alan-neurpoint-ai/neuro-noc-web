@@ -37,22 +37,22 @@ export const RuleInfoCard = ({ context }: RuleInfoCardProps) => {
 
   return (
     <Card className="p-6">
-      <h3 className="text-lg font-bold text-white mb-4">Información Actual</h3>
+      <h3 className="text-lg font-bold text-text-main mb-4">Información Actual</h3>
       <div className="space-y-4">
         <div>
-          <label className="text-xs font-bold text-white/40 uppercase tracking-wider">
+          <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
             Creado
           </label>
-          <p className="text-white/60 text-sm mt-1">
+          <p className="text-text-muted text-sm mt-1">
             {formatDate(context.created_at)}
           </p>
         </div>
         {hasAffectedTargets && (
           <div>
-            <label className="text-xs font-bold text-white/40 uppercase tracking-wider">
+            <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
               Objetivos Afectados
             </label>
-            <p className="text-white/60 text-sm mt-1">{targetsDisplay}</p>
+            <p className="text-text-muted text-sm mt-1">{targetsDisplay}</p>
           </div>
         )}
       </div>

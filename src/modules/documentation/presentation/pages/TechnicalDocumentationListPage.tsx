@@ -153,7 +153,7 @@ export const TechnicalDocumentationListPage = () => {
         );
       default:
         return (
-          <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-white/5 text-white/40 border border-white/10 uppercase">
+          <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-hover-bg text-text-muted border border-border-default uppercase">
             Desconocido
           </span>
         );
@@ -166,12 +166,12 @@ export const TechnicalDocumentationListPage = () => {
       accessor: (item: TechnicalDocumentationRow) => (
         <div className="flex items-center gap-3">
           <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center border border-white/10 text-[10px] font-bold text-brand-accent uppercase"
+            className="w-8 h-8 rounded-lg flex items-center justify-center border border-border-default text-[10px] font-bold text-brand-accent uppercase"
             style={{ background: 'rgba(103,45,169,0.2)' }}
           >
             {item.name.charAt(0)}
           </div>
-          <span className="text-white font-bold tracking-tight">
+          <span className="text-text-main font-bold tracking-tight">
             {item.name}
           </span>
         </div>
@@ -180,7 +180,7 @@ export const TechnicalDocumentationListPage = () => {
     {
       header: 'Descripción',
       accessor: (item: TechnicalDocumentationRow) => (
-        <span className="text-white/60 text-sm font-medium">
+        <span className="text-text-muted text-sm font-medium">
           {item.description || '-'}
         </span>
       ),
@@ -193,7 +193,7 @@ export const TechnicalDocumentationListPage = () => {
     {
       header: 'Fecha Creación',
       accessor: (item: TechnicalDocumentationRow) => (
-        <span className="font-mono text-xs text-white/50">
+        <span className="font-mono text-xs text-text-muted">
           {formatDate(item.created_at)}
         </span>
       ),
@@ -242,10 +242,10 @@ export const TechnicalDocumentationListPage = () => {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-2">
         <div>
-          <h1 className="text-2xl font-black text-white tracking-tighter uppercase">
+          <h1 className="text-2xl font-black text-text-main tracking-tighter uppercase">
             Documentación Técnica
           </h1>
-          <p className="text-sm text-white/40 font-headline">
+          <p className="text-sm text-text-muted font-headline">
             Base de conocimientos técnicos
           </p>
         </div>
@@ -304,15 +304,15 @@ export const TechnicalDocumentationListPage = () => {
           <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/10 flex items-center justify-center">
             <BiCheckCircle className="text-3xl text-red-400" />
           </div>
-          <h3 className="text-lg font-bold text-white mb-2">
+          <h3 className="text-lg font-bold text-text-on-elevated mb-2">
             ¿Inactivar documentación?
           </h3>
-          <p className="text-sm text-white/60 mb-2">
+          <p className="text-sm text-text-muted mb-2">
             El documento{' '}
-            <strong className="text-white">{selectedDoc?.name}</strong> será
+            <strong className="text-text-on-elevated">{selectedDoc?.name}</strong> será
             marcado como inactivo.
           </p>
-          <p className="text-xs text-white/40 mb-6">
+          <p className="text-xs text-text-muted mb-6">
             Esta acción no eliminará el documento, solo lo ocultará de la vista.
           </p>
           <div className="flex justify-center gap-3">

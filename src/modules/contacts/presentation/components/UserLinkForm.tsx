@@ -113,15 +113,15 @@ export const UserLinkForm = ({
 
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
-      <div className="bg-[#1a1a2e] border border-white/10 rounded-xl max-w-md w-full">
-        <div className="flex items-center justify-between p-4 border-b border-white/10">
-          <h3 className="text-lg font-bold text-white flex items-center gap-2">
+      <div className="bg-bg-elevated border border-border-default rounded-xl max-w-md w-full">
+        <div className="flex items-center justify-between p-4 border-b border-border-default">
+          <h3 className="text-lg font-bold text-text-on-elevated flex items-center gap-2">
             <BiUserCircle className="text-brand-accent" />
             Crear Usuario y Vincular
           </h3>
           <button
             onClick={onClose}
-            className="p-1 text-white/40 hover:text-white transition"
+            className="p-1 text-text-muted hover:text-text-on-elevated transition"
           >
             <BiX className="text-xl" />
           </button>
@@ -135,7 +135,7 @@ export const UserLinkForm = ({
           )}
 
           <div>
-            <label className="block text-xs font-bold text-white/40 uppercase mb-1">
+            <label className="block text-xs font-bold text-text-muted uppercase mb-1">
               Email *
             </label>
             <input
@@ -144,14 +144,14 @@ export const UserLinkForm = ({
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
-              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-brand-accent"
+              className="w-full px-3 py-2 bg-hover-bg border border-border-default rounded-lg text-text-on-elevated focus:outline-none focus:border-brand-accent"
               required
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-bold text-white/40 uppercase mb-1">
+              <label className="block text-xs font-bold text-text-muted uppercase mb-1">
                 Nombre *
               </label>
               <input
@@ -160,12 +160,12 @@ export const UserLinkForm = ({
                 onChange={(e) =>
                   setFormData({ ...formData, first_name: e.target.value })
                 }
-                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-brand-accent"
+                className="w-full px-3 py-2 bg-hover-bg border border-border-default rounded-lg text-text-on-elevated focus:outline-none focus:border-brand-accent"
                 required
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-white/40 uppercase mb-1">
+              <label className="block text-xs font-bold text-text-muted uppercase mb-1">
                 Apellido
               </label>
               <input
@@ -174,14 +174,14 @@ export const UserLinkForm = ({
                 onChange={(e) =>
                   setFormData({ ...formData, last_name: e.target.value })
                 }
-                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-brand-accent"
+                className="w-full px-3 py-2 bg-hover-bg border border-border-default rounded-lg text-text-on-elevated focus:outline-none focus:border-brand-accent"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-bold text-white/40 uppercase mb-1">
+              <label className="block text-xs font-bold text-text-muted uppercase mb-1">
                 Contraseña *
               </label>
               <input
@@ -190,13 +190,13 @@ export const UserLinkForm = ({
                 onChange={(e) =>
                   setFormData({ ...formData, password: e.target.value })
                 }
-                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-brand-accent"
+                className="w-full px-3 py-2 bg-hover-bg border border-border-default rounded-lg text-text-on-elevated focus:outline-none focus:border-brand-accent"
                 required
                 minLength={6}
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-white/40 uppercase mb-1">
+              <label className="block text-xs font-bold text-text-muted uppercase mb-1">
                 Confirmar *
               </label>
               <input
@@ -205,7 +205,7 @@ export const UserLinkForm = ({
                 onChange={(e) =>
                   setFormData({ ...formData, confirmPassword: e.target.value })
                 }
-                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-brand-accent"
+                className="w-full px-3 py-2 bg-hover-bg border border-border-default rounded-lg text-text-on-elevated focus:outline-none focus:border-brand-accent"
                 required
                 minLength={6}
               />
@@ -213,10 +213,10 @@ export const UserLinkForm = ({
           </div>
 
           {contact?.organization_id && (
-            <div className="p-3 bg-white/5 rounded-lg border border-white/10">
-              <p className="text-xs text-white/40">
+            <div className="p-3 bg-hover-bg rounded-lg border border-border-default">
+              <p className="text-xs text-text-muted">
                 Este usuario será creado en la organización:{' '}
-                <span className="text-white font-medium">
+                <span className="text-text-on-elevated font-medium">
                   {contact.organization_id}
                 </span>
               </p>
@@ -227,7 +227,7 @@ export const UserLinkForm = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm text-white/60 hover:text-white transition"
+              className="px-4 py-2 text-sm text-text-muted hover:text-text-on-elevated transition"
             >
               Cancelar
             </button>

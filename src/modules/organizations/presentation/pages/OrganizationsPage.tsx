@@ -111,7 +111,7 @@ export const OrganizationsPage = () => {
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <h1 className="text-xl font-headline font-bold text-white">
+            <h1 className="text-xl font-headline font-bold text-text-main">
               Organización
             </h1>
             {isInternal && (
@@ -120,9 +120,9 @@ export const OrganizationsPage = () => {
               </span>
             )}
           </div>
-          <p className="text-sm text-white/50">{viewLabel}</p>
+          <p className="text-sm text-text-muted">{viewLabel}</p>
         </div>
-        <span className="text-xs text-white/40">
+        <span className="text-xs text-text-muted">
           {organizations.length} organizacion
           {organizations.length !== 1 ? 'es' : ''}
         </span>
@@ -149,24 +149,24 @@ export const OrganizationsPage = () => {
                         </span>
                       </div>
                       <div>
-                        <h3 className="text-white font-headline font-bold group-hover:text-brand-accent transition-colors">
+                        <h3 className="text-text-main font-headline font-bold group-hover:text-brand-accent transition-colors">
                           {org.name}
                         </h3>
-                        <p className="text-white/40 text-xs">{org.slug}</p>
+                        <p className="text-text-muted text-xs">{org.slug}</p>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-3 mt-3">
                       <div>
-                        <p className="text-[10px] font-headline text-white/40 uppercase">
+                        <p className="text-[10px] font-headline text-text-muted uppercase">
                           Tipo
                         </p>
-                        <span className="text-xs text-white font-medium">
+                        <span className="text-xs text-text-main font-medium">
                           {getOrgTypeLabel(org.org_type)}
                         </span>
                       </div>
                       <div>
-                        <p className="text-[10px] font-headline text-white/40 uppercase">
+                        <p className="text-[10px] font-headline text-text-muted uppercase">
                           Estado
                         </p>
                         {org.is_active ? (
@@ -180,21 +180,21 @@ export const OrganizationsPage = () => {
                         )}
                       </div>
                       <div>
-                        <p className="text-[10px] font-headline text-white/40 uppercase">
+                        <p className="text-[10px] font-headline text-text-muted uppercase">
                           ID
                         </p>
                         <span
-                          className="text-xs text-white/60 font-mono truncate"
+                          className="text-xs text-text-muted font-mono truncate"
                           title={org.id}
                         >
                           {org.id.slice(0, 8)}...
                         </span>
                       </div>
                       <div>
-                        <p className="text-[10px] font-headline text-white/40 uppercase">
+                        <p className="text-[10px] font-headline text-text-muted uppercase">
                           Creada
                         </p>
-                        <span className="text-xs text-white/60">
+                        <span className="text-xs text-text-muted">
                           {org.created_at
                             ? new Date(org.created_at).toLocaleDateString(
                                 'es-ES',
@@ -231,7 +231,7 @@ export const OrganizationsPage = () => {
         </div>
       ) : (
         <div className="flex items-center justify-center h-32">
-          <p className="text-white/40">
+          <p className="text-text-muted">
             {isInternal
               ? 'No hay organizaciones hijas disponibles'
               : 'No hay organizaciones disponibles'}

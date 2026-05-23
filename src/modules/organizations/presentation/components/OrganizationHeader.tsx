@@ -18,8 +18,8 @@ export const OrganizationHeader = ({ name, slug }: OrganizationHeaderProps) => {
         <BiBuilding className="text-2xl text-white" />
       </div>
       <div>
-        <h1 className="text-2xl font-headline font-bold text-white">{name}</h1>
-        <p className="text-sm text-white/40">{slug}</p>
+        <h1 className="text-2xl font-headline font-bold text-text-main">{name}</h1>
+        <p className="text-sm text-text-muted">{slug}</p>
       </div>
     </div>
   );

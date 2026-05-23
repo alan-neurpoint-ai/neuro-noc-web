@@ -21,12 +21,12 @@ export const DeleteConfirmModal = ({
         <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/10 flex items-center justify-center">
           <BiTrash className="text-3xl text-red-400" />
         </div>
-        <h3 className="text-lg font-bold text-white mb-2">¿Inactivar regla?</h3>
-        <p className="text-sm text-white/60 mb-2">
-          La regla <strong className="text-white">{ruleName}</strong> será
+        <h3 className="text-lg font-bold text-text-on-elevated mb-2">¿Inactivar regla?</h3>
+        <p className="text-sm text-text-muted mb-2">
+          La regla <strong className="text-text-on-elevated">{ruleName}</strong> será
           marcada como inactiva.
         </p>
-        <p className="text-xs text-white/40 mb-6">
+        <p className="text-xs text-text-muted mb-6">
           Esta acción no eliminará la regla, solo la ocultará de la vista.
         </p>
         <div className="flex justify-center gap-3">

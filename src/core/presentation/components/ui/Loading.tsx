@@ -12,7 +12,7 @@ export const Loading = ({
 
   const variants = {
     fullscreen: `${containerBase} fixed inset-0 z-[9999] bg-bg-main/95`,
-    overlay: `${containerBase} absolute inset-0 z-50 bg-bg-main/80 rounded-[20px] border border-white/5`,
+    overlay: `${containerBase} absolute inset-0 z-50 bg-bg-main/80 rounded-[20px] border border-border-subtle`,
   };
 
   return (
