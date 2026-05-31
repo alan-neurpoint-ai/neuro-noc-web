@@ -178,7 +178,7 @@ export const authService = {
   async updateNotificationPreference(userId: string, enabled: boolean) {
     const { error } = await supabase
       .from('users')
-      .update({ notifications_enabled: enabled })
+      .update({ notifications_enabled: enabled } as never)
       .eq('id', userId);
     if (error) throw error;
   },
@@ -195,7 +195,7 @@ export const authService = {
   async updateThemePreference(userId: string, theme: 'dark' | 'light') {
     const { error } = await supabase
       .from('users')
-      .update({ theme_preference: theme })
+      .update({ theme_preference: theme } as never)
       .eq('id', userId);
     if (error) throw error;
   },
