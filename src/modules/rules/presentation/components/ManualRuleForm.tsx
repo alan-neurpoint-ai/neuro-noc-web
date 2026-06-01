@@ -118,12 +118,12 @@ export const ManualForm = ({
           placeholder="Ej: nodes: server1, server2, server3&#10;services: api, database, cache"
           className="mt-2 w-full h-28 px-4 py-3 bg-hover-bg border border-border-default rounded-xl text-text-main placeholder:text-text-muted focus:border-brand-primary/50 focus:outline-none resize-none text-sm"
         />
-        <p className="text-[10px] text-text-muted mt-1">
-          Escribe los objetivos en formato natural. Ej: "nodes: server1, server2" o "services: api, db"
-        </p>
-      </div>
+<p className="text-[10px] text-text-muted mt-1 mb-6">
+           Escribe los objetivos en formato natural. Ej: "nodes: server1, server2" o "services: api, db"
+         </p>
+       </div>
 
-      <Button
+       <Button
         variant="primary"
         icon={<BiSave />}
         onClick={handleSaveClick}

@@ -108,6 +108,14 @@
     0% { transform: translateX(-100%); }
     100% { transform: translateX(200%); }
   }
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateX(100%); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes toastProgress {
+    from { width: 100%; }
+    to { width: 0%; }
+  }
 }
 
 /* ===== TEMA OSCURO (por defecto) ===== */
@@ -376,4 +384,12 @@
 
 @utility animate-progress {
   animation: progress 2s ease-in-out infinite;
+}
+
+@utility animate-toast-in {
+  animation: toastIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility animate-toast-progress {
+  animation: toastProgress linear forwards;
 }
