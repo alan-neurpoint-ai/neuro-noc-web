@@ -267,6 +267,7 @@
 
 @utility animate-radar-sweep {
   animation: radarSweep 4s linear infinite;
+  transform-origin: 100px 100px;
 }
 
 @utility gradient-login-ambient {
