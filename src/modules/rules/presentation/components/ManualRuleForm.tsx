@@ -31,29 +31,23 @@ export const ManualForm = ({
 }: ManualFormProps) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-  const convertToJson = (text: string): string => {
+  const formatTargetsPreview = (text: string): string => {
     if (!text.trim()) return '';
-
     try {
-      JSON.parse(text);
-      return text;
-    } catch {
-      const items = text
-        .split(/[,;\n]+/)
-        .map((item) => item.trim())
-        .filter((item) => item.length > 0);
-      if (text.includes(':')) {
-        const obj: Record<string, string[]> = {};
-        text.split(/[,;\n]+/).forEach((pair) => {
-          const [key, ...values] = pair.split(':');
-          if (key && values.length > 0) {
-            obj[key.trim()] = values.map((v) => v.trim()).filter((v) => v);
-          }
-        });
-        return JSON.stringify(obj, null, 2);
+      const parsed = JSON.parse(text);
+      if (typeof parsed === 'object') {
+        return Object.entries(parsed as Record<string, unknown>)
+          .map(([key, val]) => {
+            if (Array.isArray(val)) {
+              return `${key}: ${(val as string[]).join(', ')}`;
+            }
+            return `${key}: ${String(val)}`;
+          })
+          .join(', ');
       }
-
-      return JSON.stringify({ targets: items }, null, 2);
+      return String(parsed);
+    } catch {
+      return text.length > 50 ? `${text.substring(0, 50)}...` : text;
     }
   };
 
@@ -121,12 +115,11 @@ export const ManualForm = ({
           onChange={(e) =>
             setFormData({ ...formData, affected_targets: e.target.value })
           }
-          placeholder="Ej: nodes: server1, server2, server3 o services: api, database, cache"
-          className="mt-2 w-full h-24 px-4 py-3 bg-hover-bg border border-border-default rounded-xl text-text-main placeholder:text-text-muted focus:border-brand-primary/50 focus:outline-none resize-none font-mono text-sm"
+          placeholder="Ej: nodes: server1, server2, server3&#10;services: api, database, cache"
+          className="mt-2 w-full h-28 px-4 py-3 bg-hover-bg border border-border-default rounded-xl text-text-main placeholder:text-text-muted focus:border-brand-primary/50 focus:outline-none resize-none text-sm"
         />
         <p className="text-[10px] text-text-muted mt-1">
-          Escribe los objetivos de forma natural. Se convertirán a JSON
-          automáticamente.
+          Escribe los objetivos en formato natural. Ej: "nodes: server1, server2" o "services: api, db"
         </p>
       </div>
 
@@ -174,8 +167,8 @@ export const ManualForm = ({
             {formData.affected_targets && (
               <p className="text-text-muted">
                 <span className="text-text-muted">Objetivos:</span>{' '}
-                <span className="text-brand-accent font-mono text-xs">
-                  {convertToJson(formData.affected_targets).substring(0, 50)}...
+                <span className="text-text-on-elevated text-xs">
+                  {formatTargetsPreview(formData.affected_targets)}
                 </span>
               </p>
             )}

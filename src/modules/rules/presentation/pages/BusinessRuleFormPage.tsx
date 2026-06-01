@@ -16,6 +16,53 @@ interface RuleContext {
   affected_targets: unknown;
 }
 
+const formatTargetsForDisplay = (value: unknown): string => {
+  if (!value) return '';
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value);
+      return formatTargetsForDisplay(parsed);
+    } catch {
+      return value;
+    }
+  }
+  if (typeof value === 'object') {
+    const entries = Object.entries(value as Record<string, unknown>);
+    return entries
+      .map(([key, val]) => {
+        if (Array.isArray(val)) {
+          return `${key}: ${(val as string[]).join(', ')}`;
+        }
+        return `${key}: ${String(val)}`;
+      })
+      .join('\n');
+  }
+  return String(value);
+};
+
+const convertToJson = (text: string): unknown => {
+  if (!text.trim()) return null;
+  try {
+    return JSON.parse(text);
+  } catch {
+    const items = text
+      .split(/[,;\n]+/)
+      .map((item) => item.trim())
+      .filter((item) => item.length > 0);
+    if (text.includes(':')) {
+      const obj: Record<string, string[]> = {};
+      text.split(/[,;\n]+/).forEach((pair) => {
+        const [key, ...values] = pair.split(':');
+        if (key && values.length > 0) {
+          obj[key.trim()] = values.map((v) => v.trim()).filter((v) => v);
+        }
+      });
+      return obj;
+    }
+    return { targets: items };
+  }
+};
+
 export const BusinessRuleFormPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -29,9 +76,7 @@ export const BusinessRuleFormPage = () => {
   const isEditing = !!id && id !== 'create';
   const targetOrgId = selectedOrganization?.id || user?.organizationId;
 
-  const [creationType, setCreationType] = useState<'manual' | 'document'>(
-    'manual'
-  );
+  const [creationType, setCreationType] = useState<'manual' | 'document'>('manual');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const [formData, setFormData] = useState({
@@ -65,11 +110,7 @@ export const BusinessRuleFormPage = () => {
             execution_schedule: data.execution_schedule
               ? data.execution_schedule.slice(0, 16)
               : '',
-            affected_targets: data.affected_targets
-              ? typeof data.affected_targets === 'string'
-                ? data.affected_targets
-                : JSON.stringify(data.affected_targets, null, 2)
-              : '',
+            affected_targets: formatTargetsForDisplay(data.affected_targets),
           });
         } catch (error) {
           console.error('Error loading rule:', error);
@@ -80,33 +121,9 @@ export const BusinessRuleFormPage = () => {
       };
       fetchRule();
     } else {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLoading(false);
     }
   }, [id, isEditing, navigate, targetOrgId]);
-
-  const convertToJson = (text: string): unknown => {
-    if (!text.trim()) return null;
-    try {
-      return JSON.parse(text);
-    } catch {
-      const items = text
-        .split(/[,;\n]+/)
-        .map((item) => item.trim())
-        .filter((item) => item.length > 0);
-      if (text.includes(':')) {
-        const obj: Record<string, string[]> = {};
-        text.split(/[,;\n]+/).forEach((pair) => {
-          const [key, ...values] = pair.split(':');
-          if (key && values.length > 0) {
-            obj[key.trim()] = values.map((v) => v.trim()).filter((v) => v);
-          }
-        });
-        return obj;
-      }
-      return { targets: items };
-    }
-  };
 
   const handleSave = async () => {
     if (!targetOrgId) return;
@@ -138,9 +155,7 @@ export const BusinessRuleFormPage = () => {
             execution_schedule: formData.execution_schedule
               ? new Date(formData.execution_schedule).toISOString()
               : null,
-            affected_targets: formData.affected_targets
-              ? JSON.parse(formData.affected_targets)
-              : null,
+            affected_targets: convertToJson(formData.affected_targets),
           })
           .eq('id', id);
       } else {

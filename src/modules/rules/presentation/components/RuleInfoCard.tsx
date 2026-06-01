@@ -23,7 +23,26 @@ const formatDate = (dateStr: string | null) => {
 
 const formatAffectedTargets = (value: unknown): string => {
   if (!value) return '-';
-  if (typeof value === 'object') return JSON.stringify(value);
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value);
+      return formatAffectedTargets(parsed);
+    } catch {
+      return value;
+    }
+  }
+  if (typeof value === 'object') {
+    const entries = Object.entries(value as Record<string, unknown>);
+    if (entries.length === 0) return '-';
+    return entries
+      .map(([key, val]) => {
+        if (Array.isArray(val)) {
+          return `${key}: ${(val as string[]).join(', ')}`;
+        }
+        return `${key}: ${String(val)}`;
+      })
+      .join('\n');
+  }
   return String(value) || '-';
 };
 
@@ -52,7 +71,7 @@ export const RuleInfoCard = ({ context }: RuleInfoCardProps) => {
             <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
               Objetivos Afectados
             </label>
-            <p className="text-text-muted text-sm mt-1">{targetsDisplay}</p>
+            <p className="text-text-muted text-sm mt-1 whitespace-pre-line">{targetsDisplay}</p>
           </div>
         )}
       </div>
