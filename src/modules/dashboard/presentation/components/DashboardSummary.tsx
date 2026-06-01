@@ -48,60 +48,113 @@ function VerticalBarChart({ data }: { data: BarItem[] }) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const maxVal = Math.max(...data.map((d) => d.total), 1);
 
-  return (
-    <div className="w-full">
-      <div className="flex items-end justify-between gap-4" style={{ height: 140 }}>
-        {data.map((item, i) => {
-          const totalH = (item.total / maxVal) * 100;
-          const critH = (item.critical / maxVal) * 100;
-          const warningH = totalH - critH > 0 ? totalH - critH : 0;
-          const isHovered = hoveredIdx === i;
+  const gridLines = [0.25, 0.5, 0.75, 1].map((pct) => ({
+    y: 100 - pct * 100,
+    value: Math.round(maxVal * pct),
+  }));
 
-          return (
+  return (
+    <div className="w-full relative">
+      {/* Y-axis labels */}
+      <div className="absolute left-0 top-0 bottom-8 w-10 flex flex-col justify-between pointer-events-none z-10">
+        {gridLines.map((line, i) => (
+          <span key={i} className="text-[8px] font-mono font-bold text-text-muted/30 text-right pr-2">
+            {line.value}
+          </span>
+        ))}
+      </div>
+
+      {/* Chart area */}
+      <div className="ml-10">
+        <div className="relative" style={{ height: 160 }}>
+          {/* Grid lines */}
+          {gridLines.map((line, i) => (
             <div
               key={i}
-              className="flex-1 flex flex-col items-center h-full justify-end relative group"
-              onMouseEnter={() => setHoveredIdx(i)}
-              onMouseLeave={() => setHoveredIdx(null)}
-            >
-              {isHovered && (
-                <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 rounded-md bg-bg-elevated border border-border-default shadow-lg z-10 whitespace-nowrap">
-                  <span className="text-[10px] font-mono font-bold text-text-main">
-                    {item.total}
-                  </span>
-                  <span className="text-[9px] text-text-muted ml-1">total</span>
+              className="absolute left-0 right-0 border-t border-dashed border-border-subtle/40"
+              style={{ top: `${line.y}%` }}
+            />
+          ))}
+
+          {/* Bars */}
+          <div className="absolute inset-0 flex items-end justify-around gap-3">
+            {data.map((item, i) => {
+              const totalPct = (item.total / maxVal) * 85;
+              const critPct = (item.critical / maxVal) * 85;
+              const warnPct = totalPct - critPct > 0 ? totalPct - critPct : 0;
+              const isHovered = hoveredIdx === i;
+
+              return (
+                <div
+                  key={i}
+                  className="flex-1 h-full flex flex-col justify-end relative"
+                  onMouseEnter={() => setHoveredIdx(i)}
+                  onMouseLeave={() => setHoveredIdx(null)}
+                >
+                  {/* Tooltip */}
+                  {isHovered && (
+                    <div className="absolute -top-14 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+                      <div className="px-3 py-2 rounded-lg bg-bg-card border border-border-subtle shadow-[0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-xl">
+                        <p className="text-[10px] font-black font-mono text-text-main">{item.total} alertas</p>
+                        <div className="flex items-center gap-3 mt-1">
+                          <span className="flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#f87171]" />
+                            <span className="text-[8px] font-mono text-red-400">{item.critical}</span>
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#818cf8]" />
+                            <span className="text-[8px] font-mono text-brand-secondary">{item.total - item.critical}</span>
+                          </span>
+                        </div>
+                      </div>
+                      <div className="w-2 h-2 bg-bg-card border-r border-b border-border-subtle rotate-45 mx-auto -mt-1" />
+                    </div>
+                  )}
+
+                  {/* Stacked bar */}
+                  <div
+                    className={`w-full max-w-[44px] mx-auto flex flex-col justify-end rounded-t-md transition-all duration-300 ${isHovered ? 'scale-105' : ''}`}
+                    style={{ height: `${Math.max(totalPct, 2)}%` }}
+                  >
+                    <div
+                      className="w-full transition-all duration-500 ease-out"
+                      style={{
+                        height: warnPct > 0 ? `${(warnPct / totalPct) * 100}%` : '0%',
+                        background: isHovered
+                          ? 'linear-gradient(to top, #6366f1, #818cf8)'
+                          : 'linear-gradient(to top, #4f46e5, #818cf8)',
+                        borderRadius: warnPct > 0 && critPct === 0 ? '6px 6px 0 0' : '0',
+                        minHeight: warnPct > 0 ? '2px' : '0',
+                      }}
+                    />
+                    <div
+                      className="w-full transition-all duration-500 ease-out"
+                      style={{
+                        height: critPct > 0 ? `${(critPct / totalPct) * 100}%` : '0%',
+                        background: isHovered
+                          ? 'linear-gradient(to top, #dc2626, #f87171)'
+                          : 'linear-gradient(to top, #b91c1c, #f87171)',
+                        borderRadius: '6px 6px 0 0',
+                        minHeight: critPct > 0 ? '2px' : '0',
+                      }}
+                    />
+                  </div>
                 </div>
-              )}
-              <div className="w-full max-w-[48px] flex flex-col justify-end h-full relative rounded-t-md overflow-hidden">
-                <div
-                  className="w-full rounded-t-md transition-all duration-500 ease-out"
-                  style={{
-                    height: `${Math.max(warningH, 0.5)}%`,
-                    backgroundColor: '#818cf8',
-                    opacity: 0.7,
-                  }}
-                />
-                <div
-                  className="w-full transition-all duration-500 ease-out"
-                  style={{
-                    height: `${Math.max(critH, 0.5)}%`,
-                    backgroundColor: '#f87171',
-                    opacity: 0.85,
-                  }}
-                />
-              </div>
-            </div>
-          );
-        })}
-      </div>
-      <div className="flex justify-between mt-3">
-        {data.map((item, i) => (
-          <div key={i} className="flex-1 text-center">
-            <span className="text-[9px] font-mono font-bold text-text-muted uppercase tracking-tight">
-              {item.label}
-            </span>
+              );
+            })}
           </div>
-        ))}
+        </div>
+
+        {/* X-axis labels */}
+        <div className="flex justify-around mt-2">
+          {data.map((item, i) => (
+            <div key={i} className="flex-1 text-center">
+              <span className={`text-[9px] font-mono font-bold tracking-tight transition-colors duration-200 ${hoveredIdx === i ? 'text-brand-secondary' : 'text-text-muted/50'}`}>
+                {item.label}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -451,8 +504,8 @@ export const DashboardSummary = () => {
       {/* Vertical Bar Chart */}
       {barData.length > 0 && (
         <Card variant="glass" className="p-5">
-          <div className="flex items-center justify-between mb-5">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2.5">
               <div className="p-2 rounded-lg bg-brand-primary/20 text-brand-primary">
                 <BiBell size={14} />
               </div>
@@ -460,16 +513,16 @@ export const DashboardSummary = () => {
                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-accent">
                   Comparativa Semanal
                 </p>
-                <p className="text-[11px] text-text-muted">Alertas críticas vs advertencia</p>
+                <p className="text-[11px] text-text-muted mt-0.5">Volumen de alertas por semana</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-5">
               <div className="flex items-center gap-1.5">
-                <div className="w-2.5 h-2.5 rounded-sm bg-[#818cf8]/70" />
+                <div className="w-2.5 h-2.5 rounded-[3px] bg-gradient-to-t from-[#4f46e5] to-[#818cf8]" />
                 <span className="text-[9px] font-medium text-text-muted uppercase tracking-wider">Advertencia</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <div className="w-2.5 h-2.5 rounded-sm bg-[#f87171]/85" />
+                <div className="w-2.5 h-2.5 rounded-[3px] bg-gradient-to-t from-[#b91c1c] to-[#f87171]" />
                 <span className="text-[9px] font-medium text-text-muted uppercase tracking-wider">Crítica</span>
               </div>
             </div>
