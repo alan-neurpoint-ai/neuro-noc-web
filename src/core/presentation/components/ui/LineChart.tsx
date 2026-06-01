@@ -151,7 +151,7 @@ export const LineChart: React.FC<LineChartProps> = ({
             strokeWidth={strokeWidth}
             filter="url(#glow-line)"
             strokeLinecap="round"
-            style={{ vectorEffect: "non-scaling-stroke" }}
+            vectorEffect="non-scaling-stroke"
           />
 
           {/* Indicador Hover */}

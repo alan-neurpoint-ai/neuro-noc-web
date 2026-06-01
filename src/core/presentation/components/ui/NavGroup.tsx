@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from "react";
-import { NavItem } from "../../../types/navigation/navigation.types";
+import React, { useState, useMemo } from 'react';
+import { NavItem } from '../../../types/navigation/navigation.types';
 
 export const NavGroup: React.FC<{
   item: NavItem;
@@ -40,48 +40,36 @@ export const NavGroup: React.FC<{
         onClick={handleGroupClick}
         className={`group relative w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${
           isGroupActive
-            ? "bg-linear-to-r from-brand-primary/20 to-transparent border-l-2 border-brand-primary"
-            : "hover:bg-hover-bg text-text-on-elevated-muted hover:text-text-on-elevated"
-        } ${isCollapsed ? "justify-center" : ""}`}
+            ? 'bg-gradient-to-r from-brand-primary/20 to-transparent border-l-2 border-brand-primary'
+            : 'hover:bg-hover-bg text-text-on-elevated-muted hover:text-text-on-elevated'
+        } ${isCollapsed ? 'justify-center' : ''}`}
       >
-        <div
-          className={`shrink-0 transition-colors ${
-            isGroupActive
-              ? "text-brand-accent"
-              : "text-text-on-elevated-muted group-hover:text-brand-accent/80"
-          }`}
-        >
+        <div className={`shrink-0 transition-colors ${
+          isGroupActive
+            ? 'text-brand-secondary'
+            : 'text-text-on-elevated-muted group-hover:text-brand-secondary/80'
+        }`}>
           {item.icon}
         </div>
         {!isCollapsed && (
           <div className="flex items-center justify-between flex-1 min-w-0">
-            <span
-              className={`text-sm font-headline truncate ${
-                isGroupActive ? "text-text-on-elevated font-semibold" : "font-medium"
-              }`}
-            >
+            <span className={`text-sm font-headline truncate ${isGroupActive ? 'text-text-on-elevated font-semibold' : 'font-medium'}`}>
               {item.label}
             </span>
             {item.badge && (
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-brand-accent/20 text-brand-accent border border-brand-accent/30">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-brand-secondary/20 text-brand-secondary border border-brand-secondary/30">
                 {item.badge}
               </span>
             )}
             {item.children && (
               <svg
-                className={`w-3.5 h-3.5 text-text-on-elevated-muted transition-transform duration-200 ${
-                  isOpen ? "rotate-180" : ""
-                }`}
+                className={`w-3.5 h-3.5 text-text-on-elevated-muted transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
               >
-                <path
-                  d="M6 9l6 6 6-6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
+                <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             )}
           </div>
@@ -94,18 +82,8 @@ export const NavGroup: React.FC<{
         )}
       </button>
 
-      {/* Subitems */}
       {!isCollapsed && item.children && (
-        <div
-          className={`transition-all duration-200 ${
-            isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-          }`}
-          style={{ 
-            overflow: isOpen ? 'visible' : 'hidden',
-            position: 'relative',
-            zIndex: 5
-          }}
-        >
+        <div className={`transition-all duration-200 overflow-hidden ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
           {item.children.map((child) => {
             const isChildActive = child.id === activeId;
             return (
@@ -118,14 +96,13 @@ export const NavGroup: React.FC<{
                 }}
                 className={`w-full flex items-center gap-3 px-9 py-2 rounded-lg transition-all duration-200 text-left cursor-pointer hover:bg-hover-bg ${
                   isChildActive
-                    ? "bg-brand-primary/10 text-brand-accent font-medium"
-                    : "text-text-on-elevated-muted hover:text-text-on-elevated/70"
+                    ? 'bg-brand-primary/10 text-brand-secondary font-medium'
+                    : 'text-text-on-elevated-muted hover:text-text-on-elevated/70'
                 }`}
-                style={{ position: 'relative', zIndex: 10 }}
               >
                 <div className="w-1.5 h-1.5 rounded-full shrink-0">
                   {isChildActive ? (
-                    <div className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-brand-secondary" />
                   ) : (
                     <div className="w-1.5 h-1.5 rounded-full bg-text-on-elevated-muted/30" />
                   )}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BiLogOut } from 'react-icons/bi';
+import { BiLogOut, BiMoon, BiSun } from 'react-icons/bi';
 import { TbLayoutSidebarLeftCollapseFilled } from 'react-icons/tb';
 import { NavGroup } from './NavGroup';
 import type { NavItem } from '../../../types/navigation/navigation.types';
@@ -16,37 +16,24 @@ interface SidebarProps {
   className?: string;
 }
 
-const Avatar = ({
-  src,
-  name,
-  size,
-}: {
-  src?: string;
-  name: string;
-  size: number;
-}) => (
-  <div
-    className="shrink-0 flex items-center justify-center font-bold uppercase overflow-hidden"
-    style={{
-      width: size,
-      height: size,
-      borderRadius: size / 4,
-      background: 'linear-gradient(135deg, #672da9 0%, #8b5cf6 100%)',
-      boxShadow: '0 4px 12px rgba(103, 45, 169, 0.4)',
-    }}
-  >
-    {src ? (
-      <img src={src} alt={name} className="w-full h-full object-cover" />
-    ) : (
-      <span
-        className="text-white font-headline font-bold"
-        style={{ fontSize: size * 0.4 }}
-      >
-        {name.charAt(0)}
-      </span>
-    )}
-  </div>
-);
+function Avatar({ src, name, size }: { src?: string; name: string; size: number }) {
+  const fontSize = Math.round(size * 0.4);
+  const borderRadius = Math.round(size / 4);
+  return (
+    <div
+      className={`shrink-0 flex items-center justify-center font-bold uppercase overflow-hidden gradient-avatar`}
+      style={{ width: size, height: size, borderRadius }}
+    >
+      {src ? (
+        <img src={src} alt={name} className="w-full h-full object-cover" />
+      ) : (
+        <span className="text-white font-headline font-bold" style={{ fontSize }}>
+          {name.charAt(0)}
+        </span>
+      )}
+    </div>
+  );
+}
 
 export const Sidebar: React.FC<SidebarProps> = ({
   navItems,
@@ -68,44 +55,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside
-      className={`relative h-screen flex flex-col z-50 transition-all duration-300 ${
+      className={`relative h-screen flex flex-col z-50 transition-all duration-300 bg-sidebar ${
         isCollapsed ? 'w-20' : 'w-74'
-      } ${className} bg-sidebar`}
+      } ${className}`}
     >
-      <div
-        className="absolute inset-0 opacity-[0.03] dark:opacity-30"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)
-          `,
-          backgroundSize: '40px 40px',
-        }}
-      />
-
-      <div className="absolute top-0 left-0 w-full h-32 bg-linear-to-b from-brand-primary/10 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[length:40px_40px]" />
+      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-brand-primary/10 to-transparent pointer-events-none" />
 
       <div className="relative flex items-center justify-between px-5 py-5 border-b border-border-subtle">
         <div className="flex items-center gap-3">
-          <div
-            className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
-            style={{
-              background: 'linear-gradient(135deg, #672da9 0%, #8b5cf6 100%)',
-              boxShadow: '0 0 20px rgba(103, 45, 169, 0.5)',
-            }}
-          >
-            <svg
-              className="w-5 h-5 text-white"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path
-                d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+          <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 gradient-logo-icon">
+            <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
           {!isCollapsed && (
@@ -119,29 +80,25 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
           )}
         </div>
-        <div className="flex items-center gap-2 p-2">
-          <button
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-headline font-bold uppercase tracking-wider transition-all"
-          >
-            <TbLayoutSidebarLeftCollapseFilled
-              size={17}
-              className={`transition-transform duration-300 ${
-                isCollapsed ? 'rotate-180' : ''
-              }`}
-            />
-          </button>
-        </div>
+        <button
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-headline font-bold uppercase tracking-wider transition-all text-text-on-elevated-muted hover:text-text-on-elevated hover:bg-hover-bg"
+        >
+          <TbLayoutSidebarLeftCollapseFilled
+            size={17}
+            className={`transition-transform duration-300 ${isCollapsed ? 'rotate-180' : ''}`}
+          />
+        </button>
       </div>
 
       <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
         {!isCollapsed && (
           <div className="flex items-center gap-2 px-3 pb-3">
-            <div className="h-px flex-1 bg-linear-to-r from-brand-primary/50 to-transparent" />
+            <div className="h-px flex-1 bg-gradient-to-r from-brand-primary/50 to-transparent" />
             <span className="text-[10px] font-headline font-bold uppercase tracking-[0.25em] text-text-on-elevated-muted">
               Menú
             </span>
-            <div className="h-px flex-1 bg-linear-to-l from-brand-primary/50 to-transparent" />
+            <div className="h-px flex-1 bg-gradient-to-l from-brand-primary/50 to-transparent" />
           </div>
         )}
         {navItems.map((item) => {
@@ -164,30 +121,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
               onClick={() => handleNavigate(item.id, item.path ?? '')}
               className={`group relative w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${
                 isActive
-                  ? 'bg-linear-to-r from-brand-primary/20 to-transparent border-l-2 border-brand-primary'
+                  ? 'bg-gradient-to-r from-brand-primary/20 to-transparent border-l-2 border-brand-primary'
                   : 'hover:bg-hover-bg text-text-on-elevated-muted hover:text-text-on-elevated'
               } ${isCollapsed ? 'justify-center' : ''}`}
             >
-              <div
-                className={`shrink-0 transition-colors ${
-                  isActive
-                    ? 'text-brand-accent'
-                    : 'text-text-on-elevated-muted group-hover:text-brand-accent/80'
-                }`}
-              >
+              <div className={`shrink-0 transition-colors ${
+                isActive
+                  ? 'text-brand-secondary'
+                  : 'text-text-on-elevated-muted group-hover:text-brand-secondary/80'
+              }`}>
                 {item.icon}
               </div>
               {!isCollapsed && (
                 <div className="flex items-center justify-between flex-1 min-w-0">
-                  <span
-                    className={`text-sm font-headline truncate ${
-                      isActive ? 'text-text-on-elevated font-semibold' : 'font-medium'
-                    }`}
-                  >
+                  <span className={`text-sm font-headline truncate ${isActive ? 'text-text-on-elevated font-semibold' : 'font-medium'}`}>
                     {item.label}
                   </span>
                   {item.badge && (
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-brand-accent/20 text-brand-accent border border-brand-accent/30">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-brand-secondary/20 text-brand-secondary border border-brand-secondary/30">
                       {item.badge}
                     </span>
                   )}
@@ -206,16 +157,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       <div className="p-3 mt-auto border-t border-border-subtle relative">
         {profileOpen && !isCollapsed && (
-          <div
-            className="absolute bottom-full left-3 right-3 mb-3 p-4 rounded-xl overflow-hidden bg-bg-elevated border border-brand-primary/20 shadow-xl"
-          >
+          <div className="absolute bottom-full left-3 right-3 mb-3 p-4 rounded-xl overflow-hidden bg-bg-elevated border border-brand-primary/20 shadow-xl">
             <div className="flex items-center gap-3 mb-4">
               <Avatar src={userAvatar} name={userName} size={42} />
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-headline font-bold text-text-on-elevated truncate">
                   {userName}
                 </p>
-                <p className="text-[10px] font-headline text-brand-accent truncate uppercase tracking-wider">
+                <p className="text-[10px] font-headline text-brand-secondary truncate uppercase tracking-wider">
                   {userRole}
                 </p>
               </div>
@@ -243,15 +192,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
             <div className="pt-3 flex flex-col gap-2">
               <button
-                onClick={() => {
-                  onLogout?.();
-                }}
-                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg transition-all text-xs font-headline font-semibold uppercase tracking-wider"
-                style={{
-                  background: 'rgba(239, 68, 68, 0.1)',
-                  border: '1px solid rgba(239, 68, 68, 0.2)',
-                  color: '#ef4444',
-                }}
+                onClick={() => { onLogout?.(); }}
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg transition-all text-xs font-headline font-semibold uppercase tracking-wider gradient-logout-btn hover:gradient-logout-btn-hover"
               >
                 <BiLogOut size={14} />
                 Cerrar Sesión
@@ -270,10 +212,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         >
           <div className="relative">
             <Avatar src={userAvatar} name={userName} size={32} />
-            <div
-              className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-sidebar"
-              style={{ background: '#10b981' }}
-            />
+            <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-sidebar bg-emerald-500" />
           </div>
           {!isCollapsed && (
             <div className="flex-1 min-w-0 text-left">

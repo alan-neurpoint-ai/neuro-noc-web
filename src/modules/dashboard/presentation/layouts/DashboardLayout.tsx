@@ -28,7 +28,6 @@ export const DashboardLayout = () => {
   const roleName = user?.role?.name as RoleName | undefined;
   const navItems = navigationService.getNavigationByRole(roleName);
 
-  // Sync activeNavId with current URL
   useEffect(() => {
     const path = location.pathname;
     const findActiveId = (items: typeof navItems): string | undefined => {
@@ -47,7 +46,6 @@ export const DashboardLayout = () => {
     };
     const newActiveId = findActiveId(navItems);
     if (newActiveId && newActiveId !== activeNavId) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveNavId(newActiveId);
     }
   }, [location.pathname, navItems, activeNavId]);
@@ -102,7 +100,6 @@ export const DashboardLayout = () => {
     loadOrganizations();
   }, [roleName, user, selectedOrganization, setSelectedOrganization]);
 
-  // Ocultar el Topbar cuando estamos en la página de organizaciones y la vista es "Interno"
   useEffect(() => {
     if (isOrganizationsPage) {
       const shouldHide = selectedOrganization?.isInternal;
@@ -163,6 +160,8 @@ export const DashboardLayout = () => {
             envOptions={orgOptions}
             currentEnv={selectedOrganization?.id}
             onEnvChange={handleOrgChange}
+            userName={userName}
+            userRole={user?.role?.name || 'user'}
           />
         )}
         <main className="flex-1 overflow-y-auto p-6 bg-bg-surface">

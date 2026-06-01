@@ -94,10 +94,7 @@ export const Loading = ({
             </g>
 
             {/* Segundo sweep con delay */}
-            <g
-              className="animate-[radarSweep_4s_infinite_linear]"
-              style={{ animationDelay: '-2s' }}
-            >
+            <g className="animate-[radarSweep_4s_infinite_linear] [animation-delay:-2s]">
               <path
                 d="M100,100 L100,10 A90,90 0 0,1 163.6,36.4 Z"
                 fill="url(#sweepGradient)"
@@ -145,24 +142,21 @@ export const Loading = ({
               cy="140"
               r="1.5"
               fill="#22c55e"
-              className="animate-[blip_2.5s_infinite_ease-in-out]"
-              style={{ animationDelay: '-0.5s' }}
+              className="animate-[blip_2.5s_infinite_ease-in-out] [animation-delay:-0.5s]"
             />
             <circle
               cx="160"
               cy="120"
               r="1"
               fill="#22c55e"
-              className="animate-[blip_1.8s_infinite_ease-in-out]"
-              style={{ animationDelay: '-1s' }}
+              className="animate-[blip_1.8s_infinite_ease-in-out] [animation-delay:-1s]"
             />
             <circle
               cx="45"
               cy="80"
               r="1.5"
               fill="#22c55e"
-              className="animate-[blip_2.2s_infinite_ease-in-out]"
-              style={{ animationDelay: '-1.5s' }}
+              className="animate-[blip_2.2s_infinite_ease-in-out] [animation-delay:-1.5s]"
             />
 
             {/* Anillo exterior */}
