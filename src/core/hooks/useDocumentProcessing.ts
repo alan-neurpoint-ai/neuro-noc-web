@@ -6,82 +6,128 @@ import { useToastStore } from '../presentation/stores/useToastStore';
 interface PendingDocument {
   fileName: string;
   orgId: string;
-  timestamp: number;
+  uploadedAt: string;
+  pollIntervalId: ReturnType<typeof setInterval>;
   timeoutId: ReturnType<typeof setTimeout>;
+  notified: boolean;
 }
 
-const PROCESSING_TIMEOUT_MS = 5 * 60 * 1000;
+const POLL_INTERVAL_MS = 3000;
+const PROCESSING_TIMEOUT_MS = 2 * 60 * 1000;
 
 const pendingDocuments: PendingDocument[] = [];
 
-export function trackDocumentUpload(fileName: string, orgId: string) {
-  const timeoutId = setTimeout(() => {
-    const idx = pendingDocuments.findIndex((d) => d.fileName === fileName && d.orgId === orgId);
-    if (idx >= 0) {
-      pendingDocuments.splice(idx, 1);
+async function checkForNewRules(pending: PendingDocument) {
+  if (pending.notified) return;
+
+  try {
+    const { data, error } = await supabase
+      .from('business_rule')
+      .select('id, name, created_at')
+      .eq('organization_id', pending.orgId)
+      .gte('created_at', pending.uploadedAt)
+      .is('deleted_at', null);
+
+    if (error) {
+      console.error('Error polling business rules:', error);
+      return;
+    }
+
+    if (data && data.length > 0) {
+      pending.notified = true;
+      clearInterval(pending.pollIntervalId);
+      clearTimeout(pending.timeoutId);
+
+      const idx = pendingDocuments.indexOf(pending);
+      if (idx >= 0) pendingDocuments.splice(idx, 1);
+
+      const ruleNames = data.map((r: { name: string }) => r.name).slice(0, 3).join(', ');
+      const moreCount = data.length > 3 ? ` y ${data.length - 3} más` : '';
+      const plural = data.length > 1 ? 's' : '';
+
       useToastStore.getState().addToast({
-        type: 'warning',
-        title: 'Procesamiento demorado',
-        message: `El documento "${fileName}" está tomando más tiempo del esperado. Verifica el estado más tarde.`,
+        type: 'success',
+        title: `Documento procesado`,
+        message: `"${pending.fileName}" generó ${data.length} regla${plural}: ${ruleNames}${moreCount}`,
         duration: 8000,
       });
     }
-  }, PROCESSING_TIMEOUT_MS);
-
-  pendingDocuments.push({ fileName, orgId, timestamp: Date.now(), timeoutId });
+  } catch (err) {
+    console.error('Error checking for new rules:', err);
+  }
 }
 
-function removePendingDocument(fileName: string, orgId: string) {
-  const idx = pendingDocuments.findIndex((d) => d.fileName === fileName && d.orgId === orgId);
-  if (idx >= 0) {
-    clearTimeout(pendingDocuments[idx].timeoutId);
-    pendingDocuments.splice(idx, 1);
-  }
+export function trackDocumentUpload(fileName: string, orgId: string) {
+  const uploadedAt = new Date(Date.now() - 2000).toISOString();
+
+  const pollIntervalId = setInterval(() => {
+    const pending = pendingDocuments.find((d) => d.fileName === fileName && d.orgId === orgId);
+    if (pending && !pending.notified) {
+      checkForNewRules(pending);
+    }
+  }, POLL_INTERVAL_MS);
+
+  const timeoutId = setTimeout(() => {
+    const idx = pendingDocuments.findIndex((d) => d.fileName === fileName && d.orgId === orgId);
+    if (idx >= 0) {
+      const pending = pendingDocuments[idx];
+      if (!pending.notified) {
+        clearInterval(pending.pollIntervalId);
+        pendingDocuments.splice(idx, 1);
+        useToastStore.getState().addToast({
+          type: 'warning',
+          title: 'Procesamiento demorado',
+          message: `El documento "${fileName}" está tomando más tiempo del esperado. Verifica el estado más tarde.`,
+          duration: 8000,
+        });
+      }
+    }
+  }, PROCESSING_TIMEOUT_MS);
+
+  pendingDocuments.push({
+    fileName,
+    orgId,
+    uploadedAt,
+    pollIntervalId,
+    timeoutId,
+    notified: false,
+  });
+
+  setTimeout(() => {
+    const pending = pendingDocuments.find((d) => d.fileName === fileName && d.orgId === orgId);
+    if (pending && !pending.notified) {
+      checkForNewRules(pending);
+    }
+  }, 1000);
 }
 
 export function useDocumentProcessing() {
   const user = useAuthStore((s) => s.user);
   const selectedOrganization = useAuthStore((s) => s.selectedOrganization);
-  const channelRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
+  const cleanupRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     const orgId = selectedOrganization?.id || user?.organizationId;
     if (!orgId) return;
 
-    const channel = supabase
-      .channel('business-rule-processing')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'business_rule',
-          filter: `organization_id=eq.${orgId}`,
-        },
-        (payload) => {
-          const pendingDoc = pendingDocuments.find((d) => d.orgId === orgId);
-          if (!pendingDoc) return;
-
-          const newRule = payload.new as { name?: string };
-          removePendingDocument(pendingDoc.fileName, pendingDoc.orgId);
-
-          useToastStore.getState().addToast({
-            type: 'success',
-            title: 'Documento procesado',
-            message: `El documento "${pendingDoc.fileName}" ya está disponible como regla: ${newRule.name || 'Nueva regla'}`,
-            duration: 8000,
-          });
+    cleanupRef.current = () => {
+      pendingDocuments.forEach((d) => {
+        if (d.orgId === orgId && !d.notified) {
+          clearInterval(d.pollIntervalId);
+          clearTimeout(d.timeoutId);
         }
-      )
-      .subscribe();
-
-    channelRef.current = channel;
+      });
+      for (let i = pendingDocuments.length - 1; i >= 0; i--) {
+        if (pendingDocuments[i].orgId === orgId) {
+          pendingDocuments.splice(i, 1);
+        }
+      }
+    };
 
     return () => {
-      supabase.removeChannel(channel);
-      channelRef.current = null;
+      cleanupRef.current?.();
     };
-  }, [selectedOrganization?.id, user?.organizationId, user?.id]);
+  }, [selectedOrganization?.id, user?.organizationId]);
 
   return { trackUpload: trackDocumentUpload };
 }
