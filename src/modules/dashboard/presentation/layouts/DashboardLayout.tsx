@@ -2,9 +2,7 @@ import { Outlet, useNavigate, useLocation } from 'react-router';
 import { useState, useEffect, useMemo } from 'react';
 import { Sidebar } from '../../../../core/presentation/components/ui/Sidebar';
 import { Topbar } from '../../../../core/presentation/components/ui/Topbar';
-import { ToastContainer } from '../../../../core/presentation/components/ui/ToastContainer';
 import { useAuthStore } from '../../../auth/presentation/stores/useAuthStore';
-import { useDocumentProcessing } from '../../../../core/hooks/useDocumentProcessing';
 import { authService } from '../../../auth/infrastructure/services/auth.service';
 import { organizationService } from '../../../organizations/infrastructure/services/organization.service';
 import { navigationService } from '../../../../core/services/navigation.service';
@@ -48,8 +46,6 @@ export const DashboardLayout = () => {
     setHideTopbar,
   } = useAuthStore();
   const [orgOptions, setOrgOptions] = useState<OrganizationOption[]>([]);
-
-  useDocumentProcessing();
 
   const roleName = user?.role?.name as RoleName | undefined;
   const navItems = navigationService.getNavigationByRole(roleName);
@@ -156,7 +152,6 @@ export const DashboardLayout = () => {
 
   return (
     <div className="flex h-screen bg-bg-main text-text-main overflow-hidden">
-      <ToastContainer />
       <Sidebar
         navItems={navItems}
         userName={userName}

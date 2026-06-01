@@ -4,8 +4,6 @@ import { BiUpload, BiFile } from 'react-icons/bi';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import { useAuthStore } from '../../../auth/presentation/stores/useAuthStore';
-import { useToastStore } from '../../../../core/presentation/stores/useToastStore';
-import { trackDocumentUpload } from '../../../../core/hooks/useDocumentProcessing';
 
 const N8N_WEBHOOK_URL = 'https://cesar.n8n-wsk.com/webhook/base-conocimientos';
 
@@ -23,15 +21,7 @@ export const DocumentRuleForm = ({
   const [uploadingFile, setUploadingFile] = useState(false);
 
   const handleUpload = async () => {
-    if (!selectedFile) {
-      useToastStore.getState().addToast({
-        type: 'warning',
-        title: 'Archivo requerido',
-        message: 'Por favor selecciona un archivo antes de subir.',
-        duration: 4000,
-      });
-      return;
-    }
+    if (!selectedFile) return;
 
     setUploadingFile(true);
 
@@ -51,17 +41,6 @@ export const DocumentRuleForm = ({
       });
 
       if (response.ok) {
-        const orgId = selectedOrganization?.id || user?.organizationId || '';
-
-        trackDocumentUpload(selectedFile.name, orgId);
-
-        useToastStore.getState().addToast({
-          type: 'info',
-          title: 'Documento enviado',
-          message: `"${selectedFile.name}" se está procesando. Te notificaremos cuando esté disponible.`,
-          duration: 6000,
-        });
-
         setUploadingFile(false);
         navigate('/dashboard/rules');
       } else {
@@ -70,14 +49,11 @@ export const DocumentRuleForm = ({
     } catch (error) {
       console.error('Error processing file:', error);
       setUploadingFile(false);
-
-      useToastStore.getState().addToast({
-        type: 'error',
-        title: 'Error al procesar',
-        message: `No se pudo procesar "${selectedFile.name}". Intenta nuevamente.`,
-        duration: 6000,
-      });
     }
+  };
+
+  const handleCancelUpload = () => {
+    setUploadingFile(false);
   };
 
   return (
@@ -113,9 +89,8 @@ export const DocumentRuleForm = ({
 
       <Modal
         isOpen={uploadingFile}
-        onClose={() => {}}
+        onClose={handleCancelUpload}
         title="PROCESANDO DOCUMENTO"
-        dismissOnOverlay={false}
         maxWidth="sm"
         icon={<BiFile className="text-brand-accent text-xl" />}
       >
@@ -151,6 +126,14 @@ export const DocumentRuleForm = ({
               style={{ width: '60%' }}
             />
           </div>
+
+          <Button
+            variant="outline"
+            onClick={handleCancelUpload}
+            className="mt-4"
+          >
+            CERRAR
+          </Button>
         </div>
       </Modal>
     </div>
