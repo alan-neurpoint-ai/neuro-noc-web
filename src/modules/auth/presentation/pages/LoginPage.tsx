@@ -22,7 +22,7 @@ export default function LoginPage() {
       <LoginBrandPanel mountAnim={mountAnim} />
 
       <div
-        className={`hidden lg:block absolute left-[52%] top-[8%] xl:top-[10%] bottom-[8%] xl:bottom-[10%] w-px transition-all duration-1000 delay-500 ${mountAnim ? 'opacity-100' : 'opacity-0'} gradient-login-divider`}
+        className={`hidden lg:block absolute left-[52%] top-[12%] bottom-[12%] w-px transition-all duration-1000 delay-500 ${mountAnim ? 'opacity-100' : 'opacity-0'} gradient-login-divider`}
       />
 
       <LoginFormCard mountAnim={mountAnim} />

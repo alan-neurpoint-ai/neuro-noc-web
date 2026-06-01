@@ -85,11 +85,11 @@ export function LoginFormCard({ mountAnim }: LoginFormCardProps) {
 
   return (
     <div
-      className={`w-full lg:w-[48%] flex flex-col justify-center items-center px-6 sm:px-10 xl:px-16 2xl:px-24 relative z-10 min-h-screen transition-all duration-1000 delay-300 ${mountAnim ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+      className={`w-full lg:w-[48%] flex flex-col justify-center items-center px-6 sm:px-8 lg:px-10 xl:px-16 2xl:px-24 relative z-10 py-12 lg:py-0 transition-all duration-1000 delay-300 ${mountAnim ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
     >
-      <div className="w-full max-w-96 lg:max-w-100 xl:max-w-110 2xl:max-w-120">
+      <div className="w-full max-w-92 lg:max-w-96 xl:max-w-100 2xl:max-w-105">
         <div
-          className={`flex lg:hidden items-center justify-center gap-3 mb-14 transition-all duration-700 delay-200 ${mountAnim ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}
+          className={`flex lg:hidden items-center justify-center gap-3 mb-10 transition-all duration-700 delay-200 ${mountAnim ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}
         >
           <div>
             <span className="font-headline text-[clamp(1.1rem,2vw,1.6rem)] font-bold text-text-main tracking-tight">
@@ -101,26 +101,26 @@ export function LoginFormCard({ mountAnim }: LoginFormCardProps) {
           </div>
         </div>
 
-        <div className="mb-10 xl:mb-12">
+        <div className="mb-8 xl:mb-10">
           <div
-            className={`flex items-center gap-3 mb-4 xl:mb-5 transition-all duration-600 delay-400 ${mountAnim ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-5'}`}
+            className={`flex items-center gap-3 mb-3 xl:mb-4 transition-all duration-600 delay-400 ${mountAnim ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-5'}`}
           >
             <div className="relative w-2 h-2 xl:w-2.5 xl:h-2.5">
               <div className="absolute inset-0 rounded-full bg-brand-primary animate-login-pulse" />
               <div className="absolute -inset-0.75 rounded-full bg-brand-primary/20 animate-login-pulse [animation-delay:0.5s]" />
             </div>
-            <span className="font-label text-[clamp(10px,0.65vw,14px)] font-bold text-brand-primary uppercase tracking-[0.25em]">
+            <span className="font-label text-[clamp(10px,0.6vw,14px)] font-bold text-brand-primary uppercase tracking-[0.25em]">
               Acceso
             </span>
           </div>
 
           <h2
-            className={`font-headline text-[clamp(1.85rem,2.5vw,2.8rem)] font-extrabold text-text-main tracking-tight leading-tight transition-all duration-600 delay-500 ${mountAnim ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+            className={`font-headline text-[clamp(1.7rem,2.2vw,2.6rem)] font-extrabold text-text-main tracking-tight leading-tight transition-all duration-600 delay-500 ${mountAnim ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
           >
             Inicia sesión
           </h2>
           <p
-            className={`mt-2 xl:mt-3 text-[clamp(0.8125rem,0.9vw,1rem)] text-text-muted/50 font-body transition-all duration-600 delay-600 ${mountAnim ? 'opacity-100' : 'opacity-0'}`}
+            className={`mt-2 xl:mt-3 text-[clamp(0.75rem,0.8vw,0.95rem)] text-text-muted/40 font-body transition-all duration-600 delay-600 ${mountAnim ? 'opacity-100' : 'opacity-0'}`}
           >
             Ingresa tus credenciales para acceder al centro de operaciones
           </p>
@@ -133,10 +133,10 @@ export function LoginFormCard({ mountAnim }: LoginFormCardProps) {
           <div className="absolute inset-0 rounded-2xl gradient-login-card-inner" />
 
           <form
-            className="relative p-7 sm:p-8 xl:p-10 2xl:p-12 rounded-2xl border border-white/6 bg-bg-surface/60 backdrop-blur-xl"
+            className="relative p-6 sm:p-7 xl:p-8 2xl:p-10 rounded-2xl border border-white/6 bg-bg-surface/60 backdrop-blur-xl"
             onSubmit={handleSubmit}
           >
-            <div className="space-y-5 xl:space-y-6">
+            <div className="space-y-4 xl:space-y-5">
               <div
                 className={`transition-all duration-600 delay-700 ${mountAnim ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}
               >
@@ -180,13 +180,13 @@ export function LoginFormCard({ mountAnim }: LoginFormCardProps) {
                   <Button
                     variant="primary"
                     fullWidth
-                    className="py-4 xl:py-5 relative overflow-hidden"
+                    className="py-3.5 xl:py-4 relative overflow-hidden"
                     isLoading={isLoading}
                   >
                     {isLoading ? null : (
-                      <span className="relative z-10 flex items-center justify-center gap-2 text-[clamp(0.8rem,0.9vw,1rem)]">
+                      <span className="relative z-10 flex items-center justify-center gap-2 text-[clamp(0.75rem,0.8vw,0.95rem)]">
                         <svg
-                          className="w-4 h-4 xl:w-5 xl:h-5"
+                          className="w-4 h-4 xl:w-4.5 xl:h-4.5"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
@@ -214,7 +214,7 @@ export function LoginFormCard({ mountAnim }: LoginFormCardProps) {
         </div>
 
         <p
-          className={`mt-8 xl:mt-10 text-center text-[clamp(8px,0.55vw,11px)] text-text-muted/25 font-label tracking-[0.15em] uppercase transition-all duration-600 delay-1000 ${mountAnim ? 'opacity-100' : 'opacity-0'}`}
+          className={`mt-6 xl:mt-8 text-center text-[clamp(7px,0.45vw,9px)] text-text-muted/25 font-label tracking-[0.15em] uppercase transition-all duration-600 delay-1000 ${mountAnim ? 'opacity-100' : 'opacity-0'}`}
         >
           Powered by Neuropoint.ai
         </p>
