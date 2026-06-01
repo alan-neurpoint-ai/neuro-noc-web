@@ -24,70 +24,77 @@
   --color-status-error: #f87171;
   --image-gradient-noc: linear-gradient(135deg, #6366f1 0%, #1b1b24 100%);
   @keyframes wave {
-    0%,
-    100% {
-      transform: translateY(0) skewY(-2deg);
-    }
-    50% {
-      transform: translateY(-5px) skewY(2deg);
-    }
+    0%, 100% { transform: translateY(0) skewY(-2deg); }
+    50% { transform: translateY(-5px) skewY(2deg); }
   }
-
   @keyframes float {
-    0% {
-      transform: translateY(0);
-      opacity: 0;
-    }
-    50% {
-      opacity: 0.8;
-    }
-    100% {
-      transform: translateY(-40px);
-      opacity: 0;
-    }
+    0% { transform: translateY(0); opacity: 0; }
+    50% { opacity: 0.8; }
+    100% { transform: translateY(-40px); opacity: 0; }
   }
-
   @keyframes shimmer {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translateX(200%);
-    }
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
   }
-
   @keyframes modalIn {
-    from {
-      opacity: 0;
-      transform: translateY(16px) scale(0.97);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
+    from { opacity: 0; transform: translateY(16px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
   }
-
   @keyframes radarSweep {
-    from {
-      transform: rotate(0deg);
-      transform-origin: 100px 100px;
-    }
-    to {
-      transform: rotate(360deg);
-      transform-origin: 100px 100px;
-    }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
-
   @keyframes blip {
-    0%,
-    100% {
-      opacity: 0.3;
-      r: 1;
-    }
-    50% {
-      opacity: 1;
-      r: 3;
-    }
+    0%, 100% { opacity: 0.3; r: 1; }
+    50% { opacity: 1; r: 3; }
+  }
+  @keyframes loginOrb1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(40px, -50px) scale(1.06); }
+    50% { transform: translate(-30px, -20px) scale(0.97); }
+    75% { transform: translate(15px, 30px) scale(1.03); }
+  }
+  @keyframes loginOrb2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(-35px, 40px) scale(1.08); }
+    66% { transform: translate(20px, -20px) scale(0.96); }
+  }
+  @keyframes loginScanLine {
+    0% { top: -2px; opacity: 0; }
+    3% { opacity: 0.12; }
+    97% { opacity: 0.12; }
+    100% { top: 100%; opacity: 0; }
+  }
+  @keyframes loginPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.7); }
+  }
+  @keyframes loginFadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  @keyframes loginDataStream {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes loginBorderRotate {
+    0% { --border-angle: 0deg; }
+    100% { --border-angle: 360deg; }
+  }
+  @keyframes loginShimmer {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes loginBlipCore {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+  @keyframes loginBlipRing {
+    0% { opacity: 0.6; stroke-width: 1; }
+    80% { opacity: 0; r: 12; stroke-width: 0.3; }
+    100% { opacity: 0; r: 14; stroke-width: 0; }
   }
 }
 
@@ -107,6 +114,16 @@
   --hover-bg: rgba(255, 255, 255, 0.05);
   --sidebar-bg: #0d0d1a;
   --topbar-bg: rgba(13, 13, 26, 0.95);
+  --login-gradient-ambient: radial-gradient(ellipse 120% 80% at 35% 50%, rgba(99,102,241,0.08) 0%, transparent 60%);
+  --login-gradient-orb1: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
+  --login-gradient-orb2: radial-gradient(circle, rgba(129,140,248,0.08) 0%, transparent 70%);
+  --login-gradient-scan: linear-gradient(90deg, transparent 0%, rgba(99,102,241,0.15) 30%, rgba(129,140,248,0.25) 50%, rgba(99,102,241,0.15) 70%, transparent 100%);
+  --login-gradient-divider: linear-gradient(to bottom, transparent 0%, rgba(99,102,241,0.15) 20%, rgba(129,140,248,0.25) 50%, rgba(99,102,241,0.15) 80%, transparent 100%);
+  --login-gradient-card-border: conic-gradient(from var(--border-angle, 0deg), transparent 0%, #6366f1 10%, #818cf8 30%, #6366f1 50%, transparent 60%);
+  --login-gradient-card-inner: linear-gradient(135deg, rgba(99,102,241,0.08) 0%, transparent 50%, rgba(129,140,248,0.04) 100%);
+  --login-gradient-button-glow: linear-gradient(to right, #6366f1, #818cf8, #6366f1);
+  --login-gradient-shimmer: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+  --login-gradient-hero-text: linear-gradient(to right, #6366f1, #818cf8, #c7d2fe);
 }
 
 /* ===== TEMA CLARO ===== */
@@ -142,28 +159,105 @@
     overflow-y: auto;
   }
 
-  h1,
-  h2,
-  h3,
-  h4 {
+  h1, h2, h3, h4 {
     @apply font-headline font-bold tracking-tight;
   }
 
-  code,
-  pre,
-  .mono {
+  code, pre, .mono {
     @apply font-label text-xs;
   }
 }
 
 @utility scrollbar-hide {
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  &::-webkit-scrollbar { display: none; }
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
 @utility glass-panel {
   @apply bg-bg-surface/80 backdrop-blur-xl border border-border-subtle;
+}
+
+@utility animate-login-orb1 {
+  animation: loginOrb1 22s ease-in-out infinite;
+}
+
+@utility animate-login-orb2 {
+  animation: loginOrb2 28s ease-in-out infinite;
+}
+
+@utility animate-login-scan-line {
+  animation: loginScanLine 7s linear infinite;
+}
+
+@utility animate-login-pulse {
+  animation: loginPulse 2s ease-in-out infinite;
+}
+
+@utility animate-login-pulse-badge {
+  animation: loginPulse 2.5s ease-in-out infinite;
+}
+
+@utility animate-login-fade-in {
+  animation: loginFadeIn 1.5s ease-out forwards;
+}
+
+@utility animate-login-data-stream {
+  animation: loginDataStream 30s linear infinite;
+}
+
+@utility animate-login-border-rotate {
+  animation: loginBorderRotate 6s linear infinite;
+}
+
+@utility animate-login-shimmer {
+  animation: loginShimmer 2.5s ease-in-out infinite;
+}
+
+@utility animate-login-blip-core {
+  animation: loginBlipCore 3s ease-in-out infinite;
+}
+
+@utility animate-login-blip-ring {
+  animation: loginBlipRing 3s ease-out infinite;
+}
+
+@utility animate-radar-sweep {
+  animation: radarSweep 4s linear infinite;
+}
+
+@utility gradient-login-ambient {
+  background: var(--login-gradient-ambient);
+}
+
+@utility gradient-login-orb1 {
+  background: var(--login-gradient-orb1);
+}
+
+@utility gradient-login-orb2 {
+  background: var(--login-gradient-orb2);
+}
+
+@utility gradient-login-scan {
+  background: var(--login-gradient-scan);
+}
+
+@utility gradient-login-divider {
+  background: var(--login-gradient-divider);
+}
+
+@utility gradient-login-card-border {
+  background: var(--login-gradient-card-border);
+}
+
+@utility gradient-login-card-inner {
+  background: var(--login-gradient-card-inner);
+}
+
+@utility gradient-login-button-glow {
+  background: var(--login-gradient-button-glow);
+}
+
+@utility gradient-login-hero-text {
+  background-image: var(--login-gradient-hero-text);
 }
