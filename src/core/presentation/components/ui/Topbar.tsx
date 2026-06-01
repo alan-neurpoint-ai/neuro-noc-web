@@ -55,7 +55,7 @@ export const Topbar: React.FC<TopbarProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full h-12 flex items-center justify-between p-10 border-b border-border-subtle bg-topbar backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full h-12 flex items-center justify-end p-10 border-b border-border-subtle bg-topbar backdrop-blur-md">
 
       <div className="flex items-center gap-3">
         <LiveClock />
