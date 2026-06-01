@@ -21,13 +21,9 @@ export const DocumentRuleForm = ({
   const [uploadingFile, setUploadingFile] = useState(false);
 
   const handleUpload = async () => {
-    if (!selectedFile) {
-      alert('Por favor selecciona un archivo primero');
-      return;
-    }
+    if (!selectedFile) return;
 
     setUploadingFile(true);
-    console.log('Subiendo archivo:', selectedFile.name);
 
     try {
       const formData = new FormData();
@@ -53,8 +49,11 @@ export const DocumentRuleForm = ({
     } catch (error) {
       console.error('Error processing file:', error);
       setUploadingFile(false);
-      alert('Error al procesar el archivo');
     }
+  };
+
+  const handleCancelUpload = () => {
+    setUploadingFile(false);
   };
 
   return (
@@ -90,9 +89,8 @@ export const DocumentRuleForm = ({
 
       <Modal
         isOpen={uploadingFile}
-        onClose={() => {}}
+        onClose={handleCancelUpload}
         title="PROCESANDO DOCUMENTO"
-        dismissOnOverlay={false}
         maxWidth="sm"
         icon={<BiFile className="text-brand-accent text-xl" />}
       >
@@ -128,6 +126,14 @@ export const DocumentRuleForm = ({
               style={{ width: '60%' }}
             />
           </div>
+
+          <Button
+            variant="outline"
+            onClick={handleCancelUpload}
+            className="mt-4"
+          >
+            CERRAR
+          </Button>
         </div>
       </Modal>
     </div>

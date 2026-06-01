@@ -76,10 +76,7 @@ export const DonutChart: React.FC<DonutChartProps> = ({
 
   return (
     <div
-      className={`flex flex-col p-5 rounded-2xl border border-border-subtle shadow-2xl ${className}`}
-      style={{
-        background: "linear-gradient(160deg, #2d1b69 0%, var(--bg-elevated) 100%)",
-      }}
+      className={`flex flex-col p-5 rounded-2xl border border-border-subtle shadow-2xl gradient-donut-chart ${className}`}
     >
       <div className="mb-4 border-b border-border-subtle pb-2">
         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-accent">

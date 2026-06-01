@@ -17,6 +17,8 @@ export const createSupabaseUserRepository = (): UserRepository => {
     organizationId: row.organization_id,
     roleId: row.role_id,
     isActive: row.is_active ?? true,
+    themePreference: row.theme_preference ?? null,
+    notificationsEnabled: row.notifications_enabled ?? null,
     lastLogin: row.last_login ? new Date(row.last_login) : null,
     createdAt: new Date(row.created_at || ""),
     updatedAt: new Date(row.updated_at || ""),
@@ -62,6 +64,8 @@ export const createSupabaseUserRepository = (): UserRepository => {
         organization_id: user.organizationId ?? null,
         role_id: user.roleId ?? null,
         is_active: user.isActive ?? true,
+        theme_preference: user.themePreference ?? null,
+        notifications_enabled: user.notificationsEnabled ?? null,
       };
 
       const { data, error } = await table()

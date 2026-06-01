@@ -342,3 +342,7 @@ Este desarrollo representa el compromiso de Neuropoint.ai con la excelencia tecn
 ---
 
 _Última actualización: Mayo 2026_
+
+---
+
+> **Nota**: Rama `feature/design-overhaul` — Rediseño completo de la interfaz de usuario.

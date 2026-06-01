@@ -1,5 +1,10 @@
-import { supabase } from "../../../../core/supabase";
-import type { UserEntity } from "../../../users/domain/entities/user.entity";
+import { supabase } from '../../../../core/supabase';
+import type { UserEntity } from '../../../users/domain/entities/user.entity';
+import type { UserUpdate } from '../../../../core/types/auth/users.sql';
+
+function updateUsers(payload: UserUpdate) {
+  return supabase.from('users').update(payload as never);
+}
 
 interface AuthUserProfile {
   id: string;
@@ -50,17 +55,19 @@ export const authService = {
     });
 
     if (authError) throw authError;
-    if (!user) throw new Error("No user found");
+    if (!user) throw new Error('No user found');
 
     const { data: publicUser } = (await supabase
-      .from("users")
-      .select("first_name, last_name, organization_id, role_id, is_active, theme_preference, notifications_enabled")
-      .eq("id", user.id)
+      .from('users')
+      .select(
+        'first_name, last_name, organization_id, role_id, is_active, theme_preference, notifications_enabled'
+      )
+      .eq('id', user.id)
       .single()) as { data: PublicUserRow | null };
 
     const profile: AuthUserProfile = {
       id: user.id,
-      email: user.email || "",
+      email: user.email || '',
       firstName:
         publicUser?.first_name || user.user_metadata?.firstName || null,
       lastName: publicUser?.last_name || user.user_metadata?.lastName || null,
@@ -81,9 +88,9 @@ export const authService = {
 
     if (profile.roleId) {
       const { data: roleData } = (await supabase
-        .from("roles")
-        .select("name")
-        .eq("id", profile.roleId)
+        .from('roles')
+        .select('name')
+        .eq('id', profile.roleId)
         .single()) as { data: RoleRow | null };
       if (roleData) {
         profile.role = roleData;
@@ -92,14 +99,14 @@ export const authService = {
 
     if (profile.organizationId) {
       const { data: orgData } = (await supabase
-        .from("organizations")
-        .select("name, is_active")
-        .eq("id", profile.organizationId)
+        .from('organizations')
+        .select('name, is_active')
+        .eq('id', profile.organizationId)
         .single()) as { data: OrganizationRow | null };
       if (orgData) {
         profile.organization = {
           name: orgData.name,
-          status: orgData.is_active ? "active" : "inactive",
+          status: orgData.is_active ? 'active' : 'inactive',
         };
       }
     }
@@ -121,14 +128,16 @@ export const authService = {
     const user = session.user;
 
     const { data: publicUser } = (await supabase
-      .from("users")
-      .select("first_name, last_name, organization_id, role_id, is_active, theme_preference, notifications_enabled")
-      .eq("id", user.id)
+      .from('users')
+      .select(
+        'first_name, last_name, organization_id, role_id, is_active, theme_preference, notifications_enabled'
+      )
+      .eq('id', user.id)
       .single()) as { data: PublicUserRow | null };
 
     const profile: AuthUserProfile = {
       id: user.id,
-      email: user.email || "",
+      email: user.email || '',
       firstName:
         publicUser?.first_name || user.user_metadata?.firstName || null,
       lastName: publicUser?.last_name || user.user_metadata?.lastName || null,
@@ -149,9 +158,9 @@ export const authService = {
 
     if (profile.roleId) {
       const { data: roleData } = (await supabase
-        .from("roles")
-        .select("name")
-        .eq("id", profile.roleId)
+        .from('roles')
+        .select('name')
+        .eq('id', profile.roleId)
         .single()) as { data: RoleRow | null };
       if (roleData) {
         profile.role = roleData;
@@ -160,14 +169,14 @@ export const authService = {
 
     if (profile.organizationId) {
       const { data: orgData } = (await supabase
-        .from("organizations")
-        .select("name, is_active")
-        .eq("id", profile.organizationId)
+        .from('organizations')
+        .select('name, is_active')
+        .eq('id', profile.organizationId)
         .single()) as { data: OrganizationRow | null };
       if (orgData) {
         profile.organization = {
           name: orgData.name,
-          status: orgData.is_active ? "active" : "inactive",
+          status: orgData.is_active ? 'active' : 'inactive',
         };
       }
     }
@@ -176,10 +185,10 @@ export const authService = {
   },
 
   async updateNotificationPreference(userId: string, enabled: boolean) {
-    const { error } = await supabase
-      .from('users')
-      .update({ notifications_enabled: enabled })
-      .eq('id', userId);
+    const { error } = await updateUsers({ notifications_enabled: enabled }).eq(
+      'id',
+      userId
+    );
     if (error) throw error;
   },
 
@@ -193,10 +202,10 @@ export const authService = {
   },
 
   async updateThemePreference(userId: string, theme: 'dark' | 'light') {
-    const { error } = await supabase
-      .from('users')
-      .update({ theme_preference: theme })
-      .eq('id', userId);
+    const { error } = await updateUsers({ theme_preference: theme }).eq(
+      'id',
+      userId
+    );
     if (error) throw error;
   },
 

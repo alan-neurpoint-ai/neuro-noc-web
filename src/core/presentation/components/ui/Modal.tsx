@@ -23,30 +23,6 @@ const MAX_WIDTH_MAP = {
   "2xl": "max-w-2xl",
 };
 
-const VARIANTS = {
-  default: {
-    accent: "#b29af4",
-    primary: "#672da9",
-    glow: "rgba(103,45,169,0.25)",
-    ring: "rgba(178,154,244,0.18)",
-    bar: "linear-gradient(90deg, transparent, #b29af4 30%, #672da9 70%, transparent)",
-  },
-  danger: {
-    accent: "#f87171",
-    primary: "#7c0808",
-    glow: "rgba(124,8,8,0.30)",
-    ring: "rgba(248,113,113,0.18)",
-    bar: "linear-gradient(90deg, transparent, #f87171 30%, #7c0808 70%, transparent)",
-  },
-  success: {
-    accent: "#34d399",
-    primary: "#065f46",
-    glow: "rgba(6,95,70,0.30)",
-    ring: "rgba(52,211,153,0.18)",
-    bar: "linear-gradient(90deg, transparent, #34d399 30%, #065f46 70%, transparent)",
-  },
-};
-
 export const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
@@ -61,7 +37,6 @@ export const Modal: React.FC<ModalProps> = ({
   variant = "default",
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
-  const v = VARIANTS[variant];
 
   const handleEsc = useCallback(
     (e: KeyboardEvent) => {
@@ -85,82 +60,34 @@ export const Modal: React.FC<ModalProps> = ({
 
   return createPortal(
     <div
-      className="fixed inset-0 z-999 flex items-center justify-center p-4 sm:p-6"
-      style={{ perspective: "1200px" }}
+      data-variant={variant}
+      className="fixed inset-0 z-999 flex items-center justify-center p-4 sm:p-6 [perspective:1200px]"
     >
       <div
-        className="absolute inset-0"
+        className={`absolute inset-0 ${dismissOnOverlay ? 'cursor-pointer' : ''}`}
         onClick={dismissOnOverlay ? onClose : undefined}
-        style={{
-          background: "rgba(0,0,0,0.72)",
-          backdropFilter: "blur(14px)",
-          WebkitBackdropFilter: "blur(14px)",
-          animation: "overlayIn 0.25s ease forwards",
-        }}
       />
 
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          width: 320,
-          height: 320,
-          borderRadius: "50%",
-          background: `radial-gradient(circle, ${v.glow} 0%, transparent 70%)`,
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          filter: "blur(40px)",
-          animation: "orbPulse 3s ease-in-out infinite",
-        }}
-      />
+      <div className="absolute inset-0 bg-black/50 dark:bg-black/72 backdrop-blur-xl animate-overlay-in" />
+
+      <div className="absolute pointer-events-none w-80 h-80 rounded-full top-1/2 left-1/2 blur-[40px] gradient-modal-orb animate-orb-pulse origin-center" />
 
       <div
         ref={modalRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? "modal-title" : undefined}
-        className={`relative w-full ${MAX_WIDTH_MAP[maxWidth]} flex flex-col rounded-2xl overflow-hidden ${className}`}
-        style={{
-          background:
-            "linear-gradient(160deg, #2d1b69 0%, #1a0f3e 55%, #0d0820 100%)",
-          border: `1px solid ${v.ring}`,
-          boxShadow: [
-            `0 0 0 1px ${v.ring}`,
-            `0 0 60px ${v.glow}`,
-            "0 40px 80px rgba(0,0,0,0.7)",
-            "0 0 0 1px rgba(255,255,255,0.03) inset",
-          ].join(", "),
-          animation: "modalIn 0.28s cubic-bezier(0.16,1,0.3,1) forwards",
-          transformOrigin: "center bottom",
-        }}
+        className={`relative w-full ${MAX_WIDTH_MAP[maxWidth]} flex flex-col rounded-2xl overflow-hidden gradient-modal-bg border border-[var(--modal-ring)] shadow-modal animate-modal-in origin-bottom ${className}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="h-0.75 w-full shrink-0" style={{ background: v.bar }} />
+        <div className="h-0.75 w-full shrink-0 gradient-modal-bar" />
 
-        <div
-          className="absolute top-0 left-0 pointer-events-none"
-          style={{
-            width: 180,
-            height: 180,
-            background: `radial-gradient(circle at 0% 0%, ${v.glow} 0%, transparent 65%)`,
-            borderRadius: "0 0 100% 0",
-          }}
-        />
+        <div className="absolute top-0 left-0 pointer-events-none w-[180px] h-[180px] gradient-modal-corner [border-radius:0_0_100%_0]" />
 
-        <div
-          className="relative flex items-start justify-between gap-4 px-6 py-5 shrink-0"
-          style={{ borderBottom: "1px solid rgba(178,154,244,0.08)" }}
-        >
+        <div className="relative flex items-start justify-between gap-4 px-6 py-5 shrink-0 border-b border-[var(--modal-ring)]/40">
           <div className="flex items-center gap-3 min-w-0">
             {icon && (
-              <div
-                className="shrink-0 flex items-center justify-center w-9 h-9 rounded-xl"
-                style={{
-                  background: `rgba(103,45,169,0.25)`,
-                  border: `1px solid ${v.ring}`,
-                  boxShadow: `0 0 12px ${v.glow}`,
-                }}
-              >
+              <div className="shrink-0 flex items-center justify-center w-9 h-9 rounded-xl bg-modal-icon">
                 {icon}
               </div>
             )}
@@ -169,17 +96,13 @@ export const Modal: React.FC<ModalProps> = ({
               {title && (
                 <h3
                   id="modal-title"
-                  className="text-sm font-black uppercase tracking-[0.22em] truncate"
-                  style={{ color: v.accent }}
+                  className="text-sm font-black uppercase tracking-[0.22em] truncate text-[var(--modal-accent)]"
                 >
                   {title}
                 </h3>
               )}
               {subtitle && (
-                <p
-                  className="text-xs truncate"
-                  style={{ color: "rgba(156,163,175,0.6)" }}
-                >
+                <p className="text-xs truncate text-text-muted/60">
                   {subtitle}
                 </p>
               )}
@@ -189,24 +112,7 @@ export const Modal: React.FC<ModalProps> = ({
           <button
             onClick={onClose}
             aria-label="Cerrar"
-            className="shrink-0 flex items-center justify-center w-8 h-8 rounded-xl transition-all duration-200"
-            style={{
-              background: "rgba(178,154,244,0.06)",
-              border: "1px solid rgba(178,154,244,0.1)",
-              color: "rgba(178,154,244,0.5)",
-            }}
-            onMouseEnter={(e) => {
-              const el = e.currentTarget;
-              el.style.background = "rgba(178,154,244,0.15)";
-              el.style.color = "#ffffff";
-              el.style.borderColor = "rgba(178,154,244,0.25)";
-            }}
-            onMouseLeave={(e) => {
-              const el = e.currentTarget;
-              el.style.background = "rgba(178,154,244,0.06)";
-              el.style.color = "rgba(178,154,244,0.5)";
-              el.style.borderColor = "rgba(178,154,244,0.1)";
-            }}
+            className="shrink-0 flex items-center justify-center w-8 h-8 rounded-xl transition-all duration-200 bg-[var(--modal-ring)]/30 border border-[var(--modal-ring)]/55 text-[var(--modal-accent)]/50 hover:bg-[var(--modal-ring)] hover:text-white hover:border-[var(--modal-accent)]/40"
           >
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path
@@ -219,33 +125,17 @@ export const Modal: React.FC<ModalProps> = ({
           </button>
         </div>
 
-        <div
-          className="relative px-6 py-6 overflow-y-auto flex-1"
-          style={{
-            maxHeight: "65vh",
-            color: "rgba(255,255,255,0.78)",
-            scrollbarWidth: "none",
-          }}
-        >
+        <div className="relative px-6 py-6 overflow-y-auto flex-1 max-h-[65vh] text-text-on-elevated [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {children}
         </div>
 
         {footer && (
-          <div
-            className="relative px-6 py-4 flex items-center justify-end gap-3 shrink-0"
-            style={{
-              borderTop: "1px solid rgba(178,154,244,0.08)",
-              background: "rgba(0,0,0,0.25)",
-            }}
-          >
+          <div className="relative px-6 py-4 flex items-center justify-end gap-3 shrink-0 border-t border-[var(--modal-ring)]/40 bg-text-on-elevated/5">
             <div className="absolute left-6 flex gap-1 pointer-events-none">
               {[...Array(3)].map((_, i) => (
                 <div
                   key={i}
-                  className="w-1 h-1 rounded-full"
-                  style={{
-                    background: i === 0 ? v.accent : "rgba(178,154,244,0.2)",
-                  }}
+                  className={`w-1 h-1 rounded-full ${i === 0 ? 'bg-[var(--modal-accent)]' : 'bg-[var(--modal-ring)]'}`}
                 />
               ))}
             </div>

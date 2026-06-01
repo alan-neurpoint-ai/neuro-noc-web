@@ -162,7 +162,7 @@ export const MonitoringAlertsPage = () => {
         const allOrgIds = await getOrganizationIds(targetOrgId);
         let query = supabase
           .from('alerts')
-          .select('id, title, description, severity')
+          .select('id, issue, description, criticality')
           .order('created_at', { ascending: false })
           .limit(10);
 
@@ -175,22 +175,22 @@ export const MonitoringAlertsPage = () => {
         const { data, error } = await query;
         if (error) throw error;
 
-        const latestAlerts = (data as Pick<AlertRow, 'id' | 'title' | 'description' | 'severity'>[]) || [];
+        const latestAlerts = (data as Pick<AlertRow, 'id' | 'issue' | 'description' | 'criticality'>[]) || [];
         const previousKnown = knownAlertIds.current;
 
         for (const alert of latestAlerts) {
           if (!previousKnown.has(alert.id)) {
             const severityLabel =
-              alert.severity === 'critical'
+              alert.criticality === 'critical'
                 ? '🔴 Crítica'
-                : alert.severity === 'high'
+                : alert.criticality === 'high'
                   ? '🟠 Alta'
-                  : alert.severity === 'medium'
+                  : alert.criticality === 'medium'
                     ? '🟡 Media'
                     : '🟢 Baja';
 
             sendNotification(
-              `[${severityLabel}] ${alert.title}`,
+              `[${severityLabel}] ${alert.issue}`,
               {
                 body: alert.description?.slice(0, 120) ?? 'Nueva alerta registrada',
                 tag: `alert-${alert.id}`,
