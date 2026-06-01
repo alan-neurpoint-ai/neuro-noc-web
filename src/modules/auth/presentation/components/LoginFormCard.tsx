@@ -48,7 +48,7 @@ function AuthError({ message }: { message: string }) {
           <line x1="12" y1="8" x2="12" y2="12" />
           <line x1="12" y1="16" x2="12.01" y2="16" />
         </svg>
-        <p className="font-label text-[10px] text-red-400 font-bold uppercase tracking-wider">
+        <p className="font-label text-[clamp(10px,0.6vw,13px)] text-red-400 font-bold uppercase tracking-wider">
           {message}
         </p>
       </div>
@@ -85,42 +85,42 @@ export function LoginFormCard({ mountAnim }: LoginFormCardProps) {
 
   return (
     <div
-      className={`w-full lg:w-[48%] flex flex-col justify-center items-center px-6 sm:px-10 xl:px-20 relative z-10 min-h-screen transition-all duration-1000 delay-300 ${mountAnim ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+      className={`w-full lg:w-[48%] flex flex-col justify-center items-center px-6 sm:px-10 xl:px-16 2xl:px-24 relative z-10 min-h-screen transition-all duration-1000 delay-300 ${mountAnim ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
     >
-      <div className="w-full max-w-100">
+      <div className="w-full max-w-96 lg:max-w-100 xl:max-w-110 2xl:max-w-120">
         <div
           className={`flex lg:hidden items-center justify-center gap-3 mb-14 transition-all duration-700 delay-200 ${mountAnim ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}
         >
           <div>
-            <span className="font-headline text-xl font-bold text-text-main tracking-tight">
+            <span className="font-headline text-[clamp(1.1rem,2vw,1.6rem)] font-bold text-text-main tracking-tight">
               NEURO
             </span>
-            <span className="font-headline text-xl font-bold text-brand-secondary tracking-tight">
+            <span className="font-headline text-[clamp(1.1rem,2vw,1.6rem)] font-bold text-brand-secondary tracking-tight">
               NOC
             </span>
           </div>
         </div>
 
-        <div className="mb-10">
+        <div className="mb-10 xl:mb-12">
           <div
-            className={`flex items-center gap-3 mb-4 transition-all duration-600 delay-400 ${mountAnim ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-5'}`}
+            className={`flex items-center gap-3 mb-4 xl:mb-5 transition-all duration-600 delay-400 ${mountAnim ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-5'}`}
           >
-            <div className="relative w-2 h-2">
+            <div className="relative w-2 h-2 xl:w-2.5 xl:h-2.5">
               <div className="absolute inset-0 rounded-full bg-brand-primary animate-login-pulse" />
               <div className="absolute -inset-0.75 rounded-full bg-brand-primary/20 animate-login-pulse [animation-delay:0.5s]" />
             </div>
-            <span className="font-label text-[10px] font-bold text-brand-primary uppercase tracking-[0.25em]">
+            <span className="font-label text-[clamp(10px,0.65vw,14px)] font-bold text-brand-primary uppercase tracking-[0.25em]">
               Acceso
             </span>
           </div>
 
           <h2
-            className={`font-headline text-[1.85rem] font-extrabold text-text-main tracking-tight leading-tight transition-all duration-600 delay-500 ${mountAnim ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+            className={`font-headline text-[clamp(1.85rem,2.5vw,2.8rem)] font-extrabold text-text-main tracking-tight leading-tight transition-all duration-600 delay-500 ${mountAnim ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
           >
             Inicia sesión
           </h2>
           <p
-            className={`mt-2 text-[13px] text-text-muted/40 font-body transition-all duration-600 delay-600 ${mountAnim ? 'opacity-100' : 'opacity-0'}`}
+            className={`mt-2 xl:mt-3 text-[clamp(0.8125rem,0.9vw,1rem)] text-text-muted/50 font-body transition-all duration-600 delay-600 ${mountAnim ? 'opacity-100' : 'opacity-0'}`}
           >
             Ingresa tus credenciales para acceder al centro de operaciones
           </p>
@@ -133,10 +133,10 @@ export function LoginFormCard({ mountAnim }: LoginFormCardProps) {
           <div className="absolute inset-0 rounded-2xl gradient-login-card-inner" />
 
           <form
-            className="relative p-8 rounded-2xl border border-white/6 bg-bg-surface/60 backdrop-blur-xl"
+            className="relative p-7 sm:p-8 xl:p-10 2xl:p-12 rounded-2xl border border-white/6 bg-bg-surface/60 backdrop-blur-xl"
             onSubmit={handleSubmit}
           >
-            <div className="space-y-5">
+            <div className="space-y-5 xl:space-y-6">
               <div
                 className={`transition-all duration-600 delay-700 ${mountAnim ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}
               >
@@ -180,13 +180,13 @@ export function LoginFormCard({ mountAnim }: LoginFormCardProps) {
                   <Button
                     variant="primary"
                     fullWidth
-                    className="py-4 relative overflow-hidden"
+                    className="py-4 xl:py-5 relative overflow-hidden"
                     isLoading={isLoading}
                   >
                     {isLoading ? null : (
-                      <span className="relative z-10 flex items-center justify-center gap-2">
+                      <span className="relative z-10 flex items-center justify-center gap-2 text-[clamp(0.8rem,0.9vw,1rem)]">
                         <svg
-                          className="w-4 h-4"
+                          className="w-4 h-4 xl:w-5 xl:h-5"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
@@ -214,7 +214,7 @@ export function LoginFormCard({ mountAnim }: LoginFormCardProps) {
         </div>
 
         <p
-          className={`mt-8 text-center text-[10px] text-text-muted/25 font-label tracking-[0.15em] uppercase transition-all duration-600 delay-1000 ${mountAnim ? 'opacity-100' : 'opacity-0'}`}
+          className={`mt-8 xl:mt-10 text-center text-[clamp(8px,0.55vw,11px)] text-text-muted/25 font-label tracking-[0.15em] uppercase transition-all duration-600 delay-1000 ${mountAnim ? 'opacity-100' : 'opacity-0'}`}
         >
           Powered by Neuropoint.ai
         </p>

@@ -58,7 +58,7 @@ export const Input = ({
   return (
     <div className="w-full space-y-1.5">
       {label && (
-        <label className="font-label text-[10px] font-black uppercase tracking-[0.15em] text-brand-secondary ml-1">
+        <label className="font-label text-[clamp(9px,0.6vw,13px)] font-black uppercase tracking-[0.15em] text-brand-secondary ml-1">
           {label}
         </label>
       )}
@@ -74,8 +74,8 @@ export const Input = ({
           type={type}
           onChange={handleInputChange}
           className={`
-            w-full bg-bg-surface font-body text-sm text-text-main transition-all duration-300
-            ${icon ? 'pl-12 pr-4' : 'px-5'} py-3.5
+            w-full bg-bg-surface font-body text-[clamp(0.8rem,0.85vw,1rem)] text-text-main transition-all duration-300
+            ${icon ? 'pl-12 pr-4' : 'px-5'} py-3 xl:py-3.5
             rounded-[12px]
             border border-border-subtle
             ${
@@ -91,7 +91,7 @@ export const Input = ({
       </div>
 
       {error && (
-        <span className="font-label text-[9px] font-bold text-status-error uppercase tracking-widest ml-1">
+        <span className="font-label text-[clamp(8px,0.5vw,11px)] font-bold text-status-error uppercase tracking-widest ml-1">
           {error}
         </span>
       )}

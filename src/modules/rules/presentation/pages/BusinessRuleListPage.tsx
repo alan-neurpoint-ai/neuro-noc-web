@@ -147,7 +147,11 @@ export const BusinessRuleListPage = () => {
         text: 'text-emerald-400',
         label: 'Activa',
       },
-      inactive: { bg: 'bg-hover-bg', text: 'text-text-muted', label: 'Inactiva' },
+      inactive: {
+        bg: 'bg-hover-bg',
+        text: 'text-text-muted',
+        label: 'Inactiva',
+      },
       draft: {
         bg: 'bg-amber-500/10',
         text: 'text-amber-400',
@@ -159,6 +163,7 @@ export const BusinessRuleListPage = () => {
       text: 'text-text-muted',
       label: 'Desconocido',
     };
+
     return (
       <span
         className={`px-2 py-0.5 rounded-full text-[9px] font-black ${config.bg} ${config.text} border border-border-default uppercase`}

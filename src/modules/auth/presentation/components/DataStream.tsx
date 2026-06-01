@@ -10,12 +10,12 @@ export function DataStream() {
   ];
 
   return (
-    <div className="absolute bottom-0 left-0 right-0 overflow-hidden h-6 z-20">
+    <div className="absolute bottom-0 left-0 right-0 overflow-hidden h-6 xl:h-7 z-20">
       <div className="flex animate-login-data-stream">
         {[...streams, ...streams].map((line, i) => (
           <span
             key={i}
-            className="font-label text-[9px] text-brand-primary/25 tracking-[0.15em] whitespace-nowrap mr-12"
+            className="font-label text-[clamp(8px,0.55vw,11px)] text-brand-primary/25 tracking-[0.15em] whitespace-nowrap mr-12 xl:mr-16"
           >
             {line}
           </span>
