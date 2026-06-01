@@ -78,10 +78,12 @@ export const DashboardLayout = () => {
           })
         );
 
+        const hasChildren = orgChildrenOptions.length > 0;
+
         const options: OrganizationOption[] = [
           {
             value: currentOrgId,
-            label: currentOrgName,
+            label: hasChildren ? 'Interno' : currentOrgName,
             description: currentOrgName,
           },
           ...orgChildrenOptions,
