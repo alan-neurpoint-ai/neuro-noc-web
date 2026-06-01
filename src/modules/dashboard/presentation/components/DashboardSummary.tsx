@@ -247,37 +247,66 @@ function MetricCard({
   icon,
   color,
   bar,
+  suffix,
 }: {
   label: string;
   value: string | number;
   icon: React.ReactNode;
   color: string;
   bar?: { pct: number; color: string };
+  suffix?: string;
 }) {
   return (
     <Card variant="glass" className="p-4 group relative overflow-hidden">
+      {/* Top accent line */}
+      <div
+        className="absolute top-0 left-0 right-0 h-[2px] opacity-60 group-hover:opacity-100 transition-opacity duration-300"
+        style={{
+          background: `linear-gradient(90deg, ${color}, ${color}66 60%, transparent)`,
+        }}
+      />
+
       <div className="flex items-start justify-between mb-3">
-        <div>
-          <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-text-muted mb-1.5">
+        <div className="space-y-1">
+          <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-text-muted">
             {label}
           </p>
-          <p className="text-2xl font-black font-mono tracking-tight text-text-main">
-            {value}
-          </p>
+          <div className="flex items-baseline gap-1">
+            <p className="text-2xl font-black font-mono tracking-tight text-text-main leading-none">
+              {value}
+            </p>
+            {suffix && (
+              <span className="text-[10px] font-medium text-text-muted">{suffix}</span>
+            )}
+          </div>
         </div>
         <div
-          className="p-2 rounded-lg"
+          className="p-2.5 rounded-xl transition-all duration-300 group-hover:scale-110"
           style={{ backgroundColor: `${color}12`, color }}
         >
           {icon}
         </div>
       </div>
+
       {bar && (
-        <div className="w-full h-1.5 rounded-full bg-bg-elevated/80 overflow-hidden">
-          <div
-            className="h-full rounded-full transition-all duration-700 ease-out"
-            style={{ width: `${Math.min(bar.pct, 100)}%`, backgroundColor: bar.color }}
-          />
+        <div className="mt-2 space-y-1">
+          <div className="flex items-center justify-between">
+            <span className="text-[8px] font-medium text-text-muted/60 uppercase tracking-wider">
+              Progreso
+            </span>
+            <span className="text-[8px] font-mono font-bold text-text-muted/80">
+              {Math.round(bar.pct)}%
+            </span>
+          </div>
+          <div className="w-full h-1.5 rounded-full bg-bg-elevated/60 overflow-hidden">
+            <div
+              className="h-full rounded-full transition-all duration-700 ease-out"
+              style={{
+                width: `${Math.min(bar.pct, 100)}%`,
+                background: `linear-gradient(90deg, ${bar.color}, ${bar.color}88)`,
+              }}
+            />
+          </div>
         </div>
       )}
     </Card>
@@ -452,8 +481,8 @@ export const DashboardSummary = () => {
       {/* Metric Cards */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
         <MetricCard label="Total Alertas" value={metrics.totalAlerts} icon={<BiBell size={16} />} color="#6366f1" />
-        <MetricCard label="Tasa Crítica" value={`${metrics.criticalRate}%`} icon={<BiError size={16} />} color="#f87171"
-          bar={{ pct: metrics.criticalRate, color: '#f87171' }} />
+        <MetricCard label="Tasa Crítica" value={metrics.criticalRate} icon={<BiError size={16} />} color="#f87171"
+          bar={{ pct: metrics.criticalRate, color: '#f87171' }} suffix="%" />
         <MetricCard label="Resueltas" value={metrics.resolvedAlerts} icon={<BiCheckCircle size={16} />} color="#34d399"
           bar={{ pct: resolveRate, color: '#34d399' }} />
         <MetricCard label="Pendientes" value={metrics.pendingAlerts} icon={<BiTime size={16} />} color="#fbbf24"
