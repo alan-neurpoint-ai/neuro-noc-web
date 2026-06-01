@@ -257,59 +257,45 @@ function MetricCard({
   suffix?: string;
 }) {
   return (
-    <Card variant="glass" className="p-4 group relative overflow-hidden">
-      {/* Top accent line */}
+    <div className="relative rounded-2xl bg-bg-card/50 backdrop-blur-xl border border-[var(--border-subtle)] shadow-[0_8px_32px_0_rgba(0,0,0,0.05)] overflow-hidden p-4 group">
+      {/* Left accent bar */}
       <div
-        className="absolute top-0 left-0 right-0 h-[2px] opacity-60 group-hover:opacity-100 transition-opacity duration-300"
-        style={{
-          background: `linear-gradient(90deg, ${color}, ${color}66 60%, transparent)`,
-        }}
+        className="absolute left-0 top-0 bottom-0 w-[3px] group-hover:w-[4px] transition-all duration-300"
+        style={{ backgroundColor: color }}
       />
 
-      <div className="flex items-start justify-between mb-3">
-        <div className="space-y-1">
-          <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-text-muted">
-            {label}
-          </p>
-          <div className="flex items-baseline gap-1">
-            <p className="text-2xl font-black font-mono tracking-tight text-text-main leading-none">
-              {value}
-            </p>
-            {suffix && (
-              <span className="text-[10px] font-medium text-text-muted">{suffix}</span>
-            )}
-          </div>
-        </div>
-        <div
-          className="p-2.5 rounded-xl transition-all duration-300 group-hover:scale-110"
-          style={{ backgroundColor: `${color}12`, color }}
-        >
+      <div className="flex items-center justify-between mb-2 pl-2">
+        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-text-muted">
+          {label}
+        </p>
+        <div className="p-1.5 rounded-md" style={{ color }}>
           {icon}
         </div>
       </div>
 
+      <div className="pl-2 flex items-baseline gap-0.5">
+        <p className="text-2xl font-black font-mono tracking-tight text-text-main leading-none">
+          {value}
+        </p>
+        {suffix && (
+          <span className="text-xs font-medium text-text-muted">{suffix}</span>
+        )}
+      </div>
+
       {bar && (
-        <div className="mt-2 space-y-1">
-          <div className="flex items-center justify-between">
-            <span className="text-[8px] font-medium text-text-muted/60 uppercase tracking-wider">
-              Progreso
-            </span>
-            <span className="text-[8px] font-mono font-bold text-text-muted/80">
-              {Math.round(bar.pct)}%
-            </span>
-          </div>
-          <div className="w-full h-1.5 rounded-full bg-bg-elevated/60 overflow-hidden">
+        <div className="pl-2 mt-3">
+          <div className="w-full h-1 rounded-full bg-bg-elevated/70 overflow-hidden">
             <div
               className="h-full rounded-full transition-all duration-700 ease-out"
               style={{
                 width: `${Math.min(bar.pct, 100)}%`,
-                background: `linear-gradient(90deg, ${bar.color}, ${bar.color}88)`,
+                background: `linear-gradient(90deg, ${bar.color}, ${bar.color}66)`,
               }}
             />
           </div>
         </div>
       )}
-    </Card>
+    </div>
   );
 }
 
