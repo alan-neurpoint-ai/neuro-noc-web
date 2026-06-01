@@ -23,7 +23,7 @@ function PasswordStrength({ length }: { length: number }) {
           className={`h-0.5 flex-1 rounded-full transition-all duration-500 ${
             length >= level * 2
               ? PASSWORD_STRENGTH_COLORS[Math.min(level - 1, 3)]
-              : 'bg-white/6'
+              : 'bg-border-default'
           }`}
         />
       ))}
@@ -133,7 +133,7 @@ export function LoginFormCard({ mountAnim }: LoginFormCardProps) {
           <div className="absolute inset-0 rounded-2xl gradient-login-card-inner" />
 
           <form
-            className="relative p-6 sm:p-7 xl:p-8 2xl:p-10 rounded-2xl border border-white/6 bg-bg-surface/60 backdrop-blur-xl"
+            className="relative p-6 sm:p-7 xl:p-8 2xl:p-10 rounded-2xl border border-border-subtle bg-bg-surface/60 backdrop-blur-xl"
             onSubmit={handleSubmit}
           >
             <div className="space-y-4 xl:space-y-5">

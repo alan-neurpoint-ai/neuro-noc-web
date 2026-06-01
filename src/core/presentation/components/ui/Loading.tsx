@@ -130,14 +130,14 @@ export const Loading = ({
         <div className="mt-4 flex items-center gap-2">
           <div className="flex items-center gap-1.5 px-3 py-1 rounded-md bg-emerald-500/[0.07] border border-emerald-500/15">
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_4px_rgba(52,211,153,0.5)] animate-pulse" />
-            <span className="text-[9px] font-bold text-emerald-400/80 uppercase tracking-[0.2em]">
+            <span className="text-[9px] font-bold text-emerald-600 dark:text-emerald-400/80 uppercase tracking-[0.2em]">
               En línea
             </span>
           </div>
         </div>
 
         {/* Progress bar */}
-        <div className="mt-5 w-44 h-[3px] bg-white/[0.06] rounded-full overflow-hidden">
+        <div className="mt-5 w-44 h-[3px] bg-border-default rounded-full overflow-hidden">
           <div className="h-full rounded-full bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-primary animate-progress" />
         </div>
       </div>

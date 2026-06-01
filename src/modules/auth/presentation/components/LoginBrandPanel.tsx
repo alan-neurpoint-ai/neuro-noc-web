@@ -57,7 +57,7 @@ export function LoginBrandPanel({ mountAnim }: LoginBrandPanelProps) {
           {SECURITY_BADGES.map((badge) => (
             <div
               key={badge.label}
-              className="flex items-center gap-1.5 xl:gap-2 px-2.5 xl:px-3.5 py-1.5 xl:py-2 rounded-md bg-white/3 border border-white/6"
+              className="flex items-center gap-1.5 xl:gap-2 px-2.5 xl:px-3.5 py-1.5 xl:py-2 rounded-md bg-bg-surface/50 border border-border-subtle"
             >
               <div
                 className={`w-1.5 h-1.5 xl:w-1.5 xl:h-1.5 rounded-full ${badge.color} animate-login-pulse-badge`}

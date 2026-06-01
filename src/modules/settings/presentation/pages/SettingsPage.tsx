@@ -25,7 +25,7 @@ export const SettingsPage = () => {
       <Card>
         <div className="p-6">
           <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 rounded-lg bg-blue-500/20 text-blue-400">
+            <div className="p-2 rounded-lg bg-blue-500/20 text-blue-600 dark:text-blue-400">
               <BiUser size={20} />
             </div>
             <h2 className="text-lg font-bold text-text-main">Perfil</h2>

@@ -137,24 +137,20 @@ export const BusinessRuleListPage = () => {
     });
   };
 
-  const getStatusBadge = (status: string | null) => {
+const getStatusBadge = (status: string | null) => {
     const statusConfig: Record<
       string,
       { bg: string; text: string; label: string }
     > = {
       active: {
         bg: 'bg-emerald-500/10',
-        text: 'text-emerald-400',
+        text: 'text-emerald-600 dark:text-emerald-400',
         label: 'Activa',
       },
-      inactive: {
-        bg: 'bg-hover-bg',
-        text: 'text-text-muted',
-        label: 'Inactiva',
-      },
+      inactive: { bg: 'bg-hover-bg', text: 'text-text-muted', label: 'Inactiva' },
       draft: {
         bg: 'bg-amber-500/10',
-        text: 'text-amber-400',
+        text: 'text-amber-600 dark:text-amber-400',
         label: 'Borrador',
       },
     };
@@ -236,7 +232,7 @@ export const BusinessRuleListPage = () => {
           <Button
             variant="ghost"
             icon={<BiTrash size={16} />}
-            className="px-3 py-1.5 text-red-400 hover:text-red-300"
+            className="px-3 py-1.5 text-red-600 dark:text-red-400 hover:text-red-500"
             onClick={(e) => {
               e.stopPropagation();
               openConfirmModal(item);

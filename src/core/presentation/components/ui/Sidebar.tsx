@@ -70,8 +70,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
         isCollapsed ? 'w-20' : 'w-72'
       } ${className}`}
     >
-      <div className="absolute inset-0 opacity-[0.025] bg-[linear-gradient(rgba(99,102,241,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(99,102,241,0.03)_1px,transparent_1px)] bg-size-[32px_32px] pointer-events-none" />
-      <div className="absolute top-0 left-0 right-0 h-28 bg-linear-to-b from-brand-primary/8 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 opacity-[0.015] dark:opacity-[0.025] bg-[linear-gradient(rgba(99,102,241,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(99,102,241,0.03)_1px,transparent_1px)] bg-size-[32px_32px] pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-28 bg-linear-to-b from-brand-primary/5 dark:from-brand-primary/8 to-transparent pointer-events-none" />
 
       <div className="relative flex items-center justify-between px-4 py-4">
         <div className="flex items-center gap-3">
@@ -216,7 +216,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <span className="text-[9px] font-label text-text-on-elevated-muted/50 uppercase tracking-[0.15em]">
                     Status
                   </span>
-                  <span className="text-[11px] font-headline text-emerald-400 flex items-center gap-1.5">
+                  <span className="text-[11px] font-headline text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.5)]" />
                     Online
                   </span>

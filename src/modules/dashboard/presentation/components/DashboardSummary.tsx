@@ -418,18 +418,18 @@ export const DashboardSummary = () => {
 
   const getCriticalityColor = (c: string) => {
     switch (c) {
-      case 'High': return 'text-red-400 bg-red-400/10';
-      case 'Average': return 'text-amber-400 bg-amber-400/10';
-      case 'Low': return 'text-blue-400 bg-blue-400/10';
-      default: return 'text-text-muted bg-gray-400/10';
+      case 'High': return 'text-red-600 dark:text-red-400 bg-red-500/10';
+      case 'Average': return 'text-amber-600 dark:text-amber-400 bg-amber-500/10';
+      case 'Low': return 'text-blue-600 dark:text-blue-400 bg-blue-500/10';
+      default: return 'text-text-muted bg-gray-500/10';
     }
   };
 
   const getStatusColor = (s: string) => {
     switch (s) {
-      case 'PROBLEM': return 'text-red-400';
-      case 'RESOLVED': return 'text-emerald-400';
-      case 'ACKNOWLEDGED': return 'text-amber-400';
+      case 'PROBLEM': return 'text-red-600 dark:text-red-400';
+      case 'RESOLVED': return 'text-emerald-600 dark:text-emerald-400';
+      case 'ACKNOWLEDGED': return 'text-amber-600 dark:text-amber-400';
       default: return 'text-text-muted';
     }
   };

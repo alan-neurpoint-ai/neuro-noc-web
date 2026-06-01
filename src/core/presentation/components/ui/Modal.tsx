@@ -68,7 +68,7 @@ export const Modal: React.FC<ModalProps> = ({
         onClick={dismissOnOverlay ? onClose : undefined}
       />
 
-      <div className="absolute inset-0 bg-black/72 backdrop-blur-xl animate-overlay-in" />
+      <div className="absolute inset-0 bg-black/50 dark:bg-black/72 backdrop-blur-xl animate-overlay-in" />
 
       <div className="absolute pointer-events-none w-80 h-80 rounded-full top-1/2 left-1/2 blur-[40px] gradient-modal-orb animate-orb-pulse origin-center" />
 
@@ -125,12 +125,12 @@ export const Modal: React.FC<ModalProps> = ({
           </button>
         </div>
 
-        <div className="relative px-6 py-6 overflow-y-auto flex-1 max-h-[65vh] text-white/78 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="relative px-6 py-6 overflow-y-auto flex-1 max-h-[65vh] text-text-on-elevated [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {children}
         </div>
 
         {footer && (
-          <div className="relative px-6 py-4 flex items-center justify-end gap-3 shrink-0 border-t border-[var(--modal-ring)]/40 bg-black/25">
+          <div className="relative px-6 py-4 flex items-center justify-end gap-3 shrink-0 border-t border-[var(--modal-ring)]/40 bg-text-on-elevated/5">
             <div className="absolute left-6 flex gap-1 pointer-events-none">
               {[...Array(3)].map((_, i) => (
                 <div

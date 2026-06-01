@@ -115,7 +115,7 @@ export const LineChart: React.FC<LineChartProps> = ({
           </div>
           {showDelta && (
             <div className={`inline-flex items-center gap-1 text-[10px] font-bold mt-0.5 px-1.5 py-0.5 rounded-md ${
-              positive ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'
+              positive ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : 'bg-red-500/10 text-red-600 dark:text-red-400'
             }`}>
               <span>{positive ? '↑' : '↓'}</span>
               <span>{Math.abs(delta).toFixed(1)}%</span>
@@ -185,7 +185,7 @@ export const LineChart: React.FC<LineChartProps> = ({
               <g>
                 <line x1={hov.x} y1="0" x2={hov.x} y2="100" stroke={stroke} strokeWidth="0.15" strokeDasharray="2,2" opacity="0.4" />
                 <circle cx={hov.x} cy={hov.y} r="2" fill={stroke} filter={`url(#glow-${chartId})`} />
-                <circle cx={hov.x} cy={hov.y} r="1" fill="white" />
+                <circle cx={hov.x} cy={hov.y} r="1" fill="var(--bg-card)" />
               </g>
             )}
 
@@ -198,7 +198,7 @@ export const LineChart: React.FC<LineChartProps> = ({
           {/* Tooltip */}
           {hov && data[hov.idx] && (
             <div
-              className="absolute z-10 pointer-events-none px-3 py-2 rounded-xl border border-border-subtle shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
+              className="absolute z-10 pointer-events-none px-3 py-2 rounded-xl border border-border-subtle shadow-[0_8px_24px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
               style={{
                 left: hov.x > 75 ? 'auto' : `${hov.x}%`,
                 right: hov.x > 75 ? `${100 - hov.x}%` : 'auto',
