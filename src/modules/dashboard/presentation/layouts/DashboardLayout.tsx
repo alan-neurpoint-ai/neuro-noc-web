@@ -81,7 +81,7 @@ export const DashboardLayout = () => {
         const options: OrganizationOption[] = [
           {
             value: currentOrgId,
-            label: 'Interno',
+            label: currentOrgName,
             description: currentOrgName,
           },
           ...orgChildrenOptions,
@@ -133,6 +133,8 @@ export const DashboardLayout = () => {
     navigate(path);
   };
 
+  const hasChildren = orgOptions.length > 1;
+
   const handleOrgChange = (value: string | number) => {
     const org = orgOptions.find((o) => o.value === value);
     if (org) {
@@ -164,6 +166,8 @@ export const DashboardLayout = () => {
             envOptions={orgOptions}
             currentEnv={selectedOrganization?.id}
             onEnvChange={handleOrgChange}
+            hasChildren={hasChildren}
+            orgDisplayName={user?.organization?.name || 'NeuroNOC'}
           />
         )}
         <main className="flex-1 overflow-y-auto p-6 bg-bg-surface">

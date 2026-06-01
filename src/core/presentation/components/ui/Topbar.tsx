@@ -7,6 +7,8 @@ interface TopbarProps {
   envOptions: SelectOption[];
   currentEnv?: string | number;
   onEnvChange?: (value: string | number) => void;
+  hasChildren?: boolean;
+  orgDisplayName?: string;
 }
 
 function LiveClock() {
@@ -39,6 +41,8 @@ export const Topbar: React.FC<TopbarProps> = ({
   envOptions,
   currentEnv,
   onEnvChange,
+  hasChildren = false,
+  orgDisplayName,
 }) => {
   const { toggleTheme, isDark } = useThemeContext();
   const [localEnv, setLocalEnv] = useState<string | number>(
@@ -51,7 +55,7 @@ export const Topbar: React.FC<TopbarProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full h-12 flex items-center justify-between px-5 border-b border-border-subtle bg-topbar backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full h-12 flex items-center justify-between p-10 border-b border-border-subtle bg-topbar backdrop-blur-md">
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/[0.07] border border-emerald-500/15">
           <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(52,211,153,0.5)]" />
@@ -66,14 +70,22 @@ export const Topbar: React.FC<TopbarProps> = ({
 
         <div className="h-4 w-px bg-border-subtle" />
 
-        <div className="w-52">
-          <CustomSelect
-            options={envOptions}
-            value={currentEnv || localEnv}
-            onChange={handleEnvChange}
-            className="gap-0!"
-          />
-        </div>
+        {hasChildren ? (
+          <div className="w-52">
+            <CustomSelect
+              options={envOptions}
+              value={currentEnv || localEnv}
+              onChange={handleEnvChange}
+              className="gap-0!"
+            />
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-bg-elevated/50 border border-border-subtle/50">
+            <span className="text-[13px] font-medium tracking-wide text-text-main">
+              {orgDisplayName}
+            </span>
+          </div>
+        )}
 
         <div className="h-4 w-px bg-border-subtle" />
 
